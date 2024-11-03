@@ -11,18 +11,18 @@ export default function MusicBox() {
     const musicPlay = async () => {
         try {
             const response = await fetch('https://668e29d6bf9912d4c92d0971.mockapi.io/api/ListRecp/JarJournal')
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP ERROR, Status: ${response.status}`)
             }
 
             const data = await response.json()
             setMusicData(data)
-        } catch(error) {
+        } catch (error) {
             console.error('Error mendapat API', error)
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         musicPlay()
     }, [])
 
@@ -46,6 +46,9 @@ export default function MusicBox() {
 
     }
 
+    const infoIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+    </svg>
 
     return (
         <>
@@ -67,13 +70,18 @@ export default function MusicBox() {
                 <div className="w-[360px] h-[120px] bg-black p-[16px] text-white">
                     <div>
                         <div className="flex flex-col gap-[6px]">
-                            <div className="flex flex-row gap-[6px] items-center" >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3" style={{ color: "yellow", filter: "drop-shadow(0px 0px 3px gold)" }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-                                </svg>
+                            <div className="flex flex-row justify-between items-center" >
+                                <div className="flex flex-row gap-[6px] items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3" style={{ color: "yellow", filter: "drop-shadow(0px 0px 3px gold)" }}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                                    </svg>
+                                    <p className="text-[12px] font-[700]">Brain Focus</p>
+                                </div>
 
-
-                                <p className="text-[12px] font-[700]">Brain Focus</p>
+                                <div className="flex flex-row items-center gap-[4px]">
+                                    {infoIcon}
+                                    <p className="text-[10px] font-[600]">Info</p>
+                                </div>
                             </div>
                             <div className="w-full h-[74px] gap-[16px] flex flex-row items-center justify-between">
                                 <div className="flex flex-row gap-[8px]">
@@ -91,7 +99,7 @@ export default function MusicBox() {
                                     )} */}
                                     <CountTime />
                                 </div>
-                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer" style={{...bgStyle, outline: "1px solid rgb(38, 38, 38)"}}>
+                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }}>
                                     <div className="flex flex-row justify-center items-center gap-[8px]">
                                         <p className="text-[10px] font-[600]">Buka layar</p>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">

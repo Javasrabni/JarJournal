@@ -60,7 +60,7 @@ export default function Home() {
                                             buttonFeatures={'Tulis'}
                                         />
                                     </div>
-                                    <div onClick={()=> navigate('/ftr/E-Book')}>
+                                    <div>
                                         <CardFeatures
                                             cardType2EBook={true}
                                             onClickFeatures={'/ftr/Jurnal'}
