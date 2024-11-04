@@ -17,7 +17,6 @@ import EbookPage from "./Comps/Features/eBookSection/ebookPage/ebook"
 import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 
-
 export default function Home() {
     // Mobile Media Querry
     const MobileView = matchMedia(' (max-width: 600px) ')
@@ -27,7 +26,11 @@ export default function Home() {
     const { setUserClickQuote } = useContext(UserQuoteContext)
 
     // Music box context
-    const {statusMusicAxisY, setStatusMusicAxisY} = useContext(MusicBoxContext)
+    const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
+
+    const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+  </svg>
 
     return (
         <>
@@ -78,6 +81,14 @@ export default function Home() {
                                     <div className="w-full">
                                         <Memo />
                                     </div>
+                                    <div>
+                                        {/* <div className="w-fit p-[6px] h-[24px] bg-[#f7f7f7] rounded-[4px] flex items-center justify-center">
+                                            <span className="flex flex-row gap-[8px] items-center">
+                                                {downloadIcon}
+                                                <p className="text-[10px]">Download App</p>
+                                            </span>
+                                        </div> */}
+                                    </div>
                                 </div>
                             </div>
                         </main>
@@ -87,7 +98,7 @@ export default function Home() {
                             <div>
                                 <MusicBox />
                             </div>
-                            <div className="w-[360px] h-[44px] p-[16px] bg-black " style={{borderTop: "1px solid #262626"}} onClick={() => setUserClickQuote((prev) => !prev)}>
+                            <div className="w-[360px] h-[44px] p-[16px] bg-black " style={{ borderTop: "1px solid #262626" }} onClick={() => setUserClickQuote((prev) => !prev)}>
                                 <UserQuote />
                             </div>
                         </footer>

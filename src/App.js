@@ -13,6 +13,7 @@ import AuthForm from './Comps/Form/AuthForm';
 import Home from './home';
 import CodeBaseFeatures from './Comps/Features/codeBaseFeatures';
 import Page404 from './Comps/404/404Page';
+import BrainFocusPage from './Comps/Features/brainFocus/displayPage/brainFocusPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Routes>
                 <Route index element={<Home />} />
                 <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                <Route path='/BrainFocus' element={<BrainFocusPage />} />
                 <Route path='*' element={<Page404 />} />
               </Routes>
             </BrowserRouter>

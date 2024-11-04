@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react"
 import { MusicBoxContext } from "./musicBoxContext"
 import CountTime from "./countTime"
 import { p } from "framer-motion/client"
+import { useNavigate } from "react-router-dom"
 
 export default function MusicBox() {
+    const navigate = useNavigate()
 
     const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
 
@@ -26,9 +28,27 @@ export default function MusicBox() {
         musicPlay()
     }, [])
 
-    const [DivBox, setDivBox] = useState([
+    const musicIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
+    </svg>
+
+    const infoIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+    </svg>
+
+    const bgMusicBox = {
+        backgroundImage: 'url(/Assets/background/bg03.jpg)',
+        backgroundSize: 'cover',
+
+    }
+
+    const [musicBoxDiv, setMusicBoxDiv] = useState([
         {
-            M1: "ap", Box: <div className="w-[52px] h-[52px] bg-[#262626]" style={{ borderRadius: "50px" }}></div>
+            M1: "ap",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox, borderRadius: "50px" }}>
+                {musicIcon}
+                <p className="text-[10px]">Calm</p>
+            </div>
         },
         {
             M2: "ap1", Box: <div className="w-[52px] h-[52px] bg-[#262626]" style={{ borderRadius: "50px" }}></div>
@@ -36,7 +56,7 @@ export default function MusicBox() {
 
     ])
 
-    const asoy = DivBox.slice(0, 2)
+    const displayedMusicBox = musicBoxDiv.slice(0, 2);
 
     const bgScreenTime = '/Assets/background/bg01.jpg'
 
@@ -46,9 +66,7 @@ export default function MusicBox() {
 
     }
 
-    const infoIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-    </svg>
+
 
     return (
         <>
@@ -83,9 +101,9 @@ export default function MusicBox() {
                                     <p className="text-[10px] font-[600]">Info</p>
                                 </div>
                             </div>
-                            <div className="w-full h-[74px] gap-[16px] flex flex-row items-center justify-between">
+                            <div className="w-full h-[74px] gap-[0px] flex flex-row items-center justify-between">
                                 <div className="flex flex-row gap-[8px]">
-                                    {asoy.map((item, index) =>
+                                    {displayedMusicBox.map((item, index) =>
                                         <div key={index}>
                                             {item.Box}
                                         </div>
@@ -99,7 +117,7 @@ export default function MusicBox() {
                                     )} */}
                                     <CountTime />
                                 </div>
-                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }}>
+                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }} onClick={()=> navigate('/BrainFocus')}>
                                     <div className="flex flex-row justify-center items-center gap-[8px]">
                                         <p className="text-[10px] font-[600]">Buka layar</p>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
