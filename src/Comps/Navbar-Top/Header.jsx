@@ -20,6 +20,7 @@ export default function Header({nameTools, sloganTools}) {
         pathLocation.pathname === "/ftr/Jurnal" && setJudulHeader("Jurnal")
         pathLocation.pathname === "/ftr/Catatan" && setJudulHeader("Catatan")
         pathLocation.pathname === "/ftr/E-Book" && setJudulHeader("E-Book")
+        pathLocation.pathname === "/BrainFocus" && setJudulHeader("BrainFocus")
     },[])
 
     
