@@ -7,6 +7,7 @@ import UserQuoteProvider from './Comps/Footer/userQuote/userQuoteContext';
 import MemoProvider from './Comps/Features/Memo/MemoContext';
 import { PopupFrSettingsProvider } from './Comps/Popup_settings/popupSetting/boxPopupFromSetting';
 import MusicBoxProvider from './Comps/Footer/musicBox/musicBoxContext';
+import ThemeAppProvider from './Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext';
 
 // Components
 import AuthForm from './Comps/Form/AuthForm';
@@ -21,14 +22,16 @@ function App() {
       <MemoProvider>
         <PopupFrSettingsProvider>
           <MusicBoxProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route index element={<Home />} />
-                <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                <Route path='*' element={<Page404 />} />
-              </Routes>
-            </BrowserRouter>
+            <ThemeAppProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route index element={<Home />} />
+                  <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                  <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                  <Route path='*' element={<Page404 />} />
+                </Routes>
+              </BrowserRouter>
+            </ThemeAppProvider>
           </MusicBoxProvider>
         </PopupFrSettingsProvider>
       </MemoProvider>

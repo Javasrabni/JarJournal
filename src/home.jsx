@@ -17,6 +17,9 @@ import EbookPage from "./Comps/Features/eBookSection/ebookPage/ebook"
 import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 
+// Theme App
+import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
+
 export default function Home() {
     // Mobile Media Querry
     const MobileView = matchMedia(' (max-width: 600px) ')
@@ -32,11 +35,14 @@ export default function Home() {
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
   </svg>
 
+    // Theme App
+    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
     return (
         <>
             {/* {MobileView.matches ? ( */}
             <div className="w-[360px] m-[auto] h-[100vh] flex justify-center bg-[#2a2a2a] ">
-                <div className="max-mbl:w-[360px] max-mbl:h-full flex flex-col gap-[8px] bg-white justify-between">
+                <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
                     <div>
                         <header>
                             <Header />
@@ -94,7 +100,7 @@ export default function Home() {
                         </main>
                     </div>
                     <div>
-                        <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }} >
+                        <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }}>
                             <div>
                                 <MusicBox />
                             </div>

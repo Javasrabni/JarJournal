@@ -3,6 +3,7 @@ import { MusicBoxContext } from "./musicBoxContext"
 import CountTime from "./countTime"
 import { p } from "framer-motion/client"
 import { useNavigate } from "react-router-dom"
+import ToggleDarkMode from "../../Features/Theme/toggleTheme.jsx/toggleModeTheme"
 
 export default function MusicBox() {
     const navigate = useNavigate()
@@ -71,6 +72,11 @@ export default function MusicBox() {
     return (
         <>
             {/* Music box */}
+            <div className="flex w-full h-fit justify-end">
+                <ToggleDarkMode />
+            </div>
+
+
             <div className="flex flex-col items-center" style={{}} >
                 {/* Button to pull up/down */}
                 <div className="flex justify-center items-center w-[52px] h-[14px] bg-black text-white cursor-pointer" style={{ borderRadius: "10px 10px 0px 0px", borderBottom: "1px solid #262626" }} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
