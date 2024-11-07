@@ -4,6 +4,7 @@ import { MemoContext } from "./MemoContext"
 import BoxPopupFromSetting from "../../Popup_settings/popupSetting/boxPopupFromSetting"
 import { PopupFrSettingsContext } from "../../Popup_settings/popupSetting/boxPopupFromSetting"
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 
 export default function Memo() {
     // Memo Section
@@ -173,10 +174,12 @@ export default function Memo() {
         }
     }, [changeHeightMemo])
 
+     // Theme App
+    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
     return (
-        <div className="flex flex-col justify-center items-center">
-
-
+        <div className="flex flex-col justify-center items-center" >
+            {/* Popup memo  */}
             {activePopupMemo && (
                 <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
                     <div className="w-[100%] h-[100%] bg-[#00000050]" onClick={() => { setActivePopupMemo(false) }} />
@@ -211,7 +214,7 @@ export default function Memo() {
             )}
 
 
-            <div className="w-[158px] bg-[#08090a] text-white rounded-[8px] p-[12px] gap-[12px] " style={{ overflowWrap: "break-word", whiteSpace: "normal", }}>
+            <div className="w-[158px] bg-[#08090a] text-white rounded-[8px] p-[12px] gap-[12px] " style={{ overflowWrap: "break-word", whiteSpace: "normal", outline: themeActive ? '1px solid rgb(38, 38, 38)' : "none"}}>
                 <div className="flex flex-row items-center justify-between" style={{ marginBottom: valueMemo.length < 1 ? "0px" : "8px" }}>
                     <div className="flex flex-row gap-[4px] items-center">
                         <p className="font-semibold text-xs">Memo</p>
@@ -239,6 +242,7 @@ export default function Memo() {
                             </span>
                         )}
                     </div>
+                    {/* Isi dari value memo */}
                     <div className="w-full h-fit flex flex-row justify-between items-end">
                         <ul className="flex flex-col gap-[8px]">
                             {valueMemo.length < 1 ? (
@@ -312,7 +316,7 @@ export default function Memo() {
                 </div>
             </div>
             {/* Setting 3 dots */}
-            <div className="cursor-pointer mb-[0px] h-[10px] bg-black text-white flex items-center justify-center" style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px" }}>
+            <div className="cursor-pointer mb-[0px] h-[10px] bg-black text-white flex items-center justify-center" style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px", borderBottom: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
                 <div className="flex flex-col items-end gap-[4px] w-[100%]">
                     {popupSetting && (
                         <BoxPopupFromSetting

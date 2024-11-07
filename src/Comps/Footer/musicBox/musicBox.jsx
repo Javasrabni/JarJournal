@@ -74,10 +74,10 @@ export default function MusicBox() {
     return (
         <>
             {/* Music box */}
-            <div className="flex w-full h-fit justify-end">
+            <div className="flex w-full h-fit justify-end" style={{paddingRight: "12px"}}>
                 <ToggleDarkMode />
             </div>
-            <div className="flex flex-col items-center" style={{}} >
+            <div className="flex flex-col items-center" >
                 {/* Button to pull up/down */}
                 <div className={`flex justify-center items-center w-[52px] h-[14px] bg-black text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px", borderBottom: themeActive ? "none" : "1px solid #262626", borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (

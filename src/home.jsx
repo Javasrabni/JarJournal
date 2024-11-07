@@ -81,7 +81,7 @@ export default function Home() {
                                     <div>
                                         <DateTimePlan />
                                     </div>
-                                    <div className="w-full bg-[#08090a] text-white rounded-[8px] p-[12px]">
+                                    <div className="w-full bg-[#08090a] text-white rounded-[8px] p-[12px]" style={{outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
                                         <SisaHariToNewYear />
                                     </div>
                                     <div className="w-full">

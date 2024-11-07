@@ -20,7 +20,7 @@ export default function ToggleDarkMode() {
 
     return (
         <div className="flex flex-col gap-[8px]">
-            <div className="w-[46px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" onClick={HandleClickTheme} >
+            <div className="w-[46px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" style={{outline: "1px solid rgb(38, 38, 38)"}} onClick={HandleClickTheme} >
                 <div style={{zIndex: "15", transition: "color 0.3s ease"}} className="flex flex-row items-center justify-between w-full">
                     <div className={`text-${themeActive ? 'white' : 'black'}`}>
                         {lightMOde}
