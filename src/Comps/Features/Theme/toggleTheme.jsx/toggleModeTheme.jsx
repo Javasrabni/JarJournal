@@ -18,14 +18,10 @@ export default function ToggleDarkMode() {
         setThemeActive((prev) => !prev)
     }
 
-    useEffect(() => {
-        console.log(themeActive)
-    }, [])
-
     return (
         <div className="flex flex-col gap-[8px]">
             <div className="w-[46px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" onClick={HandleClickTheme} >
-                <div style={{zIndex: "15", transition: "text-color 0.3s ease"}} className="flex flex-row items-center justify-between w-full">
+                <div style={{zIndex: "15", transition: "color 0.3s ease"}} className="flex flex-row items-center justify-between w-full">
                     <div className={`text-${themeActive ? 'white' : 'black'}`}>
                         {lightMOde}
                     </div>
