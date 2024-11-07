@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { MemoContext } from "../Features/Memo/MemoContext";
 import { PopupFrSettingsContext } from "../Popup_settings/popupSetting/boxPopupFromSetting";
+import { ThemeAppContext } from "../Features/Theme/toggleTheme.jsx/ThemeAppContext";
 
 export default function Header({nameTools, sloganTools}) {
     const pathLocation = useLocation()
@@ -63,13 +64,17 @@ export default function Header({nameTools, sloganTools}) {
         }
     }, [valueMemo])
 
+    // Theme app
+    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
+
     return (
-        <div className="bg-white w-full h-fit p-[16px] flex flex-row justify-between items-center">
+        <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
                 
             <div className="text-white flex gap-[8px]" onClick={()=> navigate('/')}>
                 <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{filter: "drop-shadow(0px 0px 12px gold)"}} width={'32px'}/>
                 <div>
-                    <h1 className="text-[12px] font-semibold text-black">{judulHeader}</h1>
+                    <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
                     <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
                 </div>
             </div>
