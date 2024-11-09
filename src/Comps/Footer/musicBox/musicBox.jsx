@@ -5,6 +5,8 @@ import { p } from "framer-motion/client"
 import { useNavigate } from "react-router-dom"
 import ToggleDarkMode from "../../Features/Theme/toggleTheme.jsx/toggleModeTheme"
 import { ThemeAppContext } from "../../Features/Theme/toggleTheme.jsx/ThemeAppContext"
+import PopupLegend from "../../Popup/Popup-typ1/PopupLegend"
+import { transform } from "framer-motion"
 
 export default function MusicBox() {
     const navigate = useNavigate()
@@ -38,22 +40,31 @@ export default function MusicBox() {
         <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
     </svg>
 
-    const bgMusicBox = {
+    const bgMusicBox01 = {
         backgroundImage: 'url(/Assets/background/bg03.jpg)',
         backgroundSize: 'cover',
-
+        outline: "rgb(38, 38, 38) solid 1px"
+    }
+    const bgMusicBox02 = {
+        backgroundImage: 'url(/Assets/background/bg04.jpg)',
+        backgroundSize: 'cover',
+        outline: "rgb(38, 38, 38) solid 1px"
     }
 
     const [musicBoxDiv, setMusicBoxDiv] = useState([
         {
-            M1: "ap",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox, borderRadius: "50px" }}>
-                {musicIcon}
-                <p className="text-[10px]">Calm</p>
+            M1: "Music Box 01",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
+                {/* {musicIcon} */}
+                <p className="text-[10px] font-[600]">Calm</p>
             </div>
         },
         {
-            M2: "ap1", Box: <div className="w-[52px] h-[52px] bg-[#262626]" style={{ borderRadius: "50px" }}></div>
+            M1: "Music box 02",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox02  , borderRadius: "50px" }}>
+                {/* {musicIcon} */}
+                <p className="text-[10px] font-[600]">Energic</p>
+            </div>
         },
 
     ])
@@ -70,9 +81,16 @@ export default function MusicBox() {
 
     // Theme app
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+    
+    // Popup Music Box
+    const {statePopupInfo, setStatePopupInfo} = useContext(MusicBoxContext)
+
+
 
     return (
         <>
+            
+
             {/* Music box */}
             <div className="flex w-full h-fit justify-end" style={{paddingRight: "12px"}}>
                 <ToggleDarkMode />
@@ -102,7 +120,7 @@ export default function MusicBox() {
                                     <p className="text-[12px] font-[700]">Brain Focus</p>
                                 </div>
 
-                                <div className="flex flex-row items-center gap-[4px]">
+                                <div className="flex flex-row items-center gap-[4px] cursor-pointer" onClick={()=> setStatePopupInfo((prev) => !prev)}>
                                     {infoIcon}
                                     <p className="text-[10px] font-[600]">Info</p>
                                 </div>

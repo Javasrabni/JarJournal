@@ -182,7 +182,7 @@ export default function Memo() {
             {/* Popup memo  */}
             {activePopupMemo && (
                 <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
-                    <div className="w-[100%] h-[100%] bg-[#00000050]" onClick={() => { setActivePopupMemo(false) }} />
+                    <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setActivePopupMemo(false) }} />
                     <div style={BoxPopupNote}>
                         {/* <div style={{marginBottom: "8px", width: "100%"}}>
                      <input type="search" style={{width: "100%", outline: "none", fontSize: "14px", fontWeight: "600"}} onChange={(e) => HandleChange(e)} placeholder="Judul"  autoFocus onFocus={KeyboardActive} onBlur={KeyboardBlur} />
@@ -272,7 +272,7 @@ export default function Memo() {
                                                     <div className="flex flex-row gap-[8px]">
                                                         {/* Icon edit-del */}
                                                         <div className="flex flex-col items-center justify-center">
-                                                            <span className="flex flex-row gap-[6px] Fcursor-pointer" onClick={() => HandleDelMemo(item, index)}>
+                                                            <span className="flex flex-row gap-[6px] cursor-pointer" onClick={() => HandleDelMemo(item, index)}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3 text-[tomato]">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                 </svg>
@@ -316,7 +316,7 @@ export default function Memo() {
                 </div>
             </div>
             {/* Setting 3 dots */}
-            <div className="cursor-pointer mb-[0px] h-[10px] bg-black text-white flex items-center justify-center" style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px", borderBottom: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+            <div className={`cursor-pointer mb-[0px] h-[10px] bg-[#08090a] text-white flex items-center justify-center`} style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px", borderBottom: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
                 <div className="flex flex-col items-end gap-[4px] w-[100%]">
                     {popupSetting && (
                         <BoxPopupFromSetting

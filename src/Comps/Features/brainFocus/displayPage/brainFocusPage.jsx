@@ -11,9 +11,9 @@ export default  function BrainFocusPage() {
 
     return (
         <div className="w-[360px] h-[100lvh] flex flex-col m-auto" style={{...bgBrainFocus}}>
-                <div className="w-full">
+                {/* <div className="w-full">
                     <Header />
-                </div>
+                </div> */}
                 <div className="w-full h-full flex justify-center items-center">
                     <div className="text-white w-full h-[50%]">
                         <CountTime 

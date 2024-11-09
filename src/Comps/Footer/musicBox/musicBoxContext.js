@@ -10,8 +10,11 @@ export default function MusicBoxProvider({children}) {
         localStorage.setItem("saveStateMusicAxisY", statusMusicAxisY)
     }, [statusMusicAxisY])
 
+    // Popup Info MusicBox
+    const [statePopupInfo, setStatePopupInfo] = useState(false)
+
     return (
-        <MusicBoxContext.Provider value={{statusMusicAxisY, setStatusMusicAxisY}}>
+        <MusicBoxContext.Provider value={{statusMusicAxisY, setStatusMusicAxisY, statePopupInfo, setStatePopupInfo}}>
             {children}
         </MusicBoxContext.Provider>
     )

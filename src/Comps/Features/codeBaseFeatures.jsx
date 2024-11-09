@@ -10,7 +10,7 @@ import BrainFocusPage from "./brainFocus/displayPage/brainFocusPage"
 export default function CodeBaseFeatures() {
     const { id } = useParams()
     const pathLocation = useLocation()
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     return (
         <>

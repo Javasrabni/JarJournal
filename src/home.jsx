@@ -16,6 +16,9 @@ import MusicBox from "./Comps/Footer/musicBox/musicBox"
 import EbookPage from "./Comps/Features/eBookSection/ebookPage/ebook"
 import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
+import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
+
+import { motion } from 'framer-motion'
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
@@ -32,14 +35,41 @@ export default function Home() {
     const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
 
     const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-  </svg>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
 
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
+    // MusicBox
+    const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
+
+
     return (
         <>
+            {/* Popup from INFO in MusicBox */}
+            {statePopupInfo && (
+                <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                    <motion.div
+                        className="popup"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                            zIndex: "2",
+                        }}
+                    >
+                        <PopupLegend
+                            InfoMusicBox={true}
+                            Judul={'Brain Focus'}
+                            Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan Timer dan musik yang tersedia.'}
+                        />
+                    </motion.div>
+                    <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />
+                </div>
+            )}
+
             {/* {MobileView.matches ? ( */}
             <div className="w-[360px] m-[auto] h-[100vh] flex justify-center bg-[#2a2a2a] ">
                 <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
@@ -81,7 +111,7 @@ export default function Home() {
                                     <div>
                                         <DateTimePlan />
                                     </div>
-                                    <div className="w-full bg-[#08090a] text-white rounded-[8px] p-[12px]" style={{outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+                                    <div className="w-full bg-[#08090a] text-white rounded-[8px] p-[12px]" style={{ outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }}>
                                         <SisaHariToNewYear />
                                     </div>
                                     <div className="w-full">
