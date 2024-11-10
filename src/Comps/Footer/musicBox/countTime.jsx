@@ -75,6 +75,7 @@ export default function CountTime({ BFPage }) {
     const [stateMusic, setStateMusic] = useState(false)
     const [musicData, setMusicData] = useState([])
     const [musicIndex, setMusicIndex] = useState(null)
+    const [musicName, setMusicName] = useState('')
 
     const musicFetch = async () => {
         try {
@@ -124,6 +125,17 @@ export default function CountTime({ BFPage }) {
         }
     }, [musicData, musicIndex])
 
+    // Music name
+    useEffect(()=> {
+        if(musicData.length > 0 && playMusicRef.current) {
+            const musicSrc = playMusicRef.current.src
+            const musicName = musicData.find((name) => name.musicPlay === musicSrc)
+            if(musicName) {
+                setMusicName(musicName.name)
+            }
+        }
+    }, [musicData, musicName])
+
     useEffect(() => {
         musicFetch()
     }, [])
@@ -142,7 +154,9 @@ export default function CountTime({ BFPage }) {
                             <div className="flex items-center">
                                 <button onClick={resetTime} className="text-[10px] mt-[0px] underline">{resetIcon}</button>
                             </div>
-
+                            
+                            <p>{musicName}</p>
+                            
                             <div className="flex flew-row gap-[24px] items-center">
                                 {/* forward */}
                                 <button>
