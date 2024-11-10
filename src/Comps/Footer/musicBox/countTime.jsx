@@ -149,7 +149,7 @@ export default function CountTime({ BFPage }) {
                                     <i class="fa-solid fa-forward-step" style={{ transform: "rotate(180deg)" }}></i>
                                 </button>
                                 {/* Play music */}
-                                <audio ref={playMusicRef} />
+                                <audio ref={playMusicRef} onEnded={randomMusicIndex} />
 
 
                                 <button onClick={() => {
@@ -180,7 +180,7 @@ export default function CountTime({ BFPage }) {
                 <div className="w-[62px]">
                     <p className="font-[700] text-[14px]">{formatTime(time)}</p>
                     <div className="flex flex-row gap-[8px] items-center h-[20px]">
-                        <audio ref={playMusicRef} />
+                        <audio ref={playMusicRef} onEnded={randomMusicIndex} />
                         {/* Pause play */}
                         <button onClick={toggleMusic}>
                             <i class="fa-solid fa-forward-step"></i>
