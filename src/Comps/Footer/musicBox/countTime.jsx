@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import axios from "axios"
+import './styleBF.css'
 
 export default function CountTime({ BFPage }) {
     const [onReset, setOnReset] = useState(false)
@@ -109,7 +110,7 @@ export default function CountTime({ BFPage }) {
             } else {
                 playMusicRef.current.pause()
             }
-            setStateMusic((prev)=> !prev)
+            setStateMusic((prev) => !prev)
         }
     }
 
@@ -126,11 +127,11 @@ export default function CountTime({ BFPage }) {
     }, [musicData, musicIndex])
 
     // Music name
-    useEffect(()=> {
-        if(musicData.length > 0 && playMusicRef.current) {
+    useEffect(() => {
+        if (musicData.length > 0 && playMusicRef.current) {
             const musicSrc = playMusicRef.current.src
             const musicName = musicData.find((name) => name.musicPlay === musicSrc)
-            if(musicName) {
+            if (musicName) {
                 setMusicName(musicName.name)
             }
         }
@@ -144,19 +145,28 @@ export default function CountTime({ BFPage }) {
         <>
             {BFPage ? (
                 // BRAIN FOCUS PAGE UI
-                <div className="w-full h-full flex flex-col justify-between items-center">
-                    <div className="w-full flex items-center justify-center">
-                        <p className="font-[700] text-[54px]">{formatTime(time)}</p >
+                <div className="w-full h-full flex flex-col items-center">
+                    {/* Timer */}
+                    <div className="w-full flex flex-col items-center mt-[50%]" >
+                        <p className="font-[700] text-[52px]">{formatTime(time)}</p >
+                        {/* Music name */}
+                        <span className="flex flex-row gap-[12px] items-center">
+                            <span className="radar"></span>
+                            <p className="text-[12px] font-[600]">{musicName}</p>
+                        </span>
                     </div>
-                    <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px]">
+
+                    {/* Music Control */}
+                    <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px] " style={{position: "fixed", bottom: "0px", width:"360px", backdropFilter: "blur(3px)", backgroundColor: "#00000050", borderTop: "rgb(38, 38, 38) solid 1px"}}>
                         <div className="w-full flex flex-row items-center justify-between">
                             {/* <span style={{ outline: "2px solid white" }} className="w-[38px] h-[38px] rounded-[50px] flex justify-center items-center"> */}
                             <div className="flex items-center">
-                                <button onClick={resetTime} className="text-[10px] mt-[0px] underline">{resetIcon}</button>
+                                <button onClick={resetTime} className="text-[10px] mt-[0px]">
+                                    Reset
+                                </button>
                             </div>
-                            
-                            <p>{musicName}</p>
-                            
+
+
                             <div className="flex flew-row gap-[24px] items-center">
                                 {/* forward */}
                                 <button>
@@ -215,4 +225,3 @@ export default function CountTime({ BFPage }) {
         </>
     )
 }
-

@@ -63,7 +63,7 @@ export default function Home() {
                         <PopupLegend
                             InfoMusicBox={true}
                             Judul={'Brain Focus'}
-                            Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan Timer dan musik yang tersedia.'}
+                            Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan timer dan musik yang tersedia.'}
                         />
                     </motion.div>
                     <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />

@@ -13,15 +13,12 @@ export default function SisaHariToNewYear() {
         const hariIni = new Date(); // Tanggal saat ini
         const tahunDepan = hariIni.getFullYear() + 1; // Tahun berikutnya
         const tahunBaru = new Date(tahunDepan, 0, 1); // 1 Januari tahun depan (bulan 0 = Januari)
-
         // Hitung selisih waktu dalam milidetik
         const selisihWaktu = tahunBaru - hariIni;
-
         // Konversi milidetik ke hari (1 hari = 86400000 ms)
         const sisaHari = Math.ceil(selisihWaktu / (1000 * 60 * 60 * 24));
         setSisaHari(sisaHari);
     };
-
     return (
         <div className="flex flex-col">
             <span className="flex flex-row gap-[4px] items-center">
