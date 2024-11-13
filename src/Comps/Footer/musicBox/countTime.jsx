@@ -72,6 +72,11 @@ export default function CountTime({ BFPage }) {
         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
     </svg>
 
+    const musicIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className={`size-${BFPage ? '6' : "3"}`}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z" />
+  </svg>
+  
+
     const playMusicRef = useRef();
     const [stateMusic, setStateMusic] = useState(false)
     const [musicData, setMusicData] = useState([])
@@ -114,6 +119,8 @@ export default function CountTime({ BFPage }) {
         }
     }
 
+    const [statePlayBtnMusic, setStatePlayBtnMusic] = useState(false)
+
     useEffect(() => {
         if (musicIndex !== null && musicData[musicIndex] && playMusicRef.current) {
             playMusicRef.current.src = musicData[musicIndex].musicPlay
@@ -124,7 +131,7 @@ export default function CountTime({ BFPage }) {
                 playMusicRef.current.pause()
             }
         }
-    }, [musicData, musicIndex])
+    }, [stateMusic])
 
     // Music name
     useEffect(() => {
@@ -157,7 +164,7 @@ export default function CountTime({ BFPage }) {
                     </div>
 
                     {/* Music Control */}
-                    <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px] " style={{position: "fixed", bottom: "0px", width:"360px", backdropFilter: "blur(3px)", backgroundColor: "#00000050", borderTop: "rgb(38, 38, 38) solid 1px"}}>
+                    <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px] " style={{ position: "fixed", bottom: "0px", width: "360px", backdropFilter: "blur(3px)", backgroundColor: "#00000050", borderTop: "rgb(38, 38, 38) solid 1px" }}>
                         <div className="w-full flex flex-row items-center justify-between">
                             {/* <span style={{ outline: "2px solid white" }} className="w-[38px] h-[38px] rounded-[50px] flex justify-center items-center"> */}
                             <div className="flex items-center">
@@ -176,18 +183,34 @@ export default function CountTime({ BFPage }) {
                                 <audio ref={playMusicRef} onEnded={randomMusicIndex} />
 
 
+                                {/* Pause music */}
+                                <button onClick={toggleMusic}>
+                                    {stateMusic ? (
+                                        <span>
+                                            {musicIcon}
+                                        </span>
+                                    ) : (
+                                        <span className="opacity-[50%]">
+                                            <div style={{width: "120%", height: "2px", backgroundColor: "white", position: "relative", top: "10px", rotate: "-20deg"}}></div>
+                                            {musicIcon}
+                                        </span>
+                                    )}
+                                </button>
+
+                                {/* Play music & timer */}
                                 <button onClick={() => {
-                                    randomMusicIndex()
+                                    setStatePlayBtnMusic((prev)=> !prev)
                                     setTimeRunning((prev) => !prev)
                                     if (timeRunning) clearInterval(playRef.current)
                                     setTimeRunning(!timeRunning)
                                 }}>
                                     {timeRunning ? pause : play}</button>
                                 {/* next */}
-                                <button>
+                                    
+                                    <button onClick={()=> {randomMusicIndex(); setStatePlayBtnMusic((prev)=> !prev)}}>
                                     <i class="fa-solid fa-forward-step"></i>
                                 </button>
-                            </div>
+                            </div>  
                             <div className="flex items-center">
                                 <button>
                                     {soundIcon}
@@ -205,14 +228,11 @@ export default function CountTime({ BFPage }) {
                     <p className="font-[700] text-[14px]">{formatTime(time)}</p>
                     <div className="flex flex-row gap-[8px] items-center h-[20px]">
                         <audio ref={playMusicRef} onEnded={randomMusicIndex} />
-                        {/* Pause play */}
-                        <button onClick={toggleMusic}>
-                            <i class="fa-solid fa-forward-step"></i>
-                        </button>
+
 
                         {/* Play music */}
                         <button onClick={() => {
-                            randomMusicIndex()
+                            // randomMusicIndex()
                             setTimeRunning((prev) => !prev)
                             if (timeRunning) clearInterval(playRef.current)
                             setTimeRunning(!timeRunning)

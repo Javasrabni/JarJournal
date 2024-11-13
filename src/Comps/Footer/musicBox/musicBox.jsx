@@ -41,35 +41,44 @@ export default function MusicBox() {
     </svg>
 
     const bgMusicBox01 = {
-        backgroundImage: 'url(/Assets/background/bg03.jpg)',
-        backgroundSize: 'cover',
-        outline: "rgb(38, 38, 38) solid 1px"
+        // backgroundImage: 'url(/Assets/background/bg03.jpg)',
+        // backgroundSize: 'cover',
+        // outline: "rgb(38, 38, 38) solid 1px"
     }
     const bgMusicBox02 = {
-        backgroundImage: 'url(/Assets/background/bg04.jpg)',
-        backgroundSize: 'cover',
-        outline: "rgb(38, 38, 38) solid 1px"
+        // backgroundImage: 'url(/Assets/background/bg04.jpg)',
+        // backgroundSize: 'cover',
+        // outline: "rgb(38, 38, 38) solid 1px"
     }
 
     const [musicBoxDiv, setMusicBoxDiv] = useState([
         {
-            M1: "Music Box 01",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
+            M1: "Music box 02",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox02, borderRadius: "50px" }}>
                 {/* {musicIcon} */}
-                <p className="text-[10px] font-[600]">Calm</p>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                {/* <p className="text-[10px] font-[600]">Energic</p> */}
             </div>
         },
         {
-            M1: "Music box 02",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox02  , borderRadius: "50px" }}>
+            M1: "Music Box 01",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
                 {/* {musicIcon} */}
-                <p className="text-[10px] font-[600]">Energic</p>
+                {/* <p className="text-[10px] font-[600]">Calm</p> */}
             </div>
         },
-
+        {
+            M1: "Music Box 01",
+            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
+                {/* {musicIcon} */}
+                {/* <p className="text-[10px] font-[600]">Calm</p> */}
+            </div>
+        }
     ])
 
-    const displayedMusicBox = musicBoxDiv.slice(0, 2);
+    const displayedMusicBox = musicBoxDiv.slice(0, 3);
 
     const bgScreenTime = '/Assets/background/bg01.jpg'
 
@@ -81,23 +90,23 @@ export default function MusicBox() {
 
     // Theme app
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
-    
+
     // Popup Music Box
-    const {statePopupInfo, setStatePopupInfo} = useContext(MusicBoxContext)
+    const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
 
 
 
     return (
         <>
-            
+
 
             {/* Music box */}
-            <div className="flex w-full h-fit justify-end" style={{paddingRight: "12px"}}>
+            <div className="flex w-full h-fit justify-end" style={{ paddingRight: "12px" }}>
                 <ToggleDarkMode />
             </div>
             <div className="flex flex-col items-center" >
                 {/* Button to pull up/down */}
-                <div className={`flex justify-center items-center w-[52px] h-[14px] bg-black text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px", borderBottom: themeActive ? "none" : "1px solid #262626", borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
+                <div className={`flex justify-center items-center w-[52px] h-[14px] bg-black text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px", borderBottom: themeActive ? "none" : "1px solid #262626", borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -109,7 +118,7 @@ export default function MusicBox() {
                     )}
                 </div>
                 {/* Music */}
-                <div className={`w-[360px] h-[120px] bg-black p-[16px] text-white`} style={{borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+                <div className={`w-[360px] h-[120px] bg-black p-[16px] text-white`} style={{ borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }}>
                     <div>
                         <div className="flex flex-col gap-[6px]">
                             <div className="flex flex-row justify-between items-center" >
@@ -120,20 +129,23 @@ export default function MusicBox() {
                                     <p className="text-[12px] font-[700]">Brain Focus</p>
                                 </div>
 
-                                <div className="flex flex-row items-center gap-[4px] cursor-pointer" onClick={()=> setStatePopupInfo((prev) => !prev)}>
+                                <div className="flex flex-row items-center gap-[4px] cursor-pointer" onClick={() => setStatePopupInfo((prev) => !prev)}>
                                     {infoIcon}
                                     <p className="text-[10px] font-[600]">Info</p>
                                 </div>
                             </div>
-                            <div className="w-full h-[74px] gap-[0px] flex flex-row items-center justify-between">
-                                <div className="flex flex-row gap-[8px]">
+
+
+                            {/* Section count, display, album */}
+                            <div className="w-full h-[74px] gap-[16px] flex flex-row items-center justify-between ">
+                                <div className="flex flex-row gap-[8px] items-center" style={{Width: "100px", overflow: "scroll", marginTop: "0 px"}}>
                                     {displayedMusicBox.map((item, index) =>
-                                        <div key={index}>
+                                        <div key={index} style={{width: "",}} className="flex flex-row shrink-0">
                                             {item.Box}
                                         </div>
                                     )}
                                 </div>
-                                <div className="cursor-pointer">
+                                <div className="cursor-pointer shrink-0">
                                     {/* {musicData && musicData.length > 1 ? (
                                         <p style={{color: "red"}}>{musicData[0].focusMusic[0].name}</p>
                                     ) : (
@@ -141,7 +153,7 @@ export default function MusicBox() {
                                     )} */}
                                     <CountTime />
                                 </div>
-                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }} onClick={()=> navigate('/BrainFocus')}>
+                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer shrink-0" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }} onClick={() => navigate('/BrainFocus')}>
                                     <div className="flex flex-row justify-center items-center gap-[8px]">
                                         <p className="text-[10px] font-[600]">Buka layar</p>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
