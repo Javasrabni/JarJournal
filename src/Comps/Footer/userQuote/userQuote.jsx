@@ -15,11 +15,23 @@ export default function UserQuote() {
         } 
     }, [userClickQuote])
 
+    // close user quote input with enter
+    useEffect(()=> {
+        if(InputQuoteRef.current) {
+            const InputRefCurrent = InputQuoteRef.current
+            InputRefCurrent.addEventListener('keyup', (event)=> {
+                if (event.key === "Enter") {
+                    setUserClickQuote((prev) => !prev)
+                }
+            })
+        }
+    }, [userClickQuote])
+
     return (
         <>
             <div className="w-full h-full flex justify-center items-center" >
                 {userClickQuote ? (
-                    <input ref={InputQuoteRef} type="search" value={userQuote} onChange={(e)=>HandleChangeQuote(e)} className="text-sm border-none focus:outline-none mx-[90px 40px]" onBlur={()=> setUserClickQuote((prev)=> !prev)}/>
+                    <input ref={InputQuoteRef} type="text" value={userQuote} onChange={(e)=>HandleChangeQuote(e)} className="text-sm border-none focus:outline-none mx-[90px 40px] bg-black text-white" onBlur={()=> setUserClickQuote((prev)=> !prev)}/>
                 ) : (
                     <p className="text-[10px] font-[600] text-center text-white" style={{filter: "drop-shadow(gold 0px 0px 3px)"}}>
                         <span className="flex gap-[6px] items-center">

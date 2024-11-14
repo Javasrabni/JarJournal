@@ -101,7 +101,7 @@ export default function MusicBox() {
 
 
             {/* Music box */}
-            <div className="flex w-full h-fit justify-end" style={{ paddingRight: "12px" }}>
+            <div className="flex w-full h-fit flex-row-reverse" style={{ paddingRight: "12px", pointerEvents: "auto" }}>
                 <ToggleDarkMode />
             </div>
             <div className="flex flex-col items-center" >

@@ -124,28 +124,7 @@ export default function Memo() {
         setKeyboardActive(false)
     }
 
-    const BoxPopupNote = {
-        position: "absolute",
-        top: keyboardActive ? "20%" : "30%",
-        transition: "0.5s ease",
-        width: "260px",
-        height: "fit-content",
-        backgroundColor: "white",
-        borderRadius: "16px",
-        padding: "16px",
-        display: "flex",
-        flexDirection: "column",
-    }
-    const SubmitMemo = {
-        backgroundColor: "#000",
-        border: "none",
-        borderRadius: "8px",
-        color: "#fff",
-        outline: "none",
-        padding: "8px",
-        fontSize: "12px",
-        fontWeight: "600"
-    }
+    
 
     // Add memo func in btn
     function HandleAddMemo() {
@@ -174,11 +153,58 @@ export default function Memo() {
         }
     }, [changeHeightMemo])
 
-     // Theme App
+    // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
+    // Handle popup view memo
+    const [openPopupMemo, setOpenPopupMemo] = useState(false)
+    const [indexValueMemo, setIndexValueMemo] = useState('')
+    function PopupMemoView(valueMemoIndex) {
+        setOpenPopupMemo((prev) => !prev)
+        setIndexValueMemo(valueMemoIndex)
+    }
+
+    // Style 
+    const BoxPopupNote = {
+        position: "absolute",
+        top: keyboardActive ? "20%" : "30%",
+        transition: "0.5s ease",
+        width: "260px",
+        height: "fit-content",
+        backgroundColor: "white",
+        borderRadius: "16px",
+        padding: "16px",
+        display: "flex",
+        flexDirection: "column",
+    }
+    const SubmitMemo = {
+        backgroundColor:"black",
+        border: "none",
+        borderRadius: "8px",
+        color: "#fff",
+        outline: "none",
+        padding: "8px",
+        fontSize: "12px",
+        fontWeight: "600"
+    }
 
     return (
         <div className="flex flex-col justify-center items-center" >
+            {/* View popup memo */}
+            {openPopupMemo && (
+                <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
+                    <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setOpenPopupMemo(false) }} />
+                    <div style={BoxPopupNote}>
+                        <div style={{ marginBottom: "8px", width: "100%", marginBottom: "12px"}} className="flex flex-col gap-[4px]">
+                            <p className="text-[12px] font-[500]">{indexValueMemo}</p>
+                        </div>
+                        <button onClick={()=> setOpenPopupMemo(false)} style={SubmitMemo}>Tutup</button>
+                    </div>
+                </div>
+            )}
+
+
+
             {/* Popup memo  */}
             {activePopupMemo && (
                 <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
@@ -214,11 +240,11 @@ export default function Memo() {
             )}
 
 
-            <div className="w-[158px] bg-[#08090a] text-white rounded-[8px] p-[12px] gap-[12px] " style={{ overflowWrap: "break-word", whiteSpace: "normal", outline: themeActive ? '1px solid rgb(38, 38, 38)' : "none"}}>
+            <div className="w-[158px] bg-[#08090a] text-white rounded-[8px] p-[12px] gap-[12px] " style={{ overflowWrap: "break-word", whiteSpace: "normal", outline: themeActive ? '1px solid rgb(38, 38, 38)' : "none" }}>
                 <div className="flex flex-row items-center justify-between" style={{ marginBottom: valueMemo.length < 1 ? "0px" : "8px" }}>
                     <div className="flex flex-row gap-[4px] items-center">
                         <p className="font-semibold text-xs">Memo</p>
-                        <p className="font-[600] text-[10px]" style={{opacity: "50%"}}>({valueMemo.length})</p>
+                        <p className="font-[600] text-[10px]" style={{ opacity: "50%" }}>({valueMemo.length})</p>
                         {/* <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p> */}
                     </div>
                     <button className="text-[10px] py-[4px] px-[4px] bg-white text-black rounded-xl font-semibold mt-[0px]" style={{ height: "fit-content" }} onClick={HandleClickMemo}>
@@ -266,7 +292,7 @@ export default function Memo() {
                                                 animate={{ opacity: 1, height: "auto" }}
                                                 exit={{ opacity: 0, height: 0 }}
                                                 transition={{ duration: 0.3, ease: "easeIn" }}
-                                                style={{overflow: "hidden" }}>
+                                                style={{ overflow: "hidden" }}>
                                                 {/* <li key={index + 1}> */}
                                                 {option1_Status ? (
                                                     <div className="flex flex-row gap-[8px]">
@@ -300,7 +326,7 @@ export default function Memo() {
                                                     </div>
                                                 ) : (
                                                     <div className="w-[136px] bg-[#262626] h-fit rounded text-white p-[8px]">
-                                                        <p className="whitespace-pre-wrap text-[10px] break-words"> {item}</p>
+                                                        <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
                                                     </div>
                                                 )}
                                                 {/* </li> */}
@@ -316,7 +342,7 @@ export default function Memo() {
                 </div>
             </div>
             {/* Setting 3 dots */}
-            <div className={`cursor-pointer mb-[0px] h-[10px] bg-[#08090a] text-white flex items-center justify-center`} style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px", borderBottom: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+            <div className={`cursor-pointer mb-[0px] h-[10px] bg-[#08090a] text-white flex items-center justify-center`} style={{ borderRadius: "0px 0px 8px 8px", zIndex: "12", width: valueMemo.length > 1 ? "64px" : "52px", borderBottom: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }}>
                 <div className="flex flex-col items-end gap-[4px] w-[100%]">
                     {popupSetting && (
                         <BoxPopupFromSetting
@@ -333,7 +359,7 @@ export default function Memo() {
                                             <div className="flex flex-row gap-[4px] items-center justify-evenly w-[100%]">
                                                 <div onClick={() => setChangeHeightMemo((prev) => !prev)}>
                                                     {changeHeightMemo ? (
-                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                                                         </svg>
                                                     ) : (
