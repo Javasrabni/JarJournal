@@ -196,14 +196,12 @@ export default function Memo() {
                     <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setOpenPopupMemo(false) }} />
                     <div style={BoxPopupNote}>
                         <div style={{ marginBottom: "8px", width: "100%", marginBottom: "12px"}} className="flex flex-col gap-[4px]">
-                            <p className="text-[12px] font-[500]">{indexValueMemo}</p>
+                            <p className="text-[12px] font-[500]" style={{whiteSpace: "pre-wrap"}}>{indexValueMemo}</p>
                         </div>
                         <button onClick={()=> setOpenPopupMemo(false)} style={SubmitMemo}>Tutup</button>
                     </div>
                 </div>
             )}
-
-
 
             {/* Popup memo  */}
             {activePopupMemo && (
