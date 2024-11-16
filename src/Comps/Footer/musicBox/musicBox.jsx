@@ -94,12 +94,8 @@ export default function MusicBox() {
     // Popup Music Box
     const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
 
-
-
     return (
         <>
-
-
             {/* Music box */}
             <div className="flex w-full h-fit flex-row-reverse" style={{ paddingRight: "12px", pointerEvents: "auto" }}>
                 <ToggleDarkMode />
@@ -138,9 +134,9 @@ export default function MusicBox() {
 
                             {/* Section count, display, album */}
                             <div className="w-full h-[74px] gap-[16px] flex flex-row items-center justify-between ">
-                                <div className="flex flex-row gap-[8px] items-center" style={{Width: "100px", overflow: "scroll", marginTop: "0 px"}}>
+                                <div className="flex flex-row gap-[8px] items-center" style={{ Width: "100px", overflow: "scroll", marginTop: "0 px" }}>
                                     {displayedMusicBox.map((item, index) =>
-                                        <div key={index} style={{width: "",}} className="flex flex-row shrink-0">
+                                        <div key={index} style={{ width: "", }} className="flex flex-row shrink-0">
                                             {item.Box}
                                         </div>
                                     )}

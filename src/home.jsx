@@ -43,10 +43,34 @@ export default function Home() {
 
     // MusicBox
     const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
+    const { popupReset, setPopupReset } = useContext(MusicBoxContext)
 
 
     return (
         <>
+            {/* Popup from Reset in MusicBox */}
+            {popupReset && (
+                <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                    <motion.div
+                        className="popup"
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                            zIndex: "2",
+                        }}
+                    >
+                        <PopupLegend
+                            resetInMusicBox={true}
+                            Judul={'Reset timer?'}
+                            Deskripsi={"Timer akan mulai dari 0 kembali."}
+                        />
+                    </motion.div>
+                    <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
+                </div>
+            )}
+
             {/* Popup from INFO in MusicBox */}
             {statePopupInfo && (
                 <div className="flex items-center justify-center w-full h-full fixed z-[15]">

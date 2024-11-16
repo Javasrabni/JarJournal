@@ -128,6 +128,8 @@ export default function Memo() {
 
     // Add memo func in btn
     function HandleAddMemo() {
+        let delayAddMemo;
+
         if (!memoInputValue) {
             setIndicatorFromMemo(false)
             setMemoInputValue('')
@@ -141,7 +143,13 @@ export default function Memo() {
         setOption1_Status(false)
         setIndicatorFromMemo(false)
         setMemoInputValue('')
-        setActivePopupMemo(false)
+
+        delayAddMemo = setTimeout(()=> {
+            setActivePopupMemo(false)
+        }, 600)
+
+        return ()=> clearTimeout(delayAddMemo)
+
     }
 
     // change height after memo has more than 2 values

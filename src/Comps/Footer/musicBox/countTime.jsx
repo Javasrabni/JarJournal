@@ -4,6 +4,11 @@ import './styleBF.css'
 import { BrainFContext } from "../../Features/brainFocus/BrainFContext"
 import ToggleAll from "../../toggle/toggleAll"
 import { ToggleAllContext } from "../../toggle/toggleContext"
+import PopupLegend from "../../Popup/Popup-typ1/PopupLegend"
+import { motion } from 'framer-motion'
+import { MusicBoxContext } from "./musicBoxContext"
+
+
 
 export default function CountTime({ BFPage }) {
     const { stateToggle, setStateToggle, stateTogglePlayMusic, setstateTogglePlayMusic } = useContext(ToggleAllContext)
@@ -18,6 +23,8 @@ export default function CountTime({ BFPage }) {
 
     const playRef = useRef()
 
+    const { popupReset, setPopupReset, boolStateResetPopup, setBoolStateResetPopup } = useContext(MusicBoxContext)
+
     function formatTime(time) {
         let hour = Math.floor(time / 60 / 60 % 24)
         let minutes = Math.floor(time / 60 % 60)
@@ -29,6 +36,8 @@ export default function CountTime({ BFPage }) {
 
         return `${hour}.${minutes}.${seconds}`
     }
+
+
     useEffect(() => {
         if (timeRunning) {
             playRef.current = setInterval(() => {
@@ -41,20 +50,32 @@ export default function CountTime({ BFPage }) {
         }
 
 
+
+
         return () => clearInterval(playRef.current)
 
     }, [timeRunning])
 
+
+
     // Confirm reset
     function resetTime() {
-        const confirmWindow = window.confirm('ingin reset?')
-        if (!confirmWindow) {
-            return;
-        } else {
-            setTime(0);
-            setOnReset(true);
-        }
+        setPopupReset((prev) => !prev)
     }
+    // Reset timer akan terjadi bila bool popupReest => true dan boolstateReset popup => true, true berasal dari btn 'Ya' pada popup reset
+    useEffect(() => {
+        // boolStateResetPopup (state from validate popup reset) 
+        let delayReset;
+        if (popupReset && boolStateResetPopup) {
+            delayReset = setTimeout(() => {
+                setTime(0);
+                setOnReset(true);
+                localStorage.removeItem('saveTime');
+                setPopupReset((prev) => !prev)
+            }, 200)
+        }
+        return () => clearTimeout(delayReset)
+    }, [boolStateResetPopup])
 
     const play = <svg xmlns="http://www.w3.org/2000/svg" fill={stateTogglePlayMusic ? "#77dd77" : BFPage ? 'white' : 'white'} viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className={`size-${ToggleAll ? "3" : BFPage ? "4" : "3"}`}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
@@ -165,8 +186,11 @@ export default function CountTime({ BFPage }) {
 
     const { switchUIBrainFocus, setSwitchUIBrainFocus } = useContext(BrainFContext)
 
+
     return (
         <>
+
+
             {BFPage ? (
                 // BRAIN FOCUS PAGE UI
                 <div className="w-full h-full flex flex-col items-center">
@@ -182,7 +206,7 @@ export default function CountTime({ BFPage }) {
 
                     {/* Music Control */}
                     <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px] " style={{ position: "fixed", bottom: "0px", width: "360px", backdropFilter: "blur(3px)", backgroundColor: "#00000050", borderTop: "rgb(38, 38, 38) solid 1px" }}>
-                        <div className="w-full flex flex-row items-center justify-between">
+                        <div className="w-full flex flex-row items-center justify-around">
                             {/* <span style={{ outline: "2px solid white" }} className="w-[38px] h-[38px] rounded-[50px] flex justify-center items-center"> */}
                             <div className="flex items-center">
                                 <button onClick={resetTime} className="text-[10px] mt-[0px]">
@@ -227,8 +251,8 @@ export default function CountTime({ BFPage }) {
 
                             </div>
                             {/* next */}
-                            <button onClick={() => { randomMusicIndex(); setStatePlayBtnMusic((prev) => !prev) }}>
-                                <i class="fa-solid fa-forward-step"></i>
+                            <button onClick={() => { randomMusicIndex(); setStatePlayBtnMusic((prev) => !prev) }} className="w-fit px-[16px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" style={{ outline: "1px solid rgb(38, 38, 38)" }}>
+                                <i class="fa-solid fa-forward-step" style={{ fontSize: "10px" }}></i>
                             </button>
 
                             <div className="flex items-center">
