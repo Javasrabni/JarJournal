@@ -194,6 +194,7 @@ export default function Memo() {
             {openPopupMemo && (
                 <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
                     <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setOpenPopupMemo(false) }} />
+                    
                     <div style={BoxPopupNote}>
                         <div style={{ marginBottom: "8px", width: "100%", marginBottom: "12px"}} className="flex flex-col gap-[4px]">
                             <p className="text-[12px] font-[500]" style={{whiteSpace: "pre-wrap"}}>{indexValueMemo}</p>
@@ -229,7 +230,6 @@ export default function Memo() {
                     </div>
                 </div>
             )}
-
 
 
             {/* invisible div untuk mengclose popup */}

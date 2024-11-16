@@ -8,6 +8,8 @@ import MemoProvider from './Comps/Features/Memo/MemoContext';
 import { PopupFrSettingsProvider } from './Comps/Popup_settings/popupSetting/boxPopupFromSetting';
 import MusicBoxProvider from './Comps/Footer/musicBox/musicBoxContext';
 import ThemeAppProvider from './Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext';
+import BrainFProvider from './Comps/Features/brainFocus/BrainFContext';
+import ToggleAllProvider from './Comps/toggle/toggleContext';
 
 // Components
 import AuthForm from './Comps/Form/AuthForm';
@@ -23,14 +25,18 @@ function App() {
         <PopupFrSettingsProvider>
           <MusicBoxProvider>
             <ThemeAppProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route index element={<Home />} />
-                  <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                  <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                  <Route path='*' element={<Page404 />} />
-                </Routes>
-              </BrowserRouter>
+              <BrainFProvider>
+                <ToggleAllProvider>
+                  <BrowserRouter>
+                    <Routes>
+                      <Route index element={<Home />} />
+                      <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                      <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                      <Route path='*' element={<Page404 />} />
+                    </Routes>
+                  </BrowserRouter>
+                </ToggleAllProvider>
+              </BrainFProvider>
             </ThemeAppProvider>
           </MusicBoxProvider>
         </PopupFrSettingsProvider>
