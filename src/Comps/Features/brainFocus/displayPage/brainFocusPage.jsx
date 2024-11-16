@@ -1,18 +1,28 @@
 import CountTime from "../../../Footer/musicBox/countTime"
 import Header from "../../../Navbar-Top/Header"
 import { BrainFContext } from "../BrainFContext"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import MusicPlayUI from "../Music UI/musicPlayUI"
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 import { MusicBoxContext } from "../../../Footer/musicBox/musicBoxContext"
 import PopupLegend from "../../../Popup/Popup-typ1/PopupLegend"
 
 export default function BrainFocusPage() {
     const bgBrainFocus = {
-        backgroundImage: "url(/Assets/background/bg-BF-NW.png)",
+        // backgroundImage: "url(https://res.cloudinary.com/dwf753l9w/image/upload/v1731781318/bg-BF-NW_rooumq.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
     }
+
+    // fast rendering bg brainfocus
+    const [onLoadBgBF, setOnLoadBgBF] = useState(false)
+    useEffect(() => {
+        const bgBF = new Image();
+        bgBF.src = 'https://res.cloudinary.com/dwf753l9w/image/upload/f_auto,q_auto/v1731781318/bg-BF-NW_rooumq.png'
+        bgBF.onload = () => setOnLoadBgBF(true)
+    }, [])
+
+
     const { switchUIBrainFocus, setSwitchUIBrainFocus } = useContext(BrainFContext)
 
     // MusicBox
@@ -44,10 +54,13 @@ export default function BrainFocusPage() {
                 </div>
             )}
 
-            <div className="w-[360px] h-[100vh] flex flex-col m-auto" style={switchUIBrainFocus ? {} : { ...bgBrainFocus }}>
-                {/* <div className="w-full">
-                    <Header />
-                </div> */}
+            {onLoadBgBF ? null : (
+                <div className="w-full h-full flex fixed bg-black text-white items-center justify-center">
+                    <p>load..</p>
+                </div>
+            )}
+
+            <div className="w-[360px] h-[100vh] flex flex-col m-auto bg-black" style={switchUIBrainFocus ? {} : { ...bgBrainFocus, backgroundImage: onLoadBgBF ? "url(https://res.cloudinary.com/dwf753l9w/image/upload/f_auto,q_auto/v1731781318/bg-BF-NW_rooumq.png)" : "none", opacity: onLoadBgBF ? '1' : '0' }}>
                 <div className="w-full h-full flex justify-center items-center">
                     <div className="text-white w-full h-full">
                         {switchUIBrainFocus ? (
@@ -59,7 +72,7 @@ export default function BrainFocusPage() {
                         )}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }
