@@ -29,7 +29,7 @@ export default function SisaHariToNewYear() {
                 </span> */}
                 <p className="text-[10px] text-white ">{sisaHari} Hari Menuju {tahun + 1}</p>
             </span>
-            <progress value={sisaHari} max={100} style={{ borderRadius: "6px", marginTop: "6px", width: "100%", height: "4px", filter: "drop-shadow(gold 0px 0px 6px)"}} className="progress-bar bg-[#999999] rounded-lg overflow-hidden" />
+            <progress value={365 - sisaHari} max={365} style={{ borderRadius: "6px", marginTop: "6px", width: "100%", height: "4px", filter: "drop-shadow(gold 0px 0px 6px)"}} className="progress-bar bg-[#999999] rounded-lg overflow-hidden" />
         </div>
 
     )

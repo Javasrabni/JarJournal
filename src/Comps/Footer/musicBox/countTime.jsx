@@ -7,10 +7,13 @@ import { ToggleAllContext } from "../../toggle/toggleContext"
 import PopupLegend from "../../Popup/Popup-typ1/PopupLegend"
 import { motion } from 'framer-motion'
 import { MusicBoxContext } from "./musicBoxContext"
+import { useNavigate } from "react-router-dom"
 
 
 
 export default function CountTime({ BFPage }) {
+    const navigate = useNavigate()
+
     const { stateToggle, setStateToggle, stateTogglePlayMusic, setstateTogglePlayMusic } = useContext(ToggleAllContext)
     const [onReset, setOnReset] = useState(false)
 
@@ -206,6 +209,19 @@ export default function CountTime({ BFPage }) {
 
                     {/* Music Control */}
                     <div className="w-full flex flex-col gap-[8px] items-center justify-center h-[20px] p-[32px] " style={{ position: "fixed", bottom: "0px", width: "360px", backdropFilter: "blur(3px)", backgroundColor: "#00000050", borderTop: "rgb(38, 38, 38) solid 1px" }}>
+
+                        {/* Back to main page */}
+                        <div className="absolute top-[-32px] flex items-center justify-center px-[12px] py-[4px] rounded-[50px] cursor-pointer" style={{ outline: "1px solid rgb(38, 38, 38)", backgroundColor: "#00000050", backdropFilter: "blur(3px)"}} onClick={()=> navigate('/')}>
+                            <p className="text-[10px] select-none">
+                                <span className="flex flex-row items-center gap-[8px]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                                    </svg>
+
+                                    Keluar
+                                </span>
+                            </p>
+                        </div>
                         <div className="w-full flex flex-row items-center justify-around">
                             {/* <span style={{ outline: "2px solid white" }} className="w-[38px] h-[38px] rounded-[50px] flex justify-center items-center"> */}
                             <div className="flex items-center">
@@ -251,7 +267,7 @@ export default function CountTime({ BFPage }) {
 
                             </div>
                             {/* next */}
-                            <button onClick={() => { randomMusicIndex(); setStatePlayBtnMusic((prev) => !prev) }} className="w-fit px-[16px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" style={{ outline: "1px solid rgb(38, 38, 38)" }}>
+                            <button onClick={() => { randomMusicIndex(); setStatePlayBtnMusic((prev) => !prev) }} className="w-fit px-[16px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[12px] cursor-pointer text-white" style={{ outline: "1px solid rgb(38, 38, 38)" }}>
                                 <i class="fa-solid fa-forward-step" style={{ fontSize: "10px" }}></i>
                             </button>
 

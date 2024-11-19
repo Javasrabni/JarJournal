@@ -10,6 +10,7 @@ import MusicBoxProvider from './Comps/Footer/musicBox/musicBoxContext';
 import ThemeAppProvider from './Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext';
 import BrainFProvider from './Comps/Features/brainFocus/BrainFContext';
 import ToggleAllProvider from './Comps/toggle/toggleContext';
+import AnimateLoadPageProvider from './Comps/animate onload page/animateLoadPage';
 
 // Components
 import AuthForm from './Comps/Form/AuthForm';
@@ -27,14 +28,16 @@ function App() {
             <ThemeAppProvider>
               <BrainFProvider>
                 <ToggleAllProvider>
-                  <BrowserRouter>
-                    <Routes>
-                      <Route index element={<Home />} />
-                      <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                      <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                      <Route path='*' element={<Page404 />} />
-                    </Routes>
-                  </BrowserRouter>
+                  <AnimateLoadPageProvider>
+                    <BrowserRouter>
+                      <Routes>
+                        <Route index element={<Home />} />
+                        <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                        <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                        <Route path='*' element={<Page404 />} />
+                      </Routes>
+                    </BrowserRouter>
+                  </AnimateLoadPageProvider>
                 </ToggleAllProvider>
               </BrainFProvider>
             </ThemeAppProvider>

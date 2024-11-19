@@ -1,6 +1,6 @@
 import { useLocation, useParams, Navigate } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Header from "../Navbar-Top/Header"
 import Catatan from "./Catatan/Catatan"
 import EbookPage from "./eBookSection/ebookPage/ebook"
@@ -13,16 +13,18 @@ export default function CodeBaseFeatures() {
     // const navigate = useNavigate()
 
     return (
-        <>
-            <Header nameTools={`${id}`} sloganTools={'as'}/>
-            <div>
-                {pathLocation.pathname === "/ftr/Catatan" && (<Catatan />)}
-                {pathLocation.pathname === "/ftr/Jurnal" && (<Jurnal />)}
-                {pathLocation.pathname === "/ftr/E-Book" && (<EbookPage />)}
-                {pathLocation.pathname === "/BrainFocus" && (<BrainFocusPage />)}
+        <div className="w-full h-full flex justify-center">
+            <div className="w-[360px] h-full flex justify-center">
+                <div className="w-full h-full flex justify-center flex-col">
+                    <Header nameTools={`${id}`} />
+                    <div>
+                        {pathLocation.pathname === "/ftr/Catatan" && (<Catatan />)}
+                        {pathLocation.pathname === "/ftr/Jurnal" && (<Jurnal />)}
+                        {pathLocation.pathname === "/ftr/E-Book" && (<EbookPage />)}
+                        {pathLocation.pathname === "/BrainFocus" && (<BrainFocusPage />)}
+                    </div>
+                </div>
             </div>
-        
-        </>
-
+        </div>
     )
 }

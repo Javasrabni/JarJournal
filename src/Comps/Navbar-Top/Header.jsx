@@ -69,26 +69,28 @@ export default function Header({ nameTools, sloganTools }) {
 
 
     return (
-        <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
+        <div className="flex flex-col gap-[8px]">
+            <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
 
-            <div className="text-white flex gap-[8px]" onClick={() => navigate('/')}>
-                <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
-                <div>
-                    <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
-                    <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
+                <div className="text-white flex gap-[8px]" onClick={() => navigate('/')}>
+                    <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                    <div>
+                        <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
+                        <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div onClick={() => { HandleOption1(); HandleClick() }}>
-                {indicatorFromMemo && (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3.5" style={{color: themeActive ? "white" : "black"}}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                    </svg>
-                )}
-            </div>
 
-            {/* Auth section */}
-            {/* <div className="w-fit h-fit flex justify-center items-center">
+                <div onClick={() => { HandleOption1(); HandleClick() }}>
+                    {indicatorFromMemo && (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3.5" style={{ color: themeActive ? "white" : "black" }}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                    )}
+                </div>
+
+                {/* Auth section */}
+                {/* <div className="w-fit h-fit flex justify-center items-center">
                     
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -101,6 +103,8 @@ export default function Header({ nameTools, sloganTools }) {
                     </svg>
                 </div>
             </div> */}
+            </div>
+            
         </div>
     )
 }

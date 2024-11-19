@@ -2,7 +2,7 @@ import Header from "./Comps/Navbar-Top/Header"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect} from "react"
 
 import Catatan from "./Comps/Features/Catatan/Catatan"
 import Jurnal from "./Comps/Features/Jurnal/Jurnal"
@@ -17,6 +17,7 @@ import EbookPage from "./Comps/Features/eBookSection/ebookPage/ebook"
 import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
+import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
 
 import { motion } from 'framer-motion'
 
@@ -24,6 +25,16 @@ import { motion } from 'framer-motion'
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
 
 export default function Home() {
+    // Smooth render page
+    const { animatePageMain, setAnimatePageMain } = useContext(AnimateLoadPageContext)
+    useEffect(()=> {
+        window.addEventListener('beforeunload', setAnimatePageMain(true))
+        return () => {
+            window.removeEventListener('beforeunload', setAnimatePageMain(false))
+        } 
+    }, [])
+
+
     // Mobile Media Querry
     const MobileView = matchMedia(' (max-width: 600px) ')
     const navigate = useNavigate()
@@ -95,13 +106,13 @@ export default function Home() {
             )}
 
             {/* {MobileView.matches ? ( */}
-            <div className="w-[360px] m-[auto] h-[100vh] flex justify-center bg-[#2a2a2a] ">
+            <div className="w-[360px] m-[auto] h-[100vh] flex justify-center bg-[#2a2a2a]">
                 <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
                     <div>
                         <header>
                             <Header />
                         </header>
-                        <main className="p-[16px] h-full">
+                        <main className="p-[16px] h-full" style={{opacity: animatePageMain ? '1' : '0'}}>
                             <div className="flex flex-row gap-[12px] justify-between">
                                 {/* Left side */}
                                 <div className="w-full grow-0 flex flex-col gap-[12px]">
@@ -153,6 +164,8 @@ export default function Home() {
                             </div>
                         </main>
                     </div>
+
+                    {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
                     <div>
                         <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }}>
                             <div>
