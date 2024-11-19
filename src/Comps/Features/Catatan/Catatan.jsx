@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom"
 import MusicBox from "../../Footer/musicBox/musicBox"
 import UserQuote from "../../Footer/userQuote/userQuote"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { MusicBoxContext } from "../../Footer/musicBox/musicBoxContext"
 import { UserQuoteContext } from "../../Footer/userQuote/userQuoteContext"
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
+import PlusBtn from "../../Button/plus btn/plusBtn"
 
 export default function Catatan() {
     const { id } = useParams()
@@ -17,40 +18,33 @@ export default function Catatan() {
 
     // Note array
     const [onNewNote, setOnNewNote] = useState([])
-    const [valueOnNewNote, setValueOnNewNote] = useState()
-    
-    return (
-        <div className="w-[360px] h-[100vh] margin-auto">
-            {/* Main content */}
-            <div className={`bg-${themeActive ? "black" : "white"} flex flex-row gap-[12px] justify-between h-full p-[16px]`}>
-                <div className="w-full flex flex-col gap-[12px] grow-0">
 
-                    {/* Card to add new note */}
-                    <div className={`w-[158px] h-[120px] ${themeActive ? 'bg-[#08090A]' : 'bg-stone-100'} rounded-[8px] p-[12px] flex flex-col gap-[8px] items-center justify-center text-${themeActive ? "[#999999]" : "[#999999]"} cursor-pointer outline outline-1 ${themeActive ? 'outline-[#1e1f1f]' : 'outline-slate-200'}`}>
-                        <div className="flex flex-col jusitfy-center items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-8">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                            <p className={`text-[10px] `}>Catatan baru</p>
+    useEffect(() => {
+        const array = ['asdas', 'asdasd', 'asdasd']
+        setOnNewNote(array)
+    }, [])
+
+    const [valueOnNewNote, setValueOnNewNote] = useState()
+
+    return (
+        <div className="w-[360px] h-[90svh] flex jusitfy-center relative">
+            {/* Main content */}
+            <div className={`bg-${themeActive ? "black" : "white"} flex flex-col gap-[12px] h-fit p-[16px] text-white w-full`}>
+                {onNewNote.map((item, index) =>
+                    <div className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex p-[12px] rounded-[6px] justify-between items-center cursor-pointer`}>
+                        <div className="flex flex-col gap-[0px]">
+                            <p key={index} className={`${themeActive ? "text-white" : "text-[#00000099]"} text-[12px] font-[600] `}>{item}</p>
+                            <p key={index} className="text-[10px] font-[500] text-[#999999]">{item}</p>
+                        </div>
+                        <div>
+                            <p className=" text-[10px] font-[500] text-[#999999]">12 november 2024</p>
                         </div>
                     </div>
+                )}
 
-                    <p></p>
-                </div>
-                <div>
-                    <p></p>
-                </div>
+                <PlusBtn />
+
             </div>
-
-            {/* Footer */}
-            {/* <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }}>
-                <div>
-                    <MusicBox />
-                </div>
-                <div className="w-[360px] h-[44px] p-[16px] bg-black " style={{ borderTop: "1px solid #262626" }} onClick={() => setUserClickQuote((prev) => !prev)}>
-                    <UserQuote />
-                </div>
-            </footer> */}
         </div>
     )
 }
