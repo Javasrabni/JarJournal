@@ -80,7 +80,7 @@ export default function MusicBox() {
             <div className="flex flex-col items-center" >
                 
                 {/* Button to pull up/down */}
-                <div className={`flex justify-center items-center w-[52px] h-[14px] ${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px",  borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
+                <div className={`flex justify-center relative items-center w-[52px] h-[14px] ${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px",  borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)", bottom: "-1px"}} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5" style={{color: themeActive ? 'white' : "var(--black-text)"}}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />

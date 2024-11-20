@@ -146,7 +146,7 @@ export default function Home() {
                                     <div>
                                         <DateTimePlan />
                                     </div>
-                                    <div className="w-full bg-[#08090a] text-white rounded-[8px] p-[12px]" style={{ outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }}>
+                                    <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
                                         <SisaHariToNewYear />
                                     </div>
                                     <div className="w-full">

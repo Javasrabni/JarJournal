@@ -15,6 +15,8 @@
   --black-bg: #262626;
   --black-card: #08090A;
 
+  --black-subtext: #999999;
+
   --white-bg-100: #F5F5F4;
   --white-bg-200: #E7E5E4;
 
@@ -26,11 +28,11 @@
 }
 
 .progress-bar::-webkit-progress-value {
-  background-color: #FFD700; /* Warna cyan-400 (Tailwind) */
+  background-color: var(--aksen-color); /* Warna cyan-400 (Tailwind) */
 }
 
 .progress-bar::-moz-progress-bar {
-  background-color: #FFD700; /* Warna cyan-400 untuk Firefox */
+  background-color: var(--aksen-color); /* Warna cyan-400 untuk Firefox */
 }
 
 ::-webkit-scrollbar {

@@ -27,7 +27,7 @@ export default function CardFeatures({ nameFeatures, heightCatatan, heightJurnal
                             <p className="text-[10px] font-[400 text-[#999999]">Bacaan gratis</p>
                         </div>
                         <div>
-                            <button className="text-[10px] py-[4px] px-[12px] bg-white text-black rounded-xl font-semibold" onClick={() => navigate('/ftr/E-Book')}>
+                            <button className={`text-[10px] py-[4px] px-[12px] ${themeActive ? 'bg-white' : 'bg-[var(--white-bg-200)]'} text-black rounded-xl font-semibold`} onClick={() => navigate('/ftr/E-Book')}>
                                 <span className="flex gap-[4px] items-center justify-center">
                                     <p>Baca</p>
                                     {/* {arrow} */}

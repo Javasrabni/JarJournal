@@ -11,7 +11,7 @@ import ThemeAppProvider from './Comps/Features/Theme/toggleTheme.jsx/ThemeAppCon
 import BrainFProvider from './Comps/Features/brainFocus/BrainFContext';
 import ToggleAllProvider from './Comps/toggle/toggleContext';
 import AnimateLoadPageProvider from './Comps/animate onload page/animateLoadPage';
-
+import CatatanProvider from './Comps/Features/Catatan/catatanContex';
 // Components
 import AuthForm from './Comps/Form/AuthForm';
 import Home from './home';
@@ -29,14 +29,16 @@ function App() {
               <BrainFProvider>
                 <ToggleAllProvider>
                   <AnimateLoadPageProvider>
-                    <BrowserRouter>
-                      <Routes>
-                        <Route index element={<Home />} />
-                        <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                        <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                        <Route path='*' element={<Page404 />} />
-                      </Routes>
-                    </BrowserRouter>
+                    <CatatanProvider>
+                      <BrowserRouter>
+                        <Routes>
+                          <Route index element={<Home />} />
+                          <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                          <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                          <Route path='*' element={<Page404 />} />
+                        </Routes>
+                      </BrowserRouter>
+                    </CatatanProvider>
                   </AnimateLoadPageProvider>
                 </ToggleAllProvider>
               </BrainFProvider>

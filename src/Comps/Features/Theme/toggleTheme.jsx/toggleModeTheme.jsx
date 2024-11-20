@@ -20,17 +20,17 @@ export default function ToggleDarkMode() {
 
     return (
         <div className="flex flex-col gap-[8px]">
-            <div className="w-[46px] h-[24px] bg-[#08090A] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white" style={{outline: "1px solid rgb(38, 38, 38)"}} onClick={HandleClickTheme} >
+            <div className={`w-[46px] h-[24px] rounded-[50px] flex flex-row justify-between items-center px-[6px] cursor-pointer text-white ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--black-card)]'}`} style={{outline: themeActive ? "1px solid var(--black-bg)" : '1px solid var(--white-bg-200)'}} onClick={HandleClickTheme} >
                 <div style={{zIndex: "15", transition: "color 0.3s ease"}} className="flex flex-row items-center justify-between w-full">
-                    <div className={`text-${themeActive ? 'white' : 'black'}`}>
+                    <div className={`${themeActive ? 'text-[var(--white-bg-200)]' : 'text-black'}`}>
                         {lightMOde}
                     </div>
-                    <div className={`text-${themeActive ? 'black' : 'white'}`}>
+                    <div className={`${themeActive ? 'text-black' : 'text-[var(--white-bg-200)]'}`}>
                         {darkMode}
                     </div>
                 </div>
 
-                <div className="bg-slate-200 w-[16px] h-[16px] rounded-[14px]" style={{ position: "absolute", zIndex: "14", transform: themeActive ? "translateX(20px)" : "translateX(-2px)", transition: "transform 0.3s ease"}} />
+                <div className=" w-[16px] h-[16px] rounded-[14px]" style={{ position: "absolute", zIndex: "14", transform: themeActive ? "translateX(20px)" : "translateX(-2px)", transition: "transform 0.3s ease", backgroundColor: themeActive ? 'white' : 'var(--white-bg-200)'}} />
 
             </div>
         </div>
