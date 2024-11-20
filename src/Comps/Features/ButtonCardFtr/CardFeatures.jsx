@@ -15,14 +15,14 @@ export default function CardFeatures({ nameFeatures, heightCatatan, heightJurnal
         <>
             {cardType2EBook ? (
                 <div className="flex flex-col" >
-                    <div className="w-[52px] h-[6px]" style={{ borderRadius: "8px 8px 0px 0px", backgroundColor: "rgb(38, 38, 38)"}} />
+                    <div className="w-[52px] h-[6px]" style={{ borderRadius: "8px 8px 0px 0px", backgroundColor: themeActive ? "var(--black-bg)" : 'var(--white-bg-200)'}} />
 
 
-                    <div className="w-full bg-[#08090a] text-white p-[12px] gap-[12px] flex flex-row gap-[8px] justify-between items-center" style={{ borderRadius: "0px 8px 8px 8px", outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+                    <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white p-[12px] gap-[12px] flex flex-row gap-[8px] justify-between items-center`} style={{ borderRadius: "0px 8px 8px 8px", outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)"}}>
                         <div>
-                            <span className="flex flex-row gap-[8px] items-center">
+                            <span className="flex f ex-row gap-[8px] items-center">
                                 {/* {Buku} */}
-                                <p className="font-semibold text-xs">E-Book</p>
+                                <p className={`font-semibold text-xs ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} `}>E-Book</p>
                             </span>
                             <p className="text-[10px] font-[400 text-[#999999]">Bacaan gratis</p>
                         </div>
@@ -37,13 +37,13 @@ export default function CardFeatures({ nameFeatures, heightCatatan, heightJurnal
                     </div>
                 </div>
             ) : (
-                <div className={`w-full bg-${themeActive ? "[#08090A]" : "[#08090A]" } text-white rounded-[8px] p-[12px] gap-[12px]`} style={{ height: heightCatatan ? "120px" : heightJurnal ? "112px" : heightMemo ? "fit-content" : "50px", outline: themeActive ? "1px solid rgb(38, 38, 38)" : "none"}}>
+                <div className={`w-full ${themeActive ? "bg-[#08090A]" : "bg-[var(--white-bg-100)]" } ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} rounded-[8px] p-[12px] gap-[12px]`} style={{ height: heightCatatan ? "120px" : heightJurnal ? "112px" : heightMemo ? "fit-content" : "50px", outline: themeActive ? "1px solid rgb(38, 38, 38)" : "1px solid var(--white-bg-200)"}}>
                     <div>
                         <div>
                             <p className="font-semibold text-xs">{nameFeatures}</p>
                             <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p>
                         </div>
-                        <button className="text-[10px] py-[4px] px-[12px] bg-white text-black rounded-xl font-semibold mt-[16px]" onClick={() => navigate(onClickFeatures)}>
+                        <button className={`text-[10px] py-[4px] px-[12px] ${themeActive ? 'bg-white' : 'bg-[var(--white-bg-200)]'} text-black rounded-xl font-semibold mt-[16px]`} onClick={() => navigate(onClickFeatures)}>
                             <span className="flex gap-[4px] items-center justify-center">
                                 {buttonFeatures}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">

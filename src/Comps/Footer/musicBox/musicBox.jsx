@@ -9,6 +9,9 @@ import PopupLegend from "../../Popup/Popup-typ1/PopupLegend"
 import { transform } from "framer-motion"
 
 export default function MusicBox() {
+    // Theme app
+    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
     const navigate = useNavigate()
 
     const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
@@ -51,32 +54,7 @@ export default function MusicBox() {
         // outline: "rgb(38, 38, 38) solid 1px"
     }
 
-    const [musicBoxDiv, setMusicBoxDiv] = useState([
-        {
-            M1: "Music box 02",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox02, borderRadius: "50px" }}>
-                {/* {musicIcon} */}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                {/* <p className="text-[10px] font-[600]">Energic</p> */}
-            </div>
-        },
-        {
-            M1: "Music Box 01",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
-                {/* {musicIcon} */}
-                {/* <p className="text-[10px] font-[600]">Calm</p> */}
-            </div>
-        },
-        {
-            M1: "Music Box 01",
-            Box: <div className="w-[52px] h-[52px] bg-[#262626] flex items-center justify-center" style={{ ...bgMusicBox01, borderRadius: "50px" }}>
-                {/* {musicIcon} */}
-                {/* <p className="text-[10px] font-[600]">Calm</p> */}
-            </div>
-        }
-    ])
+    const [musicBoxDiv, setMusicBoxDiv] = useState(['tes', 'tes1', 'tes2'])
 
     const displayedMusicBox = musicBoxDiv.slice(0, 3);
 
@@ -88,8 +66,7 @@ export default function MusicBox() {
 
     }
 
-    // Theme app
-    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
 
     // Popup Music Box
     const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
@@ -101,10 +78,11 @@ export default function MusicBox() {
                 <ToggleDarkMode />
             </div>
             <div className="flex flex-col items-center" >
+                
                 {/* Button to pull up/down */}
-                <div className={`flex justify-center items-center w-[52px] h-[14px] bg-black text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px", borderBottom: themeActive ? "none" : "1px solid #262626", borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
+                <div className={`flex justify-center items-center w-[52px] h-[14px] ${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} text-white cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px",  borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5" style={{color: themeActive ? 'white' : "var(--black-text)"}}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                         </svg>
                     ) : (
@@ -114,12 +92,12 @@ export default function MusicBox() {
                     )}
                 </div>
                 {/* Music */}
-                <div className={`w-[360px] h-[120px] bg-black p-[16px] text-white`} style={{ borderTop: themeActive ? "1px solid rgb(38, 38, 38)" : "none" }}>
+                <div className={`${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} w-[360px] h-[120px] p-[16px] ${themeActive ? "text-white" : "text-[var(--black-text)]"}`} style={{ borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }}>
                     <div>
                         <div className="flex flex-col gap-[6px]">
                             <div className="flex flex-row justify-between items-center" >
                                 <div className="flex flex-row gap-[6px] items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3" style={{ color: "yellow", filter: "drop-shadow(0px 0px 3px gold)" }}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFD700" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3" style={{ color: "var(--aksen-color)", filter: "drop-shadow(0px 0px 3px gold)" }}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
                                     </svg>
                                     <p className="text-[12px] font-[700]">Brain Focus</p>
@@ -136,7 +114,7 @@ export default function MusicBox() {
                             <div className="w-full h-[74px] gap-[16px] flex flex-row items-center justify-between ">
                                 <div className="flex flex-row gap-[8px] items-center" style={{ Width: "100px", overflow: "scroll", marginTop: "0 px" }}>
                                     {displayedMusicBox.map((item, index) =>
-                                        <div key={index} style={{ width: "", }} className="flex flex-row shrink-0">
+                                        <div key={index} className={`flex flex-row shrink-0 w-[52px] h-[52px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-stone-200'} flex items-center justify-center rounded-[50px]`}>
                                             {item.Box}
                                         </div>
                                     )}
@@ -149,7 +127,7 @@ export default function MusicBox() {
                                     )} */}
                                     <CountTime />
                                 </div>
-                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer shrink-0" style={{ ...bgStyle, outline: "1px solid rgb(38, 38, 38)" }} onClick={() => navigate('/BrainFocus')}>
+                                <div className="w-[120px] h-[52px] bg-[#262626] rounded-[8px] p-[12px] flex justify-center items-center cursor-pointer shrink-0" style={{ ...bgStyle, outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', color: "white"}} onClick={() => navigate('/BrainFocus')}>
                                     <div className="flex flex-row justify-center items-center gap-[8px]">
                                         <p className="text-[10px] font-[600]">Buka layar</p>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">

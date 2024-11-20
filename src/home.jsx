@@ -171,7 +171,7 @@ export default function Home() {
                             <div>
                                 <MusicBox />
                             </div>
-                            <div className="w-[360px] h-[44px] p-[16px] bg-black " style={{ borderTop: "1px solid #262626" }} onClick={() => setUserClickQuote((prev) => !prev)}>
+                            <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-black" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
                                 <UserQuote />
                             </div>
                         </footer>
