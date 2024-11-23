@@ -4,6 +4,11 @@
     list-style: none;
     width: 100px;
 }
+.ant-picker-calendar-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
 
 .events .ant-badge-status {
     width: 100%;
@@ -14,18 +19,29 @@
 }
 
 .notes-month {
-    font-size: 28px;
+    font-size: 14px;
     text-align: center;
 }
 
 .notes-month section {
-    font-size: 28px;
+    font-size: 14px;
 }
 
 .custom-calendar {
-    width: 80%;
+    width: 100%;
     max-width: 500px;
     /* Sesuaikan dengan kebutuhan */
     margin: 0 auto;
     /* Memusatkan */
 }
+
+.custom-calendar-header .ant-picker-header-view {
+    background-color: #4CAF50; /* Ganti warna background header */
+    color: white; /* Warna teks header */
+    font-size: 18px; /* Ukuran font */
+  }
+  
+  .custom-calendar-header .ant-picker-header-prev-btn,
+  .custom-calendar-header .ant-picker-header-next-btn {
+    color: #fff; /* Warna tombol navigasi */
+  }

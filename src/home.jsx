@@ -106,14 +106,14 @@ export default function Home() {
             )}
 
             {/* {MobileView.matches ? ( */}
-            <div className="w-[360px] m-[auto] h-[100vh] flex justify-center bg-[#2a2a2a]">
+            <div className={`w-[360px] m-[auto] h-[100lvh] flex justify-center ${themeActive ? 'bg-black' : 'bg-white'}`}style={{paddingBottom: '60px'}}>
                 <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
                     <div>
                         <header>
                             <Header />
                         </header>
-                        <main className="p-[16px] h-full" style={{ opacity: animatePageMain ? '1' : '0' }}>
-                            <div className="flex flex-row gap-[12px] justify-between">
+                        <main className="p-[16px] h-full" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white'}}>
+                            <div className="flex flex-row gap-[12px] justify-between w-full h-full">
                                 {/* Left side */}
                                 <div className="w-full grow-0 flex flex-col gap-[12px]">
                                     <div>
@@ -139,7 +139,7 @@ export default function Home() {
                                             cardType2EBook={true}
                                             onClickFeatures={'/ftr/Jurnal'}
                                             descFeatures={'Bacaan gratis'}
-                                            nameFeatures={"E-Book"}
+                                            nameFeatures={"Library"}
                                             buttonFeatures={'Baca'}
                                         />
                                     </div>

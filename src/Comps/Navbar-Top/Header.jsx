@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MemoContext } from "../Features/Memo/MemoContext";
 import { PopupFrSettingsContext } from "../Popup_settings/popupSetting/boxPopupFromSetting";
 import { ThemeAppContext } from "../Features/Theme/toggleTheme.jsx/ThemeAppContext";
+import DropdownMenu from "./menuComp/dropdownMenu";
 
 export default function Header({ nameTools, sloganTools }) {
     const pathLocation = useLocation()
@@ -67,7 +68,6 @@ export default function Header({ nameTools, sloganTools }) {
     // Theme app
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
-
     return (
         <div className="flex flex-col gap-[8px]">
             <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
@@ -104,7 +104,10 @@ export default function Header({ nameTools, sloganTools }) {
                 </div>
             </div> */}
             </div>
-            
+            <div className="mt-0" >
+                <DropdownMenu />
+            </div>
+
         </div>
     )
 }
