@@ -19,11 +19,10 @@ export default function Catatan() {
     const { setUserClickQuote } = useContext(UserQuoteContext)
 
     // Note array
-
-
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
     const { valueOnNewNote, setValueOnNewNote } = useContext(CatatanContext)
     const { writeingNote, setWriteingNote } = useContext(CatatanContext)
+
 
 
     function HandleNewNote() {
@@ -33,6 +32,23 @@ export default function Catatan() {
 
         return () => clearTimeout(delayPage)
     }
+
+
+    const { lastEdit, setLastEdit } = useContext(CatatanContext)
+
+    function lastEditNote(param) {
+        const lastEditNote = new Date(document.lastModified)
+        const formatLastEditNote = lastEditNote.toLocaleString('id-ID', {
+            year: '2-digit',
+            day: "2-digit",
+            hour: 'numeric',
+            month: "2-digit"
+        })
+    }
+
+    const lastModified = onNewNote.map((item)=> ({
+        ...item, lastModified: lastEditNote()
+    }))
 
     return (
         <>
@@ -60,7 +76,7 @@ export default function Catatan() {
                                                 <p key={index} className="text-[10px] font-[500] text-[#999999]">{item}</p>
                                             </div>
                                             <div>
-                                                <p className=" text-[10px] font-[500] text-[#999999]">12 november 2024</p>
+                                                <p className=" text-[10px] font-[500] text-[#999999]">12 Nov 202</p>
                                             </div>
                                         </div>
                                     )}
@@ -73,6 +89,7 @@ export default function Catatan() {
                     <div onClick={HandleNewNote}>
                         <PlusBtn
                             temaCatatan={true}
+
                         />
 
                     </div>

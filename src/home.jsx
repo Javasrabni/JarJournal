@@ -2,7 +2,7 @@ import Header from "./Comps/Navbar-Top/Header"
 import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
-import { useContext, useState, useEffect} from "react"
+import { useContext, useState, useEffect } from "react"
 
 import Catatan from "./Comps/Features/Catatan/Catatan"
 import Jurnal from "./Comps/Features/Jurnal/Jurnal"
@@ -27,11 +27,11 @@ import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeApp
 export default function Home() {
     // Smooth render page
     const { animatePageMain, setAnimatePageMain } = useContext(AnimateLoadPageContext)
-    useEffect(()=> {
+    useEffect(() => {
         window.addEventListener('beforeunload', setAnimatePageMain(true))
         return () => {
             window.removeEventListener('beforeunload', setAnimatePageMain(false))
-        } 
+        }
     }, [])
 
 
@@ -112,7 +112,7 @@ export default function Home() {
                         <header>
                             <Header />
                         </header>
-                        <main className="p-[16px] h-full" style={{opacity: animatePageMain ? '1' : '0'}}>
+                        <main className="p-[16px] h-full" style={{ opacity: animatePageMain ? '1' : '0' }}>
                             <div className="flex flex-row gap-[12px] justify-between">
                                 {/* Left side */}
                                 <div className="w-full grow-0 flex flex-col gap-[12px]">
@@ -138,6 +138,9 @@ export default function Home() {
                                         <CardFeatures
                                             cardType2EBook={true}
                                             onClickFeatures={'/ftr/Jurnal'}
+                                            descFeatures={'Bacaan gratis'}
+                                            nameFeatures={"E-Book"}
+                                            buttonFeatures={'Baca'}
                                         />
                                     </div>
                                 </div>
@@ -145,6 +148,16 @@ export default function Home() {
                                 <div className="w-full grow-0 flex flex-col gap-[12px]">
                                     <div>
                                         <DateTimePlan />
+                                    </div>
+                                    <div>
+                                        <CardFeatures
+                                            cardType2EBook={true}
+                                            heightKalender={true}
+                                            onClickFeatures={'/KalenderPlanner'}
+                                            descFeatures={'Sisipkan acara'}
+                                            nameFeatures={"Kalender Planner"}
+                                            buttonFeatures={'Tambah'}
+                                        />
                                     </div>
                                     <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
                                         <SisaHariToNewYear />
