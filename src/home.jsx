@@ -56,6 +56,9 @@ export default function Home() {
     const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
     const { popupReset, setPopupReset } = useContext(MusicBoxContext)
 
+    
+  
+
 
     return (
         <>
@@ -137,7 +140,7 @@ export default function Home() {
                                     <div>
                                         <CardFeatures
                                             cardType2EBook={true}
-                                            onClickFeatures={'/ftr/Jurnal'}
+                                            onClickFeatures={'/ftr/Library'}
                                             descFeatures={'Bacaan gratis'}
                                             nameFeatures={"Library"}
                                             buttonFeatures={'Baca'}

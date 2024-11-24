@@ -36,7 +36,6 @@
 }
 
 .custom-calendar-header .ant-picker-header-view {
-    background-color: #4CAF50; /* Ganti warna background header */
     color: white; /* Warna teks header */
     font-size: 18px; /* Ukuran font */
   }
@@ -45,3 +44,16 @@
   .custom-calendar-header .ant-picker-header-next-btn {
     color: #fff; /* Warna tombol navigasi */
   }
+
+  /* .ant-empty-description::before {
+    content: "Tidak ada acara"; 
+  } */
+  .ant-empty-description {
+    font-size: 12px;
+  }
+  .ant-picker-calendar .ant-picker-calendar-header {
+    justify-content: center; 
+    text-align: center;
+  }
+
+  

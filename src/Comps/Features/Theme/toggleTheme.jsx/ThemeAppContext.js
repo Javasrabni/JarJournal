@@ -5,7 +5,7 @@ export const ThemeAppContext = createContext()
 export default function ThemeAppProvider({children}) {
     const [themeActive, setThemeActive] = useState(()=> {
         const saveTheme = localStorage.getItem('saveTheme')
-        return saveTheme ? JSON.parse(saveTheme) : false
+        return saveTheme ? JSON.parse(saveTheme) : true
     })
 
     useEffect(()=> {

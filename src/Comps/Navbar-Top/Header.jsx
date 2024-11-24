@@ -21,7 +21,7 @@ export default function Header({ nameTools, sloganTools }) {
     useEffect(() => {
         pathLocation.pathname === "/ftr/Jurnal" && setJudulHeader("Jurnal")
         pathLocation.pathname === "/ftr/Catatan" && setJudulHeader("Catatan")
-        pathLocation.pathname === "/ftr/E-Book" && setJudulHeader("E-Book")
+        pathLocation.pathname === "/ftr/Library" && setJudulHeader("Library")
         pathLocation.pathname === "/BrainFocus" && setJudulHeader("Brain Focus")
     }, [])
 
@@ -104,9 +104,11 @@ export default function Header({ nameTools, sloganTools }) {
                 </div>
             </div> */}
             </div>
-            <div className="mt-0" >
+
+
+            {/* <div className="mt-0" >
                 <DropdownMenu />
-            </div>
+            </div> */}
 
         </div>
     )
