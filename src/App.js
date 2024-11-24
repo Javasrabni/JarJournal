@@ -21,38 +21,42 @@ import CodeBaseFeatures from './Comps/Features/codeBaseFeatures';
 import Page404 from './Comps/404/404Page';
 import BrainFocusPage from './Comps/Features/brainFocus/displayPage/brainFocusPage';
 import KalenderPage from './Comps/Features/kalender/kalenderPage/Kalender';
+import LoginPage from './Auth/loginPage/loginPage';
+import AuthPage from './Auth/authPage';
 
 function App() {
   return (
     <UserQuoteProvider>
-      <MemoProvider>
-        <PopupFrSettingsProvider>
-          <MusicBoxProvider>
-            <ThemeAppProvider>
-              <BrainFProvider>
-                <ToggleAllProvider>
-                  <AnimateLoadPageProvider>
-                    <CatatanProvider>
-                      <WriteNoteProvider>
-                        <BrowserRouter>
-                          <Routes>
-                            <Route index element={<Home />} />
-                            <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                            <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                            <Route path='/KalenderPlanner' element={<KalenderPage />} />
-                            <Route path='*' element={<Page404 />} />
-                          </Routes>
-                        </BrowserRouter>
-                      </WriteNoteProvider>
-                    </CatatanProvider>
-                  </AnimateLoadPageProvider>
-                </ToggleAllProvider>
-              </BrainFProvider>
-            </ThemeAppProvider>
-          </MusicBoxProvider>
-        </PopupFrSettingsProvider>
-      </MemoProvider>
+        <MemoProvider>
+          <PopupFrSettingsProvider>
+            <MusicBoxProvider>
+              <ThemeAppProvider>
+                <BrainFProvider>
+                  <ToggleAllProvider>
+                    <AnimateLoadPageProvider>
+                      <CatatanProvider>
+                        <WriteNoteProvider>
+                          <BrowserRouter>
+                            <Routes>
+                              <Route index element={<Home />} />
+                              <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                              <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                              <Route path='/KalenderPlanner' element={<KalenderPage />} />
+                              <Route path='/Login' element={<AuthPage />} />
+                              <Route path='*' element={<Page404 />} />
+                            </Routes>
+                          </BrowserRouter>
+                        </WriteNoteProvider>
+                      </CatatanProvider>
+                    </AnimateLoadPageProvider>
+                  </ToggleAllProvider>
+                </BrainFProvider>
+              </ThemeAppProvider>
+            </MusicBoxProvider>
+          </PopupFrSettingsProvider>
+        </MemoProvider>
     </UserQuoteProvider>
+
   );
 }
 

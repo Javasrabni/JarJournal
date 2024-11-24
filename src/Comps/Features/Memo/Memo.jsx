@@ -6,9 +6,12 @@ import { PopupFrSettingsContext } from "../../Popup_settings/popupSetting/boxPop
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 
-export default function Memo() {
+export default function Memo({ token }) {
+    const API_URL = 'https://0l45qcjl-5000.asse.devtunnels.ms';
+
+
     // Memo Section
-    const { indicatorFromMemo, setIndicatorFromMemo, valueMemo, setValueMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo } = useContext(MemoContext)
+    const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)
 
     const [indicator, setIndicator] = useState(false)
     const inputActive = useRef('')
@@ -66,7 +69,7 @@ export default function Memo() {
     // Popup new memo
     const [activePopupMemo, setActivePopupMemo] = useState(false)
 
-    function HandleClickMemo() {
+    const HandleClickMemo = async () => {
         // setIndicator((prev)=> !prev)
         // setIndicatorFromMemo(true)
         setActivePopupMemo(true)
@@ -126,31 +129,7 @@ export default function Memo() {
 
 
 
-    // Add memo func in btn
-    function HandleAddMemo() {
-        let delayAddMemo;
 
-        if (!memoInputValue) {
-            setIndicatorFromMemo(false)
-            setMemoInputValue('')
-            return
-        } else {
-            // setIndicatorFromMemo(false)
-            setValueMemo((prevValue) => [...prevValue, memoInputValue])
-            setVisibleMemo((prevValue) => [...prevValue, memoInputValue])
-        }
-
-        setOption1_Status(false)
-        setIndicatorFromMemo(false)
-        setMemoInputValue('')
-
-        delayAddMemo = setTimeout(() => {
-            setActivePopupMemo(false)
-        }, 600)
-
-        return () => clearTimeout(delayAddMemo)
-
-    }
 
     // change height after memo has more than 2 values
     useEffect(() => {
@@ -196,6 +175,85 @@ export default function Memo() {
         fontWeight: "600"
     }
 
+
+    const fetchMemo = async () => {
+        try {
+            const response = await fetch(`${API_URL}/get-memos`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setValueMemo(data.memos); // Atur memo user
+            }
+        } catch (err) {
+            console.error('Error fetching memo:', err);
+        }
+    };
+
+    useEffect(() => {
+        if (token) {
+            fetchMemo(); // Panggil fetchMemo setelah token tersedia
+        }
+    }, [token]);
+
+
+    const handleSaveMemo = async (newMemo) => {
+        const response = await fetch(`${API_URL}/save-memo`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ memos: [...valueMemo, newMemo] })
+        });
+
+        if (response.ok) {
+            fetchMemo();
+        } else {
+            const error = await response.json();
+            console.error('Error saving memo:', error);
+        }
+    };
+
+    // Add memo func in btn
+    const HandleAddMemo = () => {
+        let delayAddMemo;
+
+        if (!memoInputValue) {
+            setIndicatorFromMemo(false)
+            setMemoInputValue('')
+            return
+        } else {
+            // setIndicatorFromMemo(false)
+            setValueMemo((prevValue) => [...prevValue, memoInputValue])
+            setVisibleMemo((prevValue) => [...prevValue, memoInputValue])
+        }
+
+        setOption1_Status(false)
+        setIndicatorFromMemo(false)
+        setMemoInputValue('')
+
+        delayAddMemo = setTimeout(() => {
+            setActivePopupMemo(false)
+        }, 600)
+
+        // import memo into server
+        handleSaveMemo(memoInputValue)
+
+        return () => clearTimeout(delayAddMemo)
+
+    }
+
+    useEffect(() => {
+        const storedMemos = localStorage.getItem('valueMemo');
+        if (storedMemos) {
+            setValueMemo(JSON.parse(storedMemos));
+        }
+    }, []);
+    
     return (
         <>
             {/* View popup memo */}
@@ -251,7 +309,7 @@ export default function Memo() {
                     <div className="flex flex-row items-center justify-between" style={{ marginBottom: valueMemo.length < 1 ? "0px" : "8px" }}>
                         <div className="flex flex-row gap-[4px] items-center">
                             <p className={`font-semibold text-xs ${themeActive ? 'text-white' : 'text-[var(--black-text)]'}`}>Memo</p>
-                            <p className="font-[600] text-[10px]" style={{ opacity: "50%", color: themeActive ? 'white' : 'var(--black-text)'}}>({valueMemo.length})</p>
+                            <p className="font-[600] text-[10px]" style={{ opacity: "50%", color: themeActive ? 'white' : 'var(--black-text)' }}>({valueMemo.length})</p>
                             {/* <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p> */}
                         </div>
                         <button className={`text-[10px] py-[4px] px-[4px] ${themeActive ? 'bg-white' : 'bg-[var(--white-bg-200)]'} text-black rounded-xl font-semibold mt-[0px]`} style={{ height: "fit-content" }} onClick={HandleClickMemo}>
@@ -292,7 +350,7 @@ export default function Memo() {
                                 ) : (
                                     <>
                                         <AnimatePresence>
-                                            {visibleMemo.map((item, index) =>
+                                            {valueMemo.map((item, index) =>
                                                 <motion.li
                                                     key={index}
                                                     initial={{ opacity: 0, height: 0 }}

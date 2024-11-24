@@ -4,10 +4,7 @@ import 'moment/locale/id'; // Mengimpor locale moment untuk Indonesia
 import idLocale from 'antd/lib/locale/id_ID'; // Locale Indonesia untuk Ant Design
 import moment from 'moment';
 import './kalenderStyle.css'
-import '../../../../App.css'
 import { ThemeAppContext } from '../../Theme/toggleTheme.jsx/ThemeAppContext';
-
-
 
 moment.locale('id'); // Mengatur locale moment ke Bahasa Indonesia
 
@@ -101,7 +98,7 @@ const KalenderPage = () => {
                         colorBorder: themeActive ? 'rgb(38, 38, 38)' : '#d9d9d9', // Warna border
                     },
                 }}>
-                    <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender}className="custom-calendar" />
+                    <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} className="custom-calendar" />
                 </ConfigProvider>
 
 
@@ -135,7 +132,7 @@ const KalenderPage = () => {
                             <List.Item
                                 actions={[
                                     <Button
-                                    style={{paddingRight: '0px'}}
+                                        style={{ paddingRight: '0px' }}
 
                                         type="link"
                                         danger
