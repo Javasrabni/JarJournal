@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RegisterPage from './registerPage/registerPage';
 import LoginPage from './loginPage/loginPage';
 
-const AuthPage = () => {
+const AuthPage = ({setToken}) => {
     const [isRegister, setIsRegister] = useState(false);
 
     return (
@@ -17,7 +17,7 @@ const AuthPage = () => {
                 </>
             ) : (
                 <>
-                    <LoginPage />
+                    <LoginPage setToken={setToken}/>
                     <p>
                         Don't have an account?{' '}
                         <button onClick={() => setIsRegister(true)}>Register</button>

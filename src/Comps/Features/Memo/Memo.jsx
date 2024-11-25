@@ -5,10 +5,10 @@ import BoxPopupFromSetting from "../../Popup_settings/popupSetting/boxPopupFromS
 import { PopupFrSettingsContext } from "../../Popup_settings/popupSetting/boxPopupFromSetting"
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
+import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 
 export default function Memo({ token }) {
-    const API_URL = 'https://0l45qcjl-5000.asse.devtunnels.ms';
-
+    const {API_URL} = useContext(API_URL_CONTEXT)
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)

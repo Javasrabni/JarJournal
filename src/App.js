@@ -13,6 +13,7 @@ import ToggleAllProvider from './Comps/toggle/toggleContext';
 import AnimateLoadPageProvider from './Comps/animate onload page/animateLoadPage';
 import CatatanProvider from './Comps/Features/Catatan/catatanContex';
 import WriteNoteProvider from './Comps/Features/Catatan/onNewNotePage/writeNoteContext';
+import API_URL_PROVIDER from './Auth/Context/API_URL';
 
 // Components
 import AuthForm from './Comps/Form/AuthForm';
@@ -26,7 +27,8 @@ import AuthPage from './Auth/authPage';
 
 function App() {
   return (
-    <UserQuoteProvider>
+    <API_URL_PROVIDER>
+      <UserQuoteProvider>
         <MemoProvider>
           <PopupFrSettingsProvider>
             <MusicBoxProvider>
@@ -55,8 +57,8 @@ function App() {
             </MusicBoxProvider>
           </PopupFrSettingsProvider>
         </MemoProvider>
-    </UserQuoteProvider>
-
+      </UserQuoteProvider>
+    </API_URL_PROVIDER>
   );
 }
 

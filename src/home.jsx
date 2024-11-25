@@ -60,8 +60,8 @@ export default function Home() {
     const { popupReset, setPopupReset } = useContext(MusicBoxContext)
 
 
-
-    const [token, setToken] = useState(null);
+    // AUTH SECT
+    const [token, setToken] = useState(null)
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -70,23 +70,15 @@ export default function Home() {
         }
     }, []);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token'); // Hapus token
-        setToken(null); // Set token menjadi null untuk memaksa user login ulang
-    };
+
 
     return (
         <>
 
             {!token ? (
-                    <LoginPage setToken={setToken} />
+                <AuthPage setToken={setToken} />
             ) : (
                 <>
-                    {token ? (
-                        <button onClick={handleLogout}>Logout</button>
-                    ) : (
-                        <AuthPage />
-                    )}
                     < p > Welcome! Your token: {token}</p>
                     {/* Popup from Reset in MusicBox */}
                     {popupReset && (
@@ -139,7 +131,7 @@ export default function Home() {
                         <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
                             <div>
                                 <header>
-                                    <Header token={token} />
+                                    <Header token={token} setToken={setToken} />
                                 </header>
                                 <main className="p-[16px] h-full" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white' }}>
                                     <div className="flex flex-row gap-[12px] justify-between w-full h-full">
