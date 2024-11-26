@@ -174,7 +174,7 @@ export default function Memo({ token }) {
         fontSize: "12px",
         fontWeight: "600"
     }
-
+// 
 
     const fetchMemo = async () => {
         try {
