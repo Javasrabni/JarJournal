@@ -24,6 +24,7 @@ import BrainFocusPage from './Comps/Features/brainFocus/displayPage/brainFocusPa
 import KalenderPage from './Comps/Features/kalender/kalenderPage/Kalender';
 import LoginPage from './Auth/loginPage/loginPage';
 import AuthPage from './Auth/authPage';
+import LandingPage from './landingPage';
 
 function App() {
   return (
@@ -40,11 +41,12 @@ function App() {
                         <WriteNoteProvider>
                           <BrowserRouter>
                             <Routes>
-                              <Route index element={<Home />} />
+                              <Route index element={<LandingPage />} />
+                              <Route path='/dashboard' element={<Home />} />
                               <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
                               <Route path='/BrainFocus' element={<BrainFocusPage />} />
                               <Route path='/KalenderPlanner' element={<KalenderPage />} />
-                              <Route path='/Login' element={<AuthPage />} />
+                              {/* <Route path='/Login' element={<AuthPage />} /> */}
                               <Route path='*' element={<Page404 />} />
                             </Routes>
                           </BrowserRouter>

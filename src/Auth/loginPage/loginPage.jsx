@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = ({ setToken }) => {
     const API_URL = 'https://0l45qcjl-5000.asse.devtunnels.ms';
+
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -18,10 +21,12 @@ const LoginPage = ({ setToken }) => {
             const data = await response.json();
             localStorage.setItem('token', data.token)
             setToken(data.token); // Simpan token ke dalam state aplikasi
+            navigate('/dashboard')
         } else {
             const errorData = await response.json();
             setError(errorData.message);
         }
+        
     };
 
     return (

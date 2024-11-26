@@ -26,6 +26,7 @@ import { motion } from 'framer-motion'
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
 import AuthPage from "./Auth/authPage"
 import RegisterPage from "./Auth/registerPage/registerPage"
+import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 
 export default function Home() {
     // Smooth render page
@@ -61,7 +62,7 @@ export default function Home() {
 
 
     // AUTH SECT
-    const [token, setToken] = useState(null)
+    const {token, setToken} = useContext(API_URL_CONTEXT)
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
