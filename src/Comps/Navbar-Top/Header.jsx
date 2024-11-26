@@ -89,6 +89,7 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
     // AUTH SECT
     // Handle logout
     const handleLogout = () => {
+        navigate('/')
         localStorage.removeItem('token'); // Hapus token
         setToken(null); // Set token menjadi null untuk memaksa user login ulang
     };

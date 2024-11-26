@@ -80,7 +80,6 @@ export default function Home() {
                 <AuthPage setToken={setToken} />
             ) : (
                 <>
-                    < p > Welcome! Your token: {token}</p>
                     {/* Popup from Reset in MusicBox */}
                     {popupReset && (
                         <div className="flex items-center justify-center w-full h-full fixed z-[15]">
