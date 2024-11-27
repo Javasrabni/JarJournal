@@ -77,8 +77,9 @@ export default function MusicBox() {
             <div className="flex w-full h-fit flex-row-reverse" style={{ paddingRight: "12px", pointerEvents: "auto" }}>
                 <ToggleDarkMode />
             </div>
+            
             <div className="flex flex-col items-center" >
-                
+
                 {/* Button to pull up/down */}
                 <div className={`flex justify-center relative items-center w-[52px] h-[14px] ${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px",  borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)", bottom: "-1px"}} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (
@@ -91,6 +92,7 @@ export default function MusicBox() {
                         </svg>
                     )}
                 </div>
+
                 {/* Music */}
                 <div className={`${themeActive ? 'bg-black' : 'bg-[var(--white-bg-100)]'} w-[360px] h-[120px] p-[16px] ${themeActive ? "text-white" : "text-[var(--black-text)]"}`} style={{ borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }}>
                     <div>

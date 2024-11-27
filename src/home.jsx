@@ -54,6 +54,16 @@ export default function Home() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
     </svg>
 
+    const artikelIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+    </svg>
+
+    const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+
+
+
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
@@ -71,6 +81,16 @@ export default function Home() {
             setToken(savedToken); // Set token untuk menganggap user sudah login
         }
     }, []);
+
+
+    // FUNCTION INTO ARTICLE FORM
+    function HandleGoPublish() {
+        let delay = setTimeout(() => {
+            navigate('/Artikel/publish')
+        }, 200)
+
+        return () => clearTimeout(delay)
+    }
 
 
 
@@ -204,8 +224,30 @@ export default function Home() {
 
 
                                         {/* PUBLICATIONS */}
-                                        <div className="mb-[40px]">
-                                            <Publikasi />
+                                        <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
+
+                                            {/* Judul */}
+                                            <div className={`mt-[16px] flex flex-row items-center justify-between`}>
+                                                <div>
+                                                    <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
+                                                        <span className="flex flex-row gap-[6px] items-center">
+                                                            {artikelIcon}
+                                                            Artikel Publik
+                                                        </span>
+                                                    </p>
+
+                                                    <p className={`text-[var(--black-subtext)] text-[10px]`}>Baca artikel atau pesan dari warga JarJournal</p>
+                                                </div>
+                                                <div onClick={HandleGoPublish}>
+                                                    <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
+                                                        {plusIcon}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-[32px]">
+                                                <Publikasi />
+                                            </div>
                                         </div>
                                     </div>
 

@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 export default function MusicBoxProvider({children}) {
     const [statusMusicAxisY, setStatusMusicAxisY] = useState(()=> {
         const saveStateMusicAxisY = localStorage.getItem("saveStateMusicAxisY")
-        return saveStateMusicAxisY ? JSON.parse(saveStateMusicAxisY) : true
+        return saveStateMusicAxisY ? JSON.parse(saveStateMusicAxisY) : false
     })
 
     useEffect(()=> {
