@@ -34,7 +34,7 @@ export default function LandingPage() {
                 {!token && (
                     <>
                         <div>
-                            <button onClick={() => setOnLogin((prev) => !prev)}>Mulai Jarjournal</button>
+                            <button onClick={() => setOnLogin((prev) => !prev)} style={{fontWeight: '600', textDecoration: "underline"}}>Mulai Jarjournal</button>
                         </div>
                         <div>
                             {onLogin && (

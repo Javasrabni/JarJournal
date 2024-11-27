@@ -8,7 +8,7 @@ import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 
 export default function Memo({ token }) {
-    const {API_URL} = useContext(API_URL_CONTEXT)
+    const {API_URL_AUTH} = useContext(API_URL_CONTEXT)
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)
@@ -178,7 +178,7 @@ export default function Memo({ token }) {
 
     const fetchMemo = async () => {
         try {
-            const response = await fetch(`${API_URL}/get-memos`, {
+            const response = await fetch(`${API_URL_AUTH}/auth/get-memos`, {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -201,7 +201,7 @@ export default function Memo({ token }) {
 
 
     const handleSaveMemo = async (newMemo) => {
-        const response = await fetch(`${API_URL}/save-memo`, {
+        const response = await fetch(`${API_URL_AUTH}/auth/save-memo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

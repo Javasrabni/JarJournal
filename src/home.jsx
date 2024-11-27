@@ -27,6 +27,7 @@ import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeApp
 import AuthPage from "./Auth/authPage"
 import RegisterPage from "./Auth/registerPage/registerPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
+import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
 
 export default function Home() {
     // Smooth render page
@@ -62,7 +63,7 @@ export default function Home() {
 
 
     // AUTH SECT
-    const {token, setToken} = useContext(API_URL_CONTEXT)
+    const { token, setToken } = useContext(API_URL_CONTEXT)
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -133,69 +134,83 @@ export default function Home() {
                                 <header>
                                     <Header token={token} setToken={setToken} />
                                 </header>
-                                <main className="p-[16px] h-full" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white' }}>
-                                    <div className="flex flex-row gap-[12px] justify-between w-full h-full">
-                                        {/* Left side */}
-                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
-                                            <div>
-                                                <CardFeatures
-                                                    onClickFeatures={'/ftr/Catatan'}
-                                                    heightCatatan={true}
-                                                    descFeatures={'Buat catatan harian kamu disini'}
-                                                    buttonFeatures={'Buat'}
-                                                    nameFeatures={"Catatan"}
-                                                />
+                                <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white' }}>
+                                    <div className="flex flex-col gap-[12px] w-full h-full">
+
+                                        {/* PANEL RIGHT n LEFT */}
+                                        <div className="flex flex-row gap-[12px] justify-between w-full h-full">
+
+                                            {/* Left side */}
+                                            <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                                <div>
+                                                    <CardFeatures
+                                                        onClickFeatures={'/ftr/Catatan'}
+                                                        heightCatatan={true}
+                                                        descFeatures={'Buat catatan harian kamu disini'}
+                                                        buttonFeatures={'Buat'}
+                                                        nameFeatures={"Catatan"}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <CardFeatures
+                                                        onClickFeatures={'/ftr/Jurnal'}
+                                                        heightJurnal={true}
+                                                        descFeatures={'Tulis jurnal harian kamu disini'}
+                                                        nameFeatures={"Jurnal"}
+                                                        buttonFeatures={'Tulis'}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <CardFeatures
+                                                        cardType2EBook={true}
+                                                        onClickFeatures={'/ftr/Library'}
+                                                        descFeatures={'Bacaan gratis'}
+                                                        nameFeatures={"Library"}
+                                                        buttonFeatures={'Baca'}
+                                                    />
+                                                </div>
                                             </div>
-                                            <div>
-                                                <CardFeatures
-                                                    onClickFeatures={'/ftr/Jurnal'}
-                                                    heightJurnal={true}
-                                                    descFeatures={'Tulis jurnal harian kamu disini'}
-                                                    nameFeatures={"Jurnal"}
-                                                    buttonFeatures={'Tulis'}
-                                                />
-                                            </div>
-                                            <div>
-                                                <CardFeatures
-                                                    cardType2EBook={true}
-                                                    onClickFeatures={'/ftr/Library'}
-                                                    descFeatures={'Bacaan gratis'}
-                                                    nameFeatures={"Library"}
-                                                    buttonFeatures={'Baca'}
-                                                />
-                                            </div>
-                                        </div>
-                                        {/* Right side */}
-                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
-                                            <div>
-                                                <DateTimePlan />
-                                            </div>
-                                            <div>
-                                                <CardFeatures
-                                                    cardType2EBook={true}
-                                                    heightKalender={true}
-                                                    onClickFeatures={'/KalenderPlanner'}
-                                                    descFeatures={'Sisipkan acara'}
-                                                    nameFeatures={"Kalender Planner"}
-                                                    buttonFeatures={'Tambah'}
-                                                />
-                                            </div>
-                                            <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
-                                                <SisaHariToNewYear />
-                                            </div>
-                                            <div className="w-full">
-                                                <Memo token={token} />
-                                            </div>
-                                            <div>
-                                                {/* <div className="w-fit p-[6px] h-[24px] bg-[#f7f7f7] rounded-[4px] flex items-center justify-center">
+                                            {/* Right side */}
+                                            <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                                <div>
+                                                    <DateTimePlan />
+                                                </div>
+                                                <div>
+                                                    <CardFeatures
+                                                        cardType2EBook={true}
+                                                        heightKalender={true}
+                                                        onClickFeatures={'/KalenderPlanner'}
+                                                        descFeatures={'Sisipkan acara'}
+                                                        nameFeatures={"Kalender Planner"}
+                                                        buttonFeatures={'Tambah'}
+                                                    />
+                                                </div>
+                                                <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
+                                                    <SisaHariToNewYear />
+                                                </div>
+                                                <div className="w-full">
+                                                    <Memo token={token} />
+                                                </div>
+                                                <div>
+                                                    {/* <div className="w-fit p-[6px] h-[24px] bg-[#f7f7f7] rounded-[4px] flex items-center justify-center">
                                             <span className="flex flex-row gap-[8px] items-center">
                                                 {downloadIcon}
                                                 <p className="text-[10px]">Download App</p>
                                             </span>
                                         </div> */}
+                                                </div>
                                             </div>
                                         </div>
+
+
+                                        {/* PUBLICATIONS */}
+                                        <div className="mb-[40px]">
+                                            <Publikasi />
+                                        </div>
                                     </div>
+
+
+
                                 </main>
                             </div>
 
