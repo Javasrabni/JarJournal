@@ -12,8 +12,7 @@ import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 
 export default function Header({ nameTools, sloganTools, setToken, token }) {
     // AUTH
-    const { API_URL } = useContext(API_URL_CONTEXT)
-
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
@@ -89,6 +88,7 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
     // AUTH SECT
     // Handle logout
     const handleLogout = () => {
+        navigate('/')
         localStorage.removeItem('token'); // Hapus token
         setToken(null); // Set token menjadi null untuk memaksa user login ulang
     };
@@ -108,7 +108,7 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
 
     const fetchNameUser = async () => {
         try {
-            const response = await fetch(`${API_URL}/user-info`, {
+            const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -176,8 +176,8 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
                                         {nameUser ? (
                                             <>
                                                 <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
-                                                    <label className="text-[10px] text-[var(--black-subtext)]">Akun:</label>
-                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`}>{`${nameUser}`}</p>
+                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
+                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>{`${nameUser}`}</p>
                                                 </div>
                                                 <div onClick={handleLogout}>
                                                     {token && (
@@ -191,7 +191,7 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
                                                 </div>
                                             </>
                                         ) : (
-                                            <p>Load data..</p>
+                                            <p className={`${themeActive ? 'text-white' : 'text-black'} text-[12px]`}>Load data..</p>
                                         )}
                                     </div>
                                 </div>

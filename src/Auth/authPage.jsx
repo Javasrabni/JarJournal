@@ -9,18 +9,18 @@ const AuthPage = ({setToken}) => {
         <div>
             {isRegister ? (
                 <>
-                    <p>
-                        Already have an account?{' '}
-                        <button onClick={() => setIsRegister(false)}>Login</button>
+                    <p style={{color: 'blue', textDecoration: 'underline'}}>
+                        
+                        <button onClick={() => setIsRegister(false)}>Already have an account?{' '} Login</button>
                     </p>
                     <RegisterPage />
                 </>
             ) : (
                 <>
                     <LoginPage setToken={setToken}/>
-                    <p>
-                        Don't have an account?{' '}
-                        <button onClick={() => setIsRegister(true)}>Register</button>
+                    <p style={{color: "blue", textDecoration: 'underline'}}>
+                        
+                        <button onClick={() => setIsRegister(true)}>Don't have an account?{' '} Register</button>
                     </p>
                 </>
             )}
