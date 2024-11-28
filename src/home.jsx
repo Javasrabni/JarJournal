@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
+import { useRef } from "react"
 
 import Catatan from "./Comps/Features/Catatan/Catatan"
 import Jurnal from "./Comps/Features/Jurnal/Jurnal"
@@ -28,6 +29,7 @@ import AuthPage from "./Auth/authPage"
 import RegisterPage from "./Auth/registerPage/registerPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
+import { ArtikelContext } from "./Comps/Features/Publikasi/Context/artikelContext"
 
 export default function Home() {
     // Smooth render page
@@ -83,7 +85,6 @@ export default function Home() {
     }, []);
 
 
-    // FUNCTION INTO ARTICLE FORM
     function HandleGoPublish() {
         let delay = setTimeout(() => {
             navigate('/Artikel/publish')
@@ -92,15 +93,13 @@ export default function Home() {
         return () => clearTimeout(delay)
     }
 
-
-
     return (
         <>
-
             {!token ? (
                 <AuthPage setToken={setToken} />
             ) : (
                 <>
+                    {/* <button onClick={()=> autoScrollPub}>123 </button> */}
                     {/* Popup from Reset in MusicBox */}
                     {popupReset && (
                         <div className="flex items-center justify-center w-full h-full fixed z-[15]">
@@ -155,6 +154,7 @@ export default function Home() {
                                     <Header token={token} setToken={setToken} />
                                 </header>
                                 <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white' }}>
+
                                     <div className="flex flex-col gap-[12px] w-full h-full">
 
                                         {/* PANEL RIGHT n LEFT */}
@@ -225,7 +225,6 @@ export default function Home() {
 
                                         {/* PUBLICATIONS */}
                                         <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
-
                                             {/* Judul */}
                                             <div className={`mt-[16px] flex flex-row items-center justify-between`}>
                                                 <div>
@@ -245,7 +244,7 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <div className="mt-[32px]">
+                                            <div className="mt-[32px]" >
                                                 <Publikasi />
                                             </div>
                                         </div>

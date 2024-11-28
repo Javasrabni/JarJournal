@@ -68,35 +68,46 @@ export default function Publikasi() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
     </svg>
 
+    const shareIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+  </svg>
+
+  const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3.5">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+</svg>
+
+  
+
 
 
 
     return (
         <div>
             {/* Daftar publikasi */}
-            <div>
+            <div className="flex flex-col-reverse">
                 {publikasi.map((pub) => (
-                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '12px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px' }}>
+                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px',}}>
 
-                        <div className={`font-[inter] flex flex-col`}>
-                            <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[6px]`}>{pub.judulContent}</p>
+                        <div className={`font-[inter] flex flex-col `}>
+                            <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
                             <p className={`Content-artikel text-[10px] text-[var(--black-subtext)]`}>{pub.content}</p>
 
-                            <div className="flex flex-row items-center justify-between pt-[16px]">
-                                <div>
-                                    <p className={`text-[10px] pb-[4px] ${themeActive ? 'text-white' : 'text-black'} leading-[1] italic`}>
+                            <div className="flex flex-row items-center justify-between mt-[12px] h-[12px]">
+                                <div className="flex flex-row gap-[8px] items-center">
+                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `}>
                                         <span className="flex flex-row gap-[6px] items-center">
                                             {/* {userIcon} */}
-                                            {pub.userName}
+                                            @{pub.userName}
                                         </span>
                                     </p>
 
-                                    <p className={`text-[10px] text-[var(--black-subtext)]`}>{pub.timeStamp}</p>
+                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px]`}>{pub.timeStamp}</p>
                                 </div>
-                                <div className="flex flex-row  gap-[6px]">
-                                    <div className="flex flex-row items-center gap-[6px] text-[var(--black-subtext)]">
-                                        {eyeIcon}
-                                        <p className={`text-[10px] pt-[1px]`}>27</p>
+                                <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
+                                    <div className="flex flex-row items-center gap-[12px] text-[var(--black-subtext)]">
+                                        {shareIcon}
+                                        {saveIcon}
+                                        {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
                                     </div>
                                     <div>
                                         {nameUser === pub.userName && (

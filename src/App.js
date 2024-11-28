@@ -26,7 +26,7 @@ import KalenderPage from './Comps/Features/kalender/kalenderPage/Kalender';
 import LoginPage from './Auth/loginPage/loginPage';
 import AuthPage from './Auth/authPage';
 import LandingPage from './landingPage';
-import ArtikelForm from './Comps/publicArticle/artikelForm';
+import ArtikelForm from './Comps/Features/Publikasi/pubPage/artikelForm';
 
 function App() {
   return (

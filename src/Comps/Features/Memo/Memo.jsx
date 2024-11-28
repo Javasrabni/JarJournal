@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, memo } from "react"
 import { useContext } from "react"
 import { MemoContext } from "./MemoContext"
 import BoxPopupFromSetting from "../../Popup_settings/popupSetting/boxPopupFromSetting"
@@ -8,7 +8,7 @@ import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 
 export default function Memo({ token }) {
-    const {API_URL_AUTH} = useContext(API_URL_CONTEXT)
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)
@@ -18,6 +18,9 @@ export default function Memo({ token }) {
 
     const [popupSetting, setPopupSetting] = useState(false)
     const [dotSetting, setDotSetting] = useState(false)
+
+    const { nameUser, setNameUser } = useContext(API_URL_CONTEXT)
+
 
     useEffect(() => {
         if (inputActive.current) {
@@ -98,15 +101,28 @@ export default function Memo({ token }) {
         }
     })
 
-    function HandleDelMemo(SelectedValueMemo, SelectedIndexToDel) {
-        const confirmDelMemo = window.confirm(`Yakin ingin menghapus "${SelectedValueMemo}"?`)
-        if (confirmDelMemo) {
-            setValueMemo((index) =>
-                index.filter((_, i) => i !== SelectedIndexToDel)
-            );
-            setVisibleMemo((index) =>
-                index.filter((_, i) => i !== SelectedIndexToDel)
-            );
+    async function HandleDelMemo(SelectedValueMemo, SelectedIndexToDel) {
+        try {
+            const response = await fetch(`${API_URL_AUTH}/auth/del-memos`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ nameUser, memo: SelectedValueMemo })
+            })
+
+            if (response.ok) {
+                const confirmDelMemo = window.confirm(`Yakin ingin menghapus "${SelectedValueMemo}"?`)
+                if (confirmDelMemo) {
+                    setValueMemo((prev) => prev.filter((memo) => memo !== SelectedValueMemo))
+                    setVisibleMemo((index) =>
+                        index.filter((_, i) => i !== SelectedIndexToDel)
+                    );
+                }
+            }
+        } catch (err) {
+            console.error(err)
         }
     }
 
@@ -134,9 +150,9 @@ export default function Memo({ token }) {
     // change height after memo has more than 2 values
     useEffect(() => {
         if (changeHeightMemo) {
-            setVisibleMemo(valueMemo.slice(0, 1))
+            setValueMemo(valueMemo.slice(0, 2))
         } else {
-            setVisibleMemo(valueMemo)
+            setValueMemo(valueMemo)
         }
     }, [changeHeightMemo])
 
@@ -174,7 +190,7 @@ export default function Memo({ token }) {
         fontSize: "12px",
         fontWeight: "600"
     }
-// 
+    // 
 
     const fetchMemo = async () => {
         try {
@@ -247,13 +263,16 @@ export default function Memo({ token }) {
 
     }
 
+
+
+
     useEffect(() => {
         const storedMemos = localStorage.getItem('valueMemo');
         if (storedMemos) {
             setValueMemo(JSON.parse(storedMemos));
         }
     }, []);
-    
+
     return (
         <>
             {/* View popup memo */}

@@ -6,8 +6,8 @@ export const ArtikelContext = createContext()
 export default function ArtikelProvider({children}) {
     // STATE
     const [publikasi, setPublikasi] = useState([])
-    const [newPublikasi, setNewPublikasi] = useState('')
     const [judulPublikasi, setJudulPublikasi] = useState('')
+    const [newPublikasi, setNewPublikasi] = useState('')
 
     return (
         <ArtikelContext.Provider value={{publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
