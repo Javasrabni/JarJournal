@@ -3,6 +3,7 @@ import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
 import { ArtikelContext } from "../Context/artikelContext"
 import { ThemeAppContext } from "../../Theme/toggleTheme.jsx/ThemeAppContext"
 import './pubStyle.css'
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function Publikasi() {
     // API ENDPOINT
@@ -69,32 +70,41 @@ export default function Publikasi() {
     </svg>
 
     const shareIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-  </svg>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+    </svg>
 
-  const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3.5">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-</svg>
+    const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+    </svg>
 
-  
+    const navigate = useNavigate()
 
+    // Handle Select pub
+    function HandleSelectedPub(id) {
+        navigate(`/posts/${id}`)
+    }
 
-
+    // HANDLE SHARE PUB
+    function HandleSharePub(pubId) {
+        const params = 'http://localhost:3000/posts'
+        console.log(`Link copied! "${params}/${pubId}"`)
+    }
 
     return (
         <div>
             {/* Daftar publikasi */}
             <div className="flex flex-col-reverse">
                 {publikasi.map((pub) => (
-                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px',}}>
+                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer' }} >
 
                         <div className={`font-[inter] flex flex-col `}>
-                            <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
-                            <p className={`Content-artikel text-[10px] text-[var(--black-subtext)]`}>{pub.content}</p>
+                            <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.judulContent}</p>
+                            
+                            <p className={`Content-artikel text-[10px] text-[var(--black-subtext)]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
 
                             <div className="flex flex-row items-center justify-between mt-[12px] h-[12px]">
                                 <div className="flex flex-row gap-[8px] items-center">
-                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `}>
+                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                         <span className="flex flex-row gap-[6px] items-center">
                                             {/* {userIcon} */}
                                             @{pub.userName}
@@ -105,7 +115,9 @@ export default function Publikasi() {
                                 </div>
                                 <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                     <div className="flex flex-row items-center gap-[12px] text-[var(--black-subtext)]">
-                                        {shareIcon}
+                                        <div onClick={() => HandleSharePub(pub.id)}>
+                                            {shareIcon}
+                                        </div>
                                         {saveIcon}
                                         {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
                                     </div>

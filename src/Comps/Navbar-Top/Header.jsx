@@ -10,7 +10,7 @@ import LoginPage from "../../Auth/loginPage/loginPage";
 import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 
-export default function Header({ nameTools, sloganTools, setToken, token }) {
+export default function Header({ nameTools, sloganTools, backPage, hideLogo, setToken, token }) {
     // AUTH
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
 
@@ -70,6 +70,7 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
         }
     }, [valueMemo])
 
+
     // Theme app
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
@@ -104,42 +105,55 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
     }
 
 
-    const { nameUser, setNameUser } = useContext(API_URL_CONTEXT)
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
+    const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
 
-    const fetchNameUser = async () => {
-        try {
-            const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setNameUser(data.email); // Atur memo user
-            }
-        } catch (err) {
-            console.error('Error fetching memo:', err);
-        }
-    };
-
+    // FETCHING GET USER INFO
     useEffect(() => {
-        if (token) {
-            fetchNameUser(); // Panggil fetchMemo setelah token tersedia
+        const fetchUserInfo = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+
+                if (response.ok) {
+                    setUsername(data.username)
+                    setUserEmail(data.email)
+                }
+            } catch (err) {
+                console.error(err)
+            }
         }
-    }, [token]);
+
+        if (token) {
+            fetchUserInfo()
+        }
+    }, [])
+
+
 
     return (
         <div className="flex flex-col gap-[8px]">
             <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
 
-                <div className="text-white flex gap-[8px]" onClick={() => navigate('/')}>
-                    <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
-                    <div>
-                        <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
-                        <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
+                {!hideLogo ? (
+                    <div className="text-white flex gap-[8px]" onClick={() => navigate('/')}>
+                        <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                        <div>
+                            <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
+                            <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="text-white flex gap-[8px] w-full pr-[32px]">
+                        {backPage}
+                    </div>
+                )}
+
 
 
                 <div onClick={() => { HandleOption1(); HandleClick() }}>
@@ -173,11 +187,15 @@ export default function Header({ nameTools, sloganTools, setToken, token }) {
                                 <div className="p-[12px] text-[12px]" style={{ position: "absolute", transform: 'translateX(-128px) translateY(18px)', width: `${280 / 2}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
                                     <div className="flex flex-col w-full h-full gap-[8px]">
                                         {/* name user */}
-                                        {nameUser ? (
+                                        {username || userEmail ? (
                                             <>
                                                 <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
                                                     <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
-                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>{`${nameUser}`}</p>
+                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${username}`}</p>
+                                                </div>
+                                                <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
+                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
+                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${userEmail}`}</p>
                                                 </div>
                                                 <div onClick={handleLogout}>
                                                     {token && (

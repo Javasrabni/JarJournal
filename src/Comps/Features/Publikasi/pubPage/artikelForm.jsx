@@ -14,7 +14,7 @@ export default function ArtikelForm() {
     const { token, setToken } = useContext(API_URL_CONTEXT)
 
     // GET USERNAME CONTEXT
-    const { nameUser, setNameUser } = useContext(API_URL_CONTEXT)
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
 
     // NAVIGATE
     const navigate = useNavigate()
@@ -32,7 +32,7 @@ export default function ArtikelForm() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ content: newPublikasi, userName: nameUser, judulContent: judulPublikasi})
+                body: JSON.stringify({ content: newPublikasi, userName: username, judulContent: judulPublikasi})
             });
 
             if (response.ok) {

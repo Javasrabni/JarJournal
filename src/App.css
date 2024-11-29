@@ -6,7 +6,11 @@
   margin: 0;
   font-family: 'poppins', sans-serif;
   transition: background-color 0.3s ease, opacity 0.5s ease, outline 0.3s ease, border 0.3s ease, ;
-  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: 'newspaper bold';
+  src: url(/public/Assets/font/newspaper/EtherealDemo-Bold.otf);
 }
 
 :root {
