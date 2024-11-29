@@ -1,4 +1,5 @@
-import { createContext } from "react";
+import useConfig from "antd/es/config-provider/hooks/useConfig";
+import { createContext, useContext } from "react";
 import { useState } from "react";
 
 export const ArtikelContext = createContext()

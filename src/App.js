@@ -1,6 +1,7 @@
 import './App.css';
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { useContext } from 'react';
 
 // Context
 import UserQuoteProvider from './Comps/Footer/userQuote/userQuoteContext';
@@ -27,6 +28,10 @@ import LoginPage from './Auth/loginPage/loginPage';
 import AuthPage from './Auth/authPage';
 import LandingPage from './landingPage';
 import ArtikelForm from './Comps/Features/Publikasi/pubPage/artikelForm';
+import Publikasi from './Comps/Features/Publikasi/pubPage/publikasi';
+import SelectedPub from './Comps/Features/Publikasi/pubPage/selectedPub';
+
+
 
 function App() {
   return (
@@ -50,7 +55,9 @@ function App() {
                                 <Route path='/BrainFocus' element={<BrainFocusPage />} />
                                 <Route path='/Artikel/publish' element={<ArtikelForm />} />
                                 <Route path='/KalenderPlanner' element={<KalenderPage />} />
-                                {/* <Route path='/Login' element={<AuthPage />} /> */}
+
+                                {/* Publikasi link */}
+                                <Route path='/posts/:id' element={<SelectedPub />} />
                                 <Route path='*' element={<Page404 />} />
                               </Routes>
                             </BrowserRouter>

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const API_URL_CONTEXT = createContext()
 
@@ -13,10 +13,19 @@ export default function API_URL_PROVIDER({children}) {
     // USER TOKEN
     const [token, setToken] = useState(null)
 
+    // FETCH USER INFO
+    const [username, setUsername] = useState(null)
+    const [userEmail, setUserEmail] = useState(null)
 
-    const [nameUser, setNameUser] = useState(null)
+    // STATUS AUTH FORM
+    const [isRegister, setIsRegister] = useState(false);
+    
+
+    
+   
+
     return (
-        <API_URL_CONTEXT.Provider value={{API_URL_AUTH, API_URL_PUB, token, setToken, nameUser, setNameUser}}>
+        <API_URL_CONTEXT.Provider value={{API_URL_AUTH, API_URL_PUB, token, setToken,username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister}}>
             {children}
         </API_URL_CONTEXT.Provider>
     )
