@@ -15,7 +15,7 @@
 
 :root {
   --aksen-color: #FFD700;
-  
+
   --black-text: #1A1A1A;
   --black-bg: #262626;
   --black-card: #08090A;
@@ -29,19 +29,61 @@
 }
 
 .progress-bar::-webkit-progress-bar {
-  background-color: transparent; /* Latar belakang progress */
+  background-color: transparent;
+  /* Latar belakang progress */
 }
 
 .progress-bar::-webkit-progress-value {
-  background-color: var(--aksen-color); /* Warna cyan-400 (Tailwind) */
+  background-color: var(--aksen-color);
+  /* Warna cyan-400 (Tailwind) */
 }
 
 .progress-bar::-moz-progress-bar {
-  background-color: var(--aksen-color); /* Warna cyan-400 untuk Firefox */
+  background-color: var(--aksen-color);
+  /* Warna cyan-400 untuk Firefox */
 }
 
 ::-webkit-scrollbar {
   width: 0px;
   height: 0px;
-  
+
 }
+
+
+/* TEXT EDITOR QUILL */
+.ql-container.ql-snow {
+  border: none !important;
+  /* Remove border */
+  outline: none !important;
+  /* Remove outline */
+  color: white;
+
+  box-shadow: none !important;
+  /* Remove any shadow */
+}
+
+.ql-toolbar .ql-format-button {
+  color: white;
+  /* Change to desired color */
+}
+
+.ql-toolbar.ql-snow {
+  padding: 0px;
+  color: white;
+}
+
+.ql-toolbar {
+  border: none !important;
+  /* Remove border from toolbar */
+  box-shadow: none !important;
+  /* Remove shadow if any */
+  color: white;
+}
+
+.ql-editor {
+  border: none !important;
+  /* Remove border from editor */
+  outline: none !important;
+  /* Remove outline from editor */
+}
+

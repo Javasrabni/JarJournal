@@ -1,98 +1,122 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { ThemeAppContext } from "../../Theme/toggleTheme.jsx/ThemeAppContext"
 import { WriteNoteContext } from "./writeNoteContext"
 import { useRef } from "react"
 import { CatatanContext } from "../catatanContex"
+import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+
 
 export default function WriteNotePage() {
     const { themeActive } = useContext(ThemeAppContext)
+    const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            setToken(localStorage.getItem('token'))
+        }
+    }, [])
+
+    console.log(token, 'NGENTOT')
+
+    // status page writing or not
+    const { writeingNote, setWriteingNote } = useContext(CatatanContext)
 
     // Note array
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
+    // GET USERNAME CONTEXT
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
 
-    function HandleNoteSubmit() {
-        setOnNewNote((prevValue) => [...prevValue, valueEditableDiv])
+    const [note, setNote] = useState('')
+    function HandleChange(value) {
+        setNote(value)
     }
+    const [onChangeNote, setOnChangeNote] = useState('')
 
-    const { valueEditableDiv, setValueEditableDiv } = useContext(WriteNoteContext)
+    const POST_NOTE_USER = async () => {
+        try {
+            const response = await fetch(`${API_URL_NOTE}/auth/save-note`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }, body: JSON.stringify({ catatan: note })
+            })
 
-    const { boldStatus, setBoldStatus } = useContext(WriteNoteContext)
-
-    useEffect(() => {
-        const noteDivRef = editorRef.current
-
-        noteDivRef.addEventListener('keyup', (e) => {
-            if (e.ctrlKey && e.key === 'b') {
-                setBoldStatus((prev) => !prev)
+            if (response.ok) {
+                // alert('berhasil tambah')
+                const { catatan } = await response.json()
+                setOnNewNote((prev) => [catatan, ...prev])
+                setWriteingNote((prev) => !prev)
             }
-        })
-    }, [])
-
-    const HandleInputEditable = (e) => {
-        setValueEditableDiv(e.target.innerHTML)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
-    console.log(valueEditableDiv)
-    const editorRef = useRef(null);
-
-    const applyBold = () => {
-        // Mendapatkan teks yang dipilih dan menerapkan format bold
-        document.execCommand("bold", false, null);
-        setBoldStatus((prev) => !prev)
-        editorRef.current.focus(); // Kembali fokus ke editor
-    };
-
-    const boldIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-4">
-        <path strokeLinejoin="round" d="M6.75 3.744h-.753v8.25h7.125a4.125 4.125 0 0 0 0-8.25H6.75Zm0 0v.38m0 16.122h6.747a4.5 4.5 0 0 0 0-9.001h-7.5v9h.753Zm0 0v-.37m0-15.751h6a3.75 3.75 0 1 1 0 7.5h-6m0-7.5v7.5m0 0v8.25m0-8.25h6.375a4.125 4.125 0 0 1 0 8.25H6.75m.747-15.38h4.875a3.375 3.375 0 0 1 0 6.75H7.497v-6.75Zm0 7.5h5.25a3.75 3.75 0 0 1 0 7.5h-5.25v-7.5Z" />
-    </svg>
-
-    
-
+    const modules = {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ color: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#000000'] }],
+          ['link', 'image'],
+        ],
+      };
 
     return (
-        <div className={`w-full h-[100vh] ${themeActive ? 'bg-black' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col `}>
-            <div className="w-full h-fit">
-                <input type="text" placeholder="Judul" className={`w-full px-[12px] outline-0 text-[24px] font-[600] ${themeActive ? 'bg-black text-white' : 'bg-white text-[var(--black-text)]'}`} autoFocus />
-            </div>
-            <div>
-
-                <div
-                    ref={editorRef}
-                    contentEditable
-                    onInput={HandleInputEditable}
-                    // dangerouslySetInnerHTML={{ __html: valueEditableDiv }}
+        <div className={`w-full h-full ${themeActive ? 'bg-black' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col gap-[12px]`}>
+            {/* TEKS EDITOR */}
+            <div className="flex flex-col h-[100vh] ">
+                <ReactQuill
+                    value={note}
+                    onChange={HandleChange}
+                    placeholder="Tulis catatan disini"
+                    
                     style={{
-                        // border: "1px solid #ccc",
-                        minHeight: "100px",
-                        padding: "12px",
-                        outline: "none",
-                        color: themeActive ? "white" : "black",
-                        fontSize: '12px',
-                        fontFamily: 'inter'
+                        border: 'none',
+                        outline: 'none',
+                        height: "100%",
+                        zIndex: '9',
+                        color: 'red'
                     }}
-                >
+                    modules={{
+                        toolbar: [
+                            [{ 'header': [1, 2, false] }],
+                            ['bold', 'italic', 'underline'], // Bold dan Underline
+                            ['clean'], // Tombol untuk menghapus format
+                            ['code-block'],
+                            [{ list: 'ordered' }, { list: 'bullet' }]
+                        ],
+                    }}
+                    formats={[
+                        'header', // Allow headers
+                        'bold',   // Allow bold text
+                        'italic', // Allow italic text
+                        'underline', // Allow underlined text
+                        'list',   // Allow lists
+                        'bullet', // Allow bullet lists
+                        'code-block' // Allow code blocks
+                    ]}
+                />
+            </div>
+            {/* ON ADD */}
+            <div className="w-fit fixed bottom-[0px] right-[50%] m-auto flex flex-row-reverse items-center justify-center gap-[12px] z-[10] pb-[16px]" style={{transform: 'translateX(50%)'}}>
+                <div className={`w-[40px] h-[40px] rounded-[50px] ${themeActive ? 'bg-white' : 'bg-black'} flex items-center justify-center cursor-pointer float-right`} onClick={POST_NOTE_USER}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4" style={{ color: themeActive ? 'black' : 'white' }}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                </div>
+
+                <div className={`w-[40px] h-[40px] rounded-[50px] ${themeActive ? 'bg-white' : 'bg-black'} flex items-center justify-center cursor-pointer float-left`} onClick={()=> setWriteingNote((prev) => !prev)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4" style={{ color: themeActive ? 'black' : 'white' }}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    </svg>
+
                 </div>
             </div>
-
-            <div className="fixed bottom-0">
-                <div>
-                    <div onClick={HandleNoteSubmit}>
-                        <p>sip</p>
-                    </div>
-
-                    <button onClick={applyBold} style={{ marginBottom: "10px", color: "white", backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-200)', outline: boldStatus ? themeActive ? '1px solid var(--black-border)' : '1px solid black' : 'none' }} className="px-[12px] py-[6px] text-[10px] rounded-[4px]">
-                        <span className={`${themeActive ? 'text-white' : 'text-black'}`} >{boldIcon}</span>
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            {/* <div className="w-full h-full">
-                <textarea name="" id="" placeholder="Isi catatan" className={`w-full h-full px-[12px] py-[4px] font-[300] outline-0 text-[14px] ${themeActive ? 'bg-black text-white' : 'bg-white text-[var(--black-text)]'}`} >
-                </textarea>
-            </div> */}
         </div >
     )
 }

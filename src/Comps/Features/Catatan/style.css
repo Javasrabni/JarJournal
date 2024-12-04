@@ -1,0 +1,32 @@
+#outputCatatan ul {
+    list-style-type: disc;
+    /* Atau jenis lain sesuai kebutuhan */
+    padding-left: 20px;
+    font-size: 12px;
+
+    /* Atur padding sesuai kebutuhan */
+}
+
+#outputCatatan ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+
+}
+
+#outputCatatan li {
+    margin-bottom: 4px;
+    font-size: 12px;
+
+    /* Atur margin sesuai kebutuhan */
+}
+
+#outputCatatan p {
+    font-size: 12px;
+}
+
+#outputCatatan h1 {
+    font-size: 24px;
+}
+#outputCatatan h2 {
+    font-size: 18px;
+}

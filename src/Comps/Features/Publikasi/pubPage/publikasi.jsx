@@ -6,20 +6,26 @@ import './pubStyle.css'
 import { useNavigate, useParams } from "react-router-dom"
 
 export default function Publikasi() {
+    // THEME
+    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+    useEffect(() => {
+        document.body.style.backgroundColor = themeActive ? 'bg-[var(--black-card)]' : 'white'
+    }, [])
+
+
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
     const { token, setToken } = useContext(API_URL_CONTEXT)
 
     // GET USERNAME CONTEXT
-    const { nameUser, setNameUser } = useContext(API_URL_CONTEXT)
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
 
     // STATE
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
     const { newPublikasi, setNewPublikasi } = useContext(ArtikelContext)
     // const [user, setUser] = useState('')
 
-    // THEME
-    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+
 
 
     useEffect(() => {
@@ -45,7 +51,7 @@ export default function Publikasi() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nameUser }),
+                body: JSON.stringify({ username }),
             });
 
             if (response.ok) {
@@ -93,14 +99,19 @@ export default function Publikasi() {
     return (
         <div>
             {/* Daftar publikasi */}
+
             <div className="flex flex-col-reverse">
                 {publikasi.map((pub) => (
                     <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer' }} >
 
                         <div className={`font-[inter] flex flex-col `}>
                             <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.judulContent}</p>
-                            
+
                             <p className={`Content-artikel text-[10px] text-[var(--black-subtext)]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
+
+                            <div className="w-full h-[80px] bg-white rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]">
+                                <p style={{ fontFamily: 'newspaper bold', fontSize: '24px' }}>~ Tajuk ~</p>
+                            </div>
 
                             <div className="flex flex-row items-center justify-between mt-[12px] h-[12px]">
                                 <div className="flex flex-row gap-[8px] items-center">
@@ -122,8 +133,8 @@ export default function Publikasi() {
                                         {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
                                     </div>
                                     <div>
-                                        {nameUser === pub.userName && (
-                                            <button onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}></button>
+                                        {username === pub.userName && (
+                                            <button onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
                                         )}
                                     </div>
                                 </div>

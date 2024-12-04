@@ -8,6 +8,7 @@ import Jurnal from "./Jurnal/Jurnal"
 import BrainFocusPage from "./brainFocus/displayPage/brainFocusPage"
 import { ThemeAppContext } from "./Theme/toggleTheme.jsx/ThemeAppContext"
 import KalenderPage from "./kalender/kalenderPage/Kalender"
+import OnEditNote from "./Catatan/onEditNote/onEditNote"
 
 export default function CodeBaseFeatures() {
     const { id } = useParams()
@@ -25,6 +26,7 @@ export default function CodeBaseFeatures() {
                         {pathLocation.pathname === "/ftr/Catatan" && (<Catatan />)}
                         {pathLocation.pathname === "/ftr/Jurnal" && (<Jurnal />)}
                         {pathLocation.pathname === "/ftr/E-Book" && (<EbookPage />)}
+                        {pathLocation.pathname === "/ftr/EditCatatan" && (<OnEditNote />)}
                     </div>
                 </div>
             </div>

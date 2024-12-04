@@ -57,7 +57,7 @@ const LoginPage = ({ setToken }) => {
                         type="email"
                         placeholder="armstrong@gmail.com"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChang e={(e) => setEmail(e.target.value)}
                     />
                 </div> */}
                 <div className='flex flex-col'>

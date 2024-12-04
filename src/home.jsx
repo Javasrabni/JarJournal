@@ -20,6 +20,7 @@ import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
 import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
 import LoginPage from "./Auth/loginPage/loginPage"
+import 'react-quill/dist/quill.snow.css';
 
 import { motion } from 'framer-motion'
 
@@ -51,6 +52,7 @@ export default function Home() {
 
     // Music box context
     const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
+
 
     const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -92,6 +94,21 @@ export default function Home() {
 
         return () => clearTimeout(delay)
     }
+
+    const [topikAktif, setTopikAktif] = useState([
+        { topik: 'Curhatan', aktif: false },
+        { topik: 'Artikel', aktif: false },
+        { topik: 'Story', aktif: false },
+    ])
+
+    function HandleTopikAktif(index) {
+        const changeStatus = topikAktif[index].aktif = true
+        setTopikAktif(changeStatus)
+
+    }
+
+    
+
 
     return (
         <>
@@ -158,7 +175,7 @@ export default function Home() {
                                     <div className="flex flex-col gap-[12px] w-full h-full">
 
                                         {/* PANEL RIGHT n LEFT */}
-                                        <div className="flex flex-row gap-[12px] justify-between w-full h-full">
+                                        <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[60px]">
 
                                             {/* Left side */}
                                             <div className="w-full grow-0 flex flex-col gap-[12px]">
@@ -169,6 +186,7 @@ export default function Home() {
                                                         descFeatures={'Buat catatan harian kamu disini'}
                                                         buttonFeatures={'Buat'}
                                                         nameFeatures={"Catatan"}
+                                                        token={token}
                                                     />
                                                 </div>
                                                 <div>
@@ -244,7 +262,21 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <div className="mt-[32px]" >
+
+
+                                            <div className="mt-[32px]">
+                                                <div className="flex flex-row gap-[12px]">
+                                                    {topikAktif.map((item, index) =>
+                                                        <p key={index} className={`${themeActive ? 'text-[var(--black-subtext)]' : 'text-black'} text-[12px] `} onClick={() => HandleTopikAktif(index)}>
+                                                            <span className={`${item.aktif ? 'underline font-[600]' : 'font-[400]'}`}>{item.topik}</span>
+                                                        </p>
+
+                                                    )}
+                                                </div>
+
+                                            </div>
+
+                                            <div className="mt-[16px]" >
                                                 <Publikasi />
                                             </div>
                                         </div>

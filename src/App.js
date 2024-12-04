@@ -1,7 +1,7 @@
 import './App.css';
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 
 // Context
 import UserQuoteProvider from './Comps/Footer/userQuote/userQuoteContext';
@@ -16,6 +16,7 @@ import CatatanProvider from './Comps/Features/Catatan/catatanContex';
 import WriteNoteProvider from './Comps/Features/Catatan/onNewNotePage/writeNoteContext';
 import API_URL_PROVIDER from './Auth/Context/API_URL';
 import ArtikelProvider from './Comps/Features/Publikasi/Context/artikelContext';
+import OnEditNoteProvider from './Comps/Features/Catatan/onEditNote/onEditNContext';
 
 // Components
 import AuthForm from './Comps/Form/AuthForm';
@@ -33,44 +34,47 @@ import SelectedPub from './Comps/Features/Publikasi/pubPage/selectedPub';
 
 
 
+
 function App() {
   return (
     <API_URL_PROVIDER>
       <ArtikelProvider>
-        <UserQuoteProvider>
-          <MemoProvider>
-            <PopupFrSettingsProvider>
-              <MusicBoxProvider>
-                <ThemeAppProvider>
-                  <BrainFProvider>
-                    <ToggleAllProvider>
-                      <AnimateLoadPageProvider>
-                        <CatatanProvider>
-                          <WriteNoteProvider>
-                            <BrowserRouter>
-                              <Routes>
-                                <Route index element={<LandingPage />} />
-                                <Route path='/dashboard' element={<Home />} />
-                                <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                                <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                                <Route path='/Artikel/publish' element={<ArtikelForm />} />
-                                <Route path='/KalenderPlanner' element={<KalenderPage />} />
+        <OnEditNoteProvider>
+          <UserQuoteProvider>
+            <MemoProvider>
+              <PopupFrSettingsProvider>
+                <MusicBoxProvider>
+                  <ThemeAppProvider>
+                    <BrainFProvider>
+                      <ToggleAllProvider>
+                        <AnimateLoadPageProvider>
+                          <CatatanProvider>
+                            <WriteNoteProvider>
+                              <BrowserRouter>
+                                <Routes>
+                                  <Route index element={<LandingPage />} />
+                                  <Route path='/dashboard' element={<Home />} />
+                                  <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                                  <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                                  <Route path='/Artikel/publish' element={<ArtikelForm />} />
+                                  <Route path='/KalenderPlanner' element={<KalenderPage />} />
 
-                                {/* Publikasi link */}
-                                <Route path='/posts/:id' element={<SelectedPub />} />
-                                <Route path='*' element={<Page404 />} />
-                              </Routes>
-                            </BrowserRouter>
-                          </WriteNoteProvider>
-                        </CatatanProvider>
-                      </AnimateLoadPageProvider>
-                    </ToggleAllProvider>
-                  </BrainFProvider>
-                </ThemeAppProvider>
-              </MusicBoxProvider>
-            </PopupFrSettingsProvider>
-          </MemoProvider>
-        </UserQuoteProvider>
+                                  {/* Publikasi link */}
+                                  <Route path='/posts/:id' element={<SelectedPub />} />
+                                  <Route path='*' element={<Page404 />} />
+                                </Routes>
+                              </BrowserRouter>
+                            </WriteNoteProvider>
+                          </CatatanProvider>
+                        </AnimateLoadPageProvider>
+                      </ToggleAllProvider>
+                    </BrainFProvider>
+                  </ThemeAppProvider>
+                </MusicBoxProvider>
+              </PopupFrSettingsProvider>
+            </MemoProvider>
+          </UserQuoteProvider>
+        </OnEditNoteProvider>
       </ArtikelProvider>
     </API_URL_PROVIDER>
 

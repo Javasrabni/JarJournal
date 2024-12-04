@@ -77,7 +77,7 @@ const RegisterPage = () => {
                         type="email"
                         placeholder="Armstrong"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value).toLowerCase()}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div className='flex flex-col'>
