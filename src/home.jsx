@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import { useRef } from "react"
+import { useRef } from "react"
 
 import Catatan from "./Comps/Features/Catatan/Catatan"
 import Jurnal from "./Comps/Features/Jurnal/Jurnal"
@@ -26,6 +27,11 @@ import { motion } from 'framer-motion'
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
+import AuthPage from "./Auth/authPage"
+import RegisterPage from "./Auth/registerPage/registerPage"
+import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
+import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
+import { ArtikelContext } from "./Comps/Features/Publikasi/Context/artikelContext"
 import AuthPage from "./Auth/authPage"
 import RegisterPage from "./Auth/registerPage/registerPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
@@ -57,6 +63,16 @@ export default function Home() {
     const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
     </svg>
+
+    const artikelIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+    </svg>
+
+    const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+
+
 
     const artikelIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
@@ -139,7 +155,56 @@ export default function Home() {
                             <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
                         </div>
                     )}
+            {!token ? (
+                <AuthPage setToken={setToken} />
+            ) : (
+                <>
+                    {/* <button onClick={()=> autoScrollPub}>123 </button> */}
+                    {/* Popup from Reset in MusicBox */}
+                    {popupReset && (
+                        <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                            <motion.div
+                                className="popup"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 50 }}
+                                transition={{ duration: 0.3 }}
+                                style={{
+                                    zIndex: "2",
+                                }}
+                            >
+                                <PopupLegend
+                                    resetInMusicBox={true}
+                                    Judul={'Reset timer?'}
+                                    Deskripsi={"Timer akan mulai dari 0 kembali."}
+                                />
+                            </motion.div>
+                            <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
+                        </div>
+                    )}
 
+                    {/* Popup from INFO in MusicBox */}
+                    {statePopupInfo && (
+                        <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                            <motion.div
+                                className="popup"
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 50 }}
+                                transition={{ duration: 0.3 }}
+                                style={{
+                                    zIndex: "2",
+                                }}
+                            >
+                                <PopupLegend
+                                    InfoMusicBox={true}
+                                    Judul={'Brain Focus'}
+                                    Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan timer dan musik yang tersedia.'}
+                                />
+                            </motion.div>
+                            <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />
+                        </div>
+                    )}
                     {/* Popup from INFO in MusicBox */}
                     {statePopupInfo && (
                         <div className="flex items-center justify-center w-full h-full fixed z-[15]">
@@ -301,10 +366,31 @@ export default function Home() {
                         </div>
                     </div>
                     {/* ) : (
+                            {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
+                            <div>
+                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }}>
+                                    <div>
+                                        <MusicBox />
+                                    </div>
+                                    <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-black" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
+                                        <UserQuote />
+                                    </div>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                    {/* ) : (
                 <div>
                     <p>Desktop will avaliable</p>
                 </div>
             )} */}
+
+
+                </>
+
+            )
+            }
+
 
 
                 </>
