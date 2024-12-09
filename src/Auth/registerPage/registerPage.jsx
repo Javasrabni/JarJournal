@@ -26,19 +26,18 @@ const RegisterPage = () => {
 
     const handleRegister = async () => {
 
-        if (username.length < 10) {
-            alert('username minimal 10 karakter ')
-            return
-        }
-
-        if(username.length > 12) {
-            alert('username max 12 karakter')
-            return
-        }
-
         if (!email.includes('@gmail.com')) {
             alert('masukkan email yang valid')
             return
+        }
+
+        if(!username || !email || !password){
+            alert("Masukkan nama / email / pass terlebih dahulu")
+            return
+        }
+        if (password.length < 8) {
+            alert("Password harus memiliki setidaknya 8 karakter");
+            return;
         }
 
         try {
@@ -72,11 +71,12 @@ const RegisterPage = () => {
                 <div className='flex flex-col'>
                     <label htmlFor="username" className='text-[10px]'>Username</label>
                     <input
-                        name='Email'
+                        name='username'
                         className='p-[8px] text-[10px] w-full rounded-[4px] outline-none'
-                        type="email"
+                        type="text"
                         placeholder="Armstrong"
                         value={username}
+                        maxLength={20}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>

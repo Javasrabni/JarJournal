@@ -148,13 +148,17 @@ export default function Memo({ token }) {
 
 
     // change height after memo has more than 2 values
-    useEffect(() => {
-        if (changeHeightMemo) {
-            setValueMemo(valueMemo.slice(0, 2))
-        } else {
-            setValueMemo(valueMemo)
-        }
-    }, [changeHeightMemo])
+    // useEffect(() => {
+    //     if (changeHeightMemo) {
+    //         setValueMemo(valueMemo.slice(0, 2))
+    //     } else {
+    //         setValueMemo(valueMemo)
+    //     }
+    // }, [changeHeightMemo])
+
+    useEffect(()=> {
+        setValueMemo(prev => (prev.length > 2 ? prev.slice(0,2) : prev))
+    })
 
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
@@ -413,10 +417,12 @@ export default function Memo({ token }) {
                                                     ) : (
                                                         <div className={`w-[136px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
                                                             <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
+
                                                         </div>
                                                     )}
                                                     {/* </li> */}
                                                 </motion.li>
+
                                             )}
                                         </AnimatePresence>
                                     </>
@@ -425,6 +431,9 @@ export default function Memo({ token }) {
 
 
                         </div>
+                        {valueMemo.length >= 2 && (
+                            <p className="text-[10px] text-[var(--aksen-color)] cursor-pointer text-center pt-[8px]">Buka semua memo</p>
+                        )}
                     </div>
                 </div>
                 {/* Setting 3 dots */}

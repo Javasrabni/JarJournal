@@ -34,7 +34,9 @@ export default function OnEditNote({ dataNote, indexNote }) {
 
     // EDIT VALUE NOTE STATE
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
+    const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
     console.log(onEditNote)
+    console.log(onEditNoteIndex)
 
     const POST_NOTE_USER = async () => {
         try {
@@ -43,7 +45,7 @@ export default function OnEditNote({ dataNote, indexNote }) {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ editNote: onNewNote })
+                }, body: JSON.stringify({ editNote: onNewNote})
             })
 
             if (response.ok) {
@@ -66,7 +68,6 @@ export default function OnEditNote({ dataNote, indexNote }) {
                         value={onEditNote}
                         onChange={setOnEditNote}
                         placeholder="Tulis catatan disini"
-
                         style={{
                             border: 'none',
                             outline: 'none',

@@ -29,10 +29,40 @@ export default function Catatan() {
     const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
 
     const { token, setToken } = useContext(API_URL_CONTEXT)
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
+    const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setToken(localStorage.getItem('token'))
+        }
+    }, [])
+
+    // FETCHING GET USER INFO
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+
+                if (response.ok) {
+                    setUsername(data.username)
+                    setUserEmail(data.email)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        if (token) {
+            fetchUserInfo()
         }
     }, [])
 
@@ -83,8 +113,10 @@ export default function Catatan() {
     }
 
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
+    const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
     function HandleClickNote(item, index) {
-        setOnEditNote(item, index)
+        setOnEditNote(item)
+        setOnEditNoteIndex(index)
         navigate('/ftr/EditCatatan')
     }
 

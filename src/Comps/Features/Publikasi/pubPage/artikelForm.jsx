@@ -8,6 +8,7 @@ export default function ArtikelForm() {
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
     const { newPublikasi, setNewPublikasi } = useContext(ArtikelContext)
     const { judulPublikasi, setJudulPublikasi } = useContext(ArtikelContext)
+    const { selectedImage, setSelectedImage } = useContext(ArtikelContext)
 
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
@@ -25,39 +26,47 @@ export default function ArtikelForm() {
             return;
         }
 
-        try {
-            const response = await fetch(`${API_URL_PUB}/pub/add-pub`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ content: newPublikasi, userName: username, judulContent: judulPublikasi})
-            });
-
-            if (response.ok) {
-                const { publications: newPub} = await response.json();
-                setJudulPublikasi((prev)=> [newPub, ...prev])
-                setPublikasi((prev) => [newPub, ...prev]); // Tambahkan publikasi baru ke state
-                setNewPublikasi(''); // Reset input
-                navigate('/dashboard') // after publish, return path
-            } else {
-                alert('Gagal menambahkan publikasi');
-            }
-        } catch (err) {
-            console.error(`Error adding publication: ${err}`);
+        const articleData = new FormData()
+        articleData.append('judulContent', judulPublikasi)
+        articleData.append('content', newPublikasi)
+        articleData.append('userName', username)
+        if (selectedImage) {
+            articleData.append('image', selectedImage)
         }
+
+            try {
+                const response = await fetch(`${API_URL_PUB}/pub/add-pub`, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: articleData
+                });
+
+                if (response.ok) {
+                    const { publications: newPub } = await response.json();
+                    setJudulPublikasi((prev) => [newPub, ...prev])
+                    setPublikasi((prev) => [newPub, ...prev]); // Tambahkan publikasi baru ke state
+                    setSelectedImage(null)
+                    setNewPublikasi(''); // Reset input
+                    navigate('/dashboard') // after publish, return path
+                } else {
+                    alert('Gagal menambahkan publikasi');
+                }
+            } catch (err) {
+                console.error(`Error adding publication: ${err}`);
+            }
     };
 
     return (
         <div>
             {/* Form untuk menambah publikasi */}
             <div style={{ marginBottom: '20px' }}>
-                <input 
+                <input
                     placeholder="judul pub"
                     type="text"
                     // value={judulPublikasi}
-                    onChange={(e)=> setJudulPublikasi(e.target.value)}
+                    onChange={(e) => setJudulPublikasi(e.target.value)}
 
                 />
                 {/* <input
@@ -73,6 +82,8 @@ export default function ArtikelForm() {
                     onChange={(e) => setNewPublikasi(e.target.value)}
                     style={{ width: '300px', height: '100px', marginRight: '10px' }}
                 />
+                <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+
                 <button onClick={HandleAddPub} style={{ padding: '5px 10px' }}>
                     Publish
                 </button>

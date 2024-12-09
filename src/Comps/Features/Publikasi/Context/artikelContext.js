@@ -9,9 +9,10 @@ export default function ArtikelProvider({children}) {
     const [publikasi, setPublikasi] = useState([])
     const [judulPublikasi, setJudulPublikasi] = useState('')
     const [newPublikasi, setNewPublikasi] = useState('')
+    const [selectedImage, setSelectedImage] = useState(null)
 
     return (
-        <ArtikelContext.Provider value={{publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
+        <ArtikelContext.Provider value={{selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
             {children}
         </ArtikelContext.Provider>
     )

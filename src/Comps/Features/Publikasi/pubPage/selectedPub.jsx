@@ -25,7 +25,7 @@ export default function SelectedPub({ items }) {
     // GET ID
     const { id } = useParams()
 
-    
+
     // NAVIGATE
     const navigate = useNavigate()
 
@@ -80,6 +80,9 @@ export default function SelectedPub({ items }) {
                     <div className={`p-[16px] h-full w-full`}>
                         <div className="leading-[1] pb-[12px]">
                             <h1 className={`text-[32px] ${themeActive ? 'text-[white]' : 'text-black'} font-[700] `} style={{ fontFamily: 'newspaper bold' }}>{selectedPub.judulContent}</h1>
+                        </div>
+                        <div>
+                            <img src={selectedPub.imageUrl} alt="pub-image" />
                         </div>
                         <div>
                             <p className="text-[14px] text-white">{selectedPub.content}</p>

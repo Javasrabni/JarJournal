@@ -1,12 +1,6 @@
 import Header from "./Comps/Navbar-Top/Header"
-import { Link } from "react-router-dom"
-import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
-import { useRef } from "react"
-
-import Catatan from "./Comps/Features/Catatan/Catatan"
-import Jurnal from "./Comps/Features/Jurnal/Jurnal"
 import CardFeatures from "./Comps/Features/ButtonCardFtr/CardFeatures"
 import UserQuote from "./Comps/Footer/userQuote/userQuote"
 import DateTimePlan from "./Comps/Features/Datetime quote/DatetmPlan/dateTimePlan"
@@ -19,7 +13,6 @@ import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
 import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
-import LoginPage from "./Auth/loginPage/loginPage"
 import 'react-quill/dist/quill.snow.css';
 
 import { motion } from 'framer-motion'
@@ -27,10 +20,9 @@ import { motion } from 'framer-motion'
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
 import AuthPage from "./Auth/authPage"
-import RegisterPage from "./Auth/registerPage/registerPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
-import { ArtikelContext } from "./Comps/Features/Publikasi/Context/artikelContext"
+
 
 export default function Home() {
     // Smooth render page
@@ -95,28 +87,12 @@ export default function Home() {
         return () => clearTimeout(delay)
     }
 
-    const [topikAktif, setTopikAktif] = useState([
-        { topik: 'Curhatan', aktif: false },
-        { topik: 'Artikel', aktif: false },
-        { topik: 'Story', aktif: false },
-    ])
-
-    function HandleTopikAktif(index) {
-        const changeStatus = topikAktif[index].aktif = true
-        setTopikAktif(changeStatus)
-
-    }
-
-    
-
-
     return (
         <>
             {!token ? (
                 <AuthPage setToken={setToken} />
             ) : (
                 <>
-                    {/* <button onClick={()=> autoScrollPub}>123 </button> */}
                     {/* Popup from Reset in MusicBox */}
                     {popupReset && (
                         <div className="flex items-center justify-center w-full h-full fixed z-[15]">
@@ -163,6 +139,7 @@ export default function Home() {
                         </div>
                     )}
 
+
                     {/* {MobileView.matches ? ( */}
                     <div className={`w-[360px] m-[auto] h-[100lvh] flex justify-center ${themeActive ? 'bg-black' : 'bg-white'}`} style={{ paddingBottom: '60px' }}>
                         <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
@@ -170,12 +147,12 @@ export default function Home() {
                                 <header>
                                     <Header token={token} setToken={setToken} />
                                 </header>
-                                <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'black' : 'white' }}>
+                                <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'var(--bg-12)' : 'white' }}>
 
                                     <div className="flex flex-col gap-[12px] w-full h-full">
 
                                         {/* PANEL RIGHT n LEFT */}
-                                        <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[60px]">
+                                        <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[32px]">
 
                                             {/* Left side */}
                                             <div className="w-full grow-0 flex flex-col gap-[12px]">
@@ -229,14 +206,6 @@ export default function Home() {
                                                 <div className="w-full">
                                                     <Memo token={token} />
                                                 </div>
-                                                <div>
-                                                    {/* <div className="w-fit p-[6px] h-[24px] bg-[#f7f7f7] rounded-[4px] flex items-center justify-center">
-                                            <span className="flex flex-row gap-[8px] items-center">
-                                                {downloadIcon}
-                                                <p className="text-[10px]">Download App</p>
-                                            </span>
-                                        </div> */}
-                                                </div>
                                             </div>
                                         </div>
 
@@ -249,11 +218,11 @@ export default function Home() {
                                                     <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
                                                         <span className="flex flex-row gap-[6px] items-center">
                                                             {artikelIcon}
-                                                            Artikel Publik
+                                                            Ruang Publik
                                                         </span>
                                                     </p>
 
-                                                    <p className={`text-[var(--black-subtext)] text-[10px]`}>Baca artikel atau pesan dari warga JarJournal</p>
+                                                    <p className={`text-[var(--black-subtext)] text-[10px]`}>Baca pesan atau artikel dari warga JarJournal</p>
                                                 </div>
                                                 <div onClick={HandleGoPublish}>
                                                     <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
@@ -262,28 +231,11 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-
-
-                                            <div className="mt-[32px]">
-                                                <div className="flex flex-row gap-[12px]">
-                                                    {topikAktif.map((item, index) =>
-                                                        <p key={index} className={`${themeActive ? 'text-[var(--black-subtext)]' : 'text-black'} text-[12px] `} onClick={() => HandleTopikAktif(index)}>
-                                                            <span className={`${item.aktif ? 'underline font-[600]' : 'font-[400]'}`}>{item.topik}</span>
-                                                        </p>
-
-                                                    )}
-                                                </div>
-
-                                            </div>
-
-                                            <div className="mt-[16px]" >
+                                            <div className="mt-[32px]" >
                                                 <Publikasi />
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                 </main>
                             </div>
 
@@ -300,15 +252,7 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    {/* ) : (
-                <div>
-                    <p>Desktop will avaliable</p>
-                </div>
-            )} */}
-
-
                 </>
-
             )
             }
 

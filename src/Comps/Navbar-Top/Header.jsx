@@ -10,9 +10,18 @@ import LoginPage from "../../Auth/loginPage/loginPage";
 import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 
-export default function Header({ nameTools, sloganTools, backPage, hideLogo, setToken, token }) {
+export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     // AUTH
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+
+    // GET TOKEN    
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+    useEffect(() => {
+        const getToken = localStorage.getItem('token')
+        if (getToken) {
+            setToken(getToken)
+        }
+    }, [])
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
@@ -29,6 +38,13 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo, set
         pathLocation.pathname === "/ftr/Library" && setJudulHeader("Library")
         pathLocation.pathname === "/BrainFocus" && setJudulHeader("Brain Focus")
     }, [])
+
+    const [catatanPage, setCatatanPage] = useState(false)
+    useEffect(() => {
+        if (pathLocation.pathname === "/ftr/Catatan") {
+            setCatatanPage(true)
+        }
+    }, [catatanPage])
 
 
     // Memo Section
@@ -134,15 +150,24 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo, set
         }
     }, [])
 
+    const backIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+    </svg>
 
 
     return (
         <div className="flex flex-col gap-[8px]">
-            <div className={`bg-${themeActive ? "black" : "white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
+            <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
 
                 {!hideLogo ? (
-                    <div className="text-white flex gap-[8px]" onClick={() => navigate('/')}>
-                        <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                    <div className="text-white flex gap-[8px]" onClick={() => navigate('/dashboard')}>
+                        {catatanPage ? (
+                            <div className="flex items-center justify-center pr-[12px] cursor-pointer">
+                                {backIcon}
+                            </div>
+                        ) : (
+                            <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                        )}
                         <div>
                             <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
                             <p className="text-[10px] text-[#999] font-medium">{appSlogan}</p>
@@ -156,16 +181,10 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo, set
 
 
 
-                <div onClick={() => { HandleOption1(); HandleClick() }}>
-                    {indicatorFromMemo && (
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3.5" style={{ color: themeActive ? "white" : "black" }}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                        </svg>
-                    )}
-                </div>
+
 
                 {/* Auth section */}
-                <div className="w-fit h-fit flex justify-center items-center">
+                <div className="w-fit h-fit flex justify-center items-center gap-[24px]">
                     {/* login */}
 
 
@@ -174,6 +193,15 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo, set
                             <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                         </svg>
                     </div> */}
+
+                    {/* CHECKLIST */}
+                    <div onClick={() => { HandleOption1(); HandleClick() }}>
+                        {indicatorFromMemo && (
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3.5" style={{ color: themeActive ? "white" : "black" }}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                            </svg>
+                        )}
+                    </div>
 
                     {/* SETTING  */}
                     <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer" onClick={HandleSetting}>
@@ -184,7 +212,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo, set
                         {/* ON POPUP */}
                         <div>
                             {openSetting && (
-                                <div className="p-[12px] text-[12px]" style={{ position: "absolute", transform: 'translateX(-128px) translateY(18px)', width: `${280 / 2}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
+                                <div className="p-[12px] text-[12px]" style={{ position: "absolute", zIndex: '10', transform: 'translateX(-128px) translateY(18px)', width: `${280 / 2}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
                                     <div className="flex flex-col w-full h-full gap-[8px]">
                                         {/* name user */}
                                         {username || userEmail ? (

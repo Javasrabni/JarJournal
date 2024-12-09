@@ -67,7 +67,7 @@ export default function CardFeatures({token, heightKalender, nameFeatures, heigh
                     </div>
                 </div>
             ) : (
-                <div className={`w-full ${themeActive ? "bg-[#08090A]" : "bg-[var(--white-bg-100)]"} ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} rounded-[8px] p-[12px] gap-[12px]`} style={{ height: heightCatatan ? "120px" : heightJurnal ? "112px" : heightMemo ? "fit-content" : "50px", outline: themeActive ? "1px solid rgb(38, 38, 38)" : "1px solid var(--white-bg-200)" }}>
+                <div className={`w-full ${themeActive ? "bg-[var(--black-card)]" : "bg-[var(--white-bg-100)]"} ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} rounded-[8px] p-[12px] gap-[12px]`} style={{ height: heightCatatan ? "120px" : heightJurnal ? "112px" : heightMemo ? "fit-content" : "50px", outline: themeActive ? "1px solid rgb(38, 38, 38)" : "1px solid var(--white-bg-200)" }}>
                     <div>
                         <div>
                             <p className="font-semibold text-xs">{nameFeatures}</p>

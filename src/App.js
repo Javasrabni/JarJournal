@@ -19,8 +19,8 @@ import ArtikelProvider from './Comps/Features/Publikasi/Context/artikelContext';
 import OnEditNoteProvider from './Comps/Features/Catatan/onEditNote/onEditNContext';
 
 // Components
-import AuthForm from './Comps/Form/AuthForm';
 import Home from './home';
+import AuthForm from './Comps/Form/AuthForm';
 import CodeBaseFeatures from './Comps/Features/codeBaseFeatures';
 import Page404 from './Comps/404/404Page';
 import BrainFocusPage from './Comps/Features/brainFocus/displayPage/brainFocusPage';

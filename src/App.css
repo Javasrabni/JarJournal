@@ -16,9 +16,12 @@
 :root {
   --aksen-color: #FFD700;
 
+  --bg-12: #121212;
+
   --black-text: #1A1A1A;
   --black-bg: #262626;
-  --black-card: #08090A;
+  --black-card: #121212;
+  /* --black-card: #08090A; */
 
   --black-subtext: #999999;
 
