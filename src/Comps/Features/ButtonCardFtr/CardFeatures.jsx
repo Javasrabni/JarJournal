@@ -26,14 +26,14 @@ export default function CardFeatures({token, heightKalender, nameFeatures, heigh
                     )}
 
 
-                    <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white p-[12px] gap-[12px] flex flex-row gap-[8px] justify-between items-center`} style={{ borderRadius: heightKalender ? '8px' : "0px 8px 8px 8px", outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
+                    <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white p-[12px] flex flex-row gap-[6px] justify-between items-center`} style={{ borderRadius: heightKalender ? '8px' : "0px 8px 8px 8px", outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
                         <div>
                             <span className="flex f ex-row gap-[8px] items-center">
                                 {/* {Buku} */}
                                 <p className={`font-semibold text-xs ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} `}>{nameFeatures}</p>
                             </span>
                             {heightKalender ? (
-                                <p className="text-[10px] font-[400 text-[#999999]">
+                                <p className="text-[11px] font-[400 text-[#999999]">
                                     <span className="flex items-center gap-[4px] mt-[0px]">
                                         <span>
                                             {kalenderIcon}
@@ -44,7 +44,7 @@ export default function CardFeatures({token, heightKalender, nameFeatures, heigh
                                     </span>
                                 </p>
                             ) : (
-                                <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p>
+                                <p className="text-[11px] font-[400 text-[#999999]">{descFeatures}</p>
                             )}
                         </div>
                         <div>
@@ -71,7 +71,7 @@ export default function CardFeatures({token, heightKalender, nameFeatures, heigh
                     <div>
                         <div>
                             <p className="font-semibold text-xs">{nameFeatures}</p>
-                            <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p>
+                            <p className="text-[11px] font-[400 text-[#999999]">{descFeatures}</p>
                         </div>
                         <button className={`text-[10px] py-[4px] px-[12px] ${themeActive ? 'bg-white' : 'bg-[var(--white-bg-200)]'} text-black rounded-xl font-semibold mt-[16px]`} onClick={() => navigate(onClickFeatures)}>
                             <span className="flex gap-[4px] items-center justify-center">

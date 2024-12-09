@@ -214,7 +214,7 @@ export default function Home() {
                                         <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
                                             {/* Judul */}
                                             <div className={`mt-[16px] flex flex-row items-center justify-between`}>
-                                                <div>
+                                                <div className="flex flex-col gap-[4px]">
                                                     <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
                                                         <span className="flex flex-row gap-[6px] items-center">
                                                             {artikelIcon}
@@ -222,7 +222,7 @@ export default function Home() {
                                                         </span>
                                                     </p>
 
-                                                    <p className={`text-[var(--black-subtext)] text-[10px]`}>Baca pesan atau artikel dari warga JarJournal</p>
+                                                    <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
                                                 </div>
                                                 <div onClick={HandleGoPublish}>
                                                     <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
@@ -232,7 +232,7 @@ export default function Home() {
                                             </div>
 
                                             <div className="mt-[32px]" >
-                                                <Publikasi />
+                                                <Publikasi token={token} />
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@ export default function Home() {
                                     <div>
                                         <MusicBox />
                                     </div>
-                                    <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-black" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
+                                    <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
                                         <UserQuote />
                                     </div>
                                 </footer>

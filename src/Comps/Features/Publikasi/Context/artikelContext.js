@@ -11,8 +11,11 @@ export default function ArtikelProvider({children}) {
     const [newPublikasi, setNewPublikasi] = useState('')
     const [selectedImage, setSelectedImage] = useState(null)
 
+    // LIKE PUB
+    const [likePub, setLikePub] = useState(0)
+
     return (
-        <ArtikelContext.Provider value={{selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
+        <ArtikelContext.Provider value={{likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
             {children}
         </ArtikelContext.Provider>
     )

@@ -30,7 +30,7 @@ export default function SisaHariToNewYear() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                 </span> */}
-                <p className={`text-[10px] ${themeActive ? 'text-white' : 'text-[var(--black-text)]'}`}>{sisaHari} Hari Menuju {tahun + 1}</p>
+                <p className={`text-[11px] ${themeActive ? 'text-white' : 'text-[var(--black-text)]'}`}>{sisaHari} Hari Menuju {tahun + 1}</p>
             </span>
             <progress value={365 - sisaHari} max={365} style={{ borderRadius: "6px", marginTop: "6px", width: "100%", height: "4px", filter: "drop-shadow(gold 0px 0px 6px)"}} className="progress-bar bg-[#999999] rounded-lg overflow-hidden" />
         </div>

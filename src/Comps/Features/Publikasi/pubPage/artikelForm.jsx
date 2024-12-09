@@ -20,6 +20,10 @@ export default function ArtikelForm() {
     // NAVIGATE
     const navigate = useNavigate()
 
+    // TOTAL LIKE PUB
+    const { likePub, setLikePub } = useContext(ArtikelContext)
+
+
     const HandleAddPub = async () => {
         if (!judulPublikasi || !newPublikasi) {
             alert('judul dan konten dibutuhkan!');
@@ -30,6 +34,7 @@ export default function ArtikelForm() {
         articleData.append('judulContent', judulPublikasi)
         articleData.append('content', newPublikasi)
         articleData.append('userName', username)
+        articleData.append('totalLikePub', likePub)
         if (selectedImage) {
             articleData.append('image', selectedImage)
         }

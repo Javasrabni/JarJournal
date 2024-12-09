@@ -84,6 +84,10 @@ export default function Publikasi() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
     </svg>
 
+    const loveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+    </svg>
+
     const navigate = useNavigate()
 
     // Handle Select pub
@@ -97,6 +101,34 @@ export default function Publikasi() {
         console.log(`Link copied! "${params}/${pubId}"`)
     }
 
+    const { likePub, setLikePub } = useContext(ArtikelContext)
+    async function HandleLikePub(pubId) {
+        try {
+            const response = await fetch(`${API_URL_PUB}/pub/like-pub`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ LikePubId: pubId, userName: username })
+            });
+    
+            if (response.ok) {
+                const { publication } = await response.json();
+                setPublikasi((prevPublikasi) =>
+                    prevPublikasi.map((pub) =>
+                        pub.id === pubId ? { ...pub, totalLikePub: publication.totalLikePub } : pub
+                    )
+                );
+            } else {
+                const { message } = await response.json();
+                alert(message); // Menampilkan pesan error jika user sudah memberikan "like"
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    
     return (
         <div>
             {/* Daftar publikasi */}
@@ -108,48 +140,68 @@ export default function Publikasi() {
                         <div className={`font-[inter] flex flex-col `}>
                             <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.judulContent}</p>
 
-                            <p className={`Content-artikel text-[10px] text-[var(--black-subtext)]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
+                            <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
 
                             {pub.imageUrl && (
                                 <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
-                                    <img src={`${API_URL_PUB}/pub/${pub.imageUrl}`} alt="pub-image"  className="w-full h-auto max-h-full object-cover rounded-[8px]" loading="lazy" />
+                                    <img src={`${API_URL_PUB}/pub/${pub.imageUrl}`} alt="pub-image" className="w-full h-auto max-h-full object-cover rounded-[8px]" loading="lazy" />
                                 </div>
                             )}
 
 
 
-                                < div className="flex flex-row items-center justify-between mt-[8px] h-fit">
-                            <div className="flex flex-row gap-[8px] items-center">
-                                <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
-                                    <span className="flex flex-col gap-[2px] justify-center">
-                                        {/* {userIcon} */}
-                                        @{pub.userName}
-                                        <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
-                                    </span>
-                                </p>
+                            <div className="flex flex-row items-center justify-between mt-[8px] h-fit">
+                                <div className="flex flex-row gap-[8px] items-center">
+                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
+                                        <span className="flex flex-col gap-[2px] justify-center">
+                                            {/* {userIcon} */}
+                                            @{pub.userName}
+                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
+                                        </span>
+                                    </p>
 
 
-                            </div>
-                            <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
-                                <div className="flex flex-row items-center gap-[12px] text-[var(--black-subtext)]">
-                                    <div onClick={() => HandleSharePub(pub.id)}>
-                                        {shareIcon}
-                                    </div>
-                                    {saveIcon}
-                                    {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
                                 </div>
-                                <div>
-                                    {username === pub.userName && (
-                                        <button onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
+                                <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
+                                    <div className="flex flex-row items-center gap-[12px] text-white">
+
+                                        <div onClick={() => HandleSharePub(pub.id)}>
+                                            {shareIcon}
+                                        </div>
+                                        <div>
+                                            {saveIcon}
+                                        </div>
+                                        <div onClick={()=> HandleLikePub(pub.id)}>
+                                            <span className="flex flex-row gap-[6px] items-center">
+                                                {loveIcon}
+                                                <p className="text-[14px] text-white">{pub.totalLikePub}</p>
+                                            </span>
+
+                                        </div>
+                                        {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
+                                    </div>
+                                    <div>
+                                        {username === pub.userName && (
+                                            <button onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-[8px]">
+                                <div className="flex flex-row text-white items-center">
+                                    <p className="text-[11px] pr-[4px]">Disukai oleh</p>
+                                    {pub.likes.map((username, index)=> 
+                                        <span className="font-[600] pr-[4px] text-[11px]">{username + ","}</span>
                                     )}
+                                    
                                 </div>
                             </div>
                         </div>
-                    </div>
 
                     </div>
                 ))}
-        </div>
+            </div>
         </div >
     )
 }
