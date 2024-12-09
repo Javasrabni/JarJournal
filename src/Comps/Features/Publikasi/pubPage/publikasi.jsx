@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
 import { ArtikelContext } from "../Context/artikelContext"
 import { ThemeAppContext } from "../../Theme/toggleTheme.jsx/ThemeAppContext"
 import './pubStyle.css'
 import { useNavigate, useParams } from "react-router-dom"
+import html2canvas from "html2canvas"
 
 export default function Publikasi() {
     // THEME
@@ -112,7 +113,7 @@ export default function Publikasi() {
                 },
                 body: JSON.stringify({ LikePubId: pubId, userName: username })
             });
-    
+
             if (response.ok) {
                 const { publication } = await response.json();
                 setPublikasi((prevPublikasi) =>
@@ -128,14 +129,50 @@ export default function Publikasi() {
             console.error(err);
         }
     }
-    
+
+    // TAKE SCREENSHOT IN PUB THREAD
+    const pubElement2Download = useRef({})
+    function DownloadPub(pubId) {
+        const element = pubElement2Download.current[pubId]
+
+        // Buat elemen pembungkus dengan padding dan background
+        const wrapper = document.createElement("div");
+        wrapper.style.padding = "32px"; // Sesuaikan dengan padding yang diinginkan
+        wrapper.style.backgroundColor = "#f0f0f0"; // Ganti dengan warna latar belakang yang diinginkan
+        wrapper.style.borderRadius = "8px"; // Untuk menambah radius pada sudut
+        wrapper.style.width = "fit-content"; // Agar ukuran sesuai dengan konten
+      
+        // Salin konten elemen ke dalam wrapper
+        wrapper.appendChild(element.cloneNode(true));
+      
+        // Tambahkan wrapper ke body untuk screenshot
+        document.body.appendChild(wrapper);
+      
+        // Ambil screenshot dari elemen pembungkus
+        html2canvas(wrapper, {
+          useCORS: true,
+          scale: 3, // Sesuaikan dengan resolusi layar
+          scrollX: 0,
+          scrollY: 0,
+        }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = imgData;
+          link.download = `${pubId}-Threads.jpg`; // Nama file download
+          link.click();
+      
+          // Hapus wrapper setelah screenshot
+          document.body.removeChild(wrapper);
+        });
+    }
+
     return (
         <div>
             {/* Daftar publikasi */}
 
-            <div className="flex flex-col-reverse">
+            <div className="flex flex-col-reverse" >
                 {publikasi.map((pub) => (
-                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} >
+                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el)=> pubElement2Download.current[pub.id] = el}>
 
                         <div className={`font-[inter] flex flex-col `}>
                             <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`} onClick={() => HandleSelectedPub(pub.id)}>{pub.judulContent}</p>
@@ -165,13 +202,13 @@ export default function Publikasi() {
                                 <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                     <div className="flex flex-row items-center gap-[12px] text-white">
 
-                                        <div onClick={() => HandleSharePub(pub.id)}>
+                                        <div onClick={() => {HandleSharePub(pub.id); DownloadPub(pub.id)}}>
                                             {shareIcon}
                                         </div>
                                         <div>
                                             {saveIcon}
                                         </div>
-                                        <div onClick={()=> HandleLikePub(pub.id)}>
+                                        <div onClick={() => HandleLikePub(pub.id)}>
                                             <span className="flex flex-row gap-[6px] items-center">
                                                 {loveIcon}
                                                 <p className="text-[14px] text-white">{pub.totalLikePub}</p>
@@ -191,10 +228,10 @@ export default function Publikasi() {
                             <div className="pt-[8px]">
                                 <div className="flex flex-row text-white items-center">
                                     <p className="text-[11px] pr-[4px]">Disukai oleh</p>
-                                    {pub.likes.map((username, index)=> 
+                                    {pub.likes.map((username, index) =>
                                         <span className="font-[600] pr-[4px] text-[11px]">{username + ","}</span>
                                     )}
-                                    
+
                                 </div>
                             </div>
                         </div>
