@@ -17,6 +17,7 @@ import WriteNoteProvider from './Comps/Features/Catatan/onNewNotePage/writeNoteC
 import API_URL_PROVIDER from './Auth/Context/API_URL';
 import ArtikelProvider from './Comps/Features/Publikasi/Context/artikelContext';
 import OnEditNoteProvider from './Comps/Features/Catatan/onEditNote/onEditNContext';
+import OVERALL_CONTEXT_PROVIDER from './Context/OVERALL_CONTEXT';
 
 // Components
 import Home from './home';
@@ -31,53 +32,55 @@ import LandingPage from './landingPage';
 import ArtikelForm from './Comps/Features/Publikasi/pubPage/artikelForm';
 import Publikasi from './Comps/Features/Publikasi/pubPage/publikasi';
 import SelectedPub from './Comps/Features/Publikasi/pubPage/selectedPub';
-
-
-
+import { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
 
 function App() {
   return (
-    <API_URL_PROVIDER>
-      <ArtikelProvider>
-        <OnEditNoteProvider>
-          <UserQuoteProvider>
-            <MemoProvider>
-              <PopupFrSettingsProvider>
-                <MusicBoxProvider>
-                  <ThemeAppProvider>
-                    <BrainFProvider>
-                      <ToggleAllProvider>
-                        <AnimateLoadPageProvider>
-                          <CatatanProvider>
-                            <WriteNoteProvider>
-                              <BrowserRouter>
-                                <Routes>
-                                  <Route index element={<LandingPage />} />
-                                  <Route path='/dashboard' element={<Home />} />
-                                  <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                                  <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                                  <Route path='/Artikel/publish' element={<ArtikelForm />} />
-                                  <Route path='/KalenderPlanner' element={<KalenderPage />} />
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <API_URL_PROVIDER>
+        <OVERALL_CONTEXT_PROVIDER>
+          <ArtikelProvider>
+            <OnEditNoteProvider>
+              <UserQuoteProvider>
+                <MemoProvider>
+                  <PopupFrSettingsProvider>
+                    <MusicBoxProvider>
+                      <ThemeAppProvider>
+                        <BrainFProvider>
+                          <ToggleAllProvider>
+                            <AnimateLoadPageProvider>
+                              <CatatanProvider>
+                                <WriteNoteProvider>
+                                  <BrowserRouter>
+                                    <Routes>
+                                      <Route index element={<LandingPage />} />
+                                      <Route path='/dashboard' element={<Home />} />
+                                      <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                                      <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                                      <Route path='/Artikel/publish' element={<ArtikelForm />} />
+                                      <Route path='/KalenderPlanner' element={<KalenderPage />} />
 
-                                  {/* Publikasi link */}
-                                  <Route path='/posts/:id' element={<SelectedPub />} />
-                                  <Route path='*' element={<Page404 />} />
-                                </Routes>
-                              </BrowserRouter>
-                            </WriteNoteProvider>
-                          </CatatanProvider>
-                        </AnimateLoadPageProvider>
-                      </ToggleAllProvider>
-                    </BrainFProvider>
-                  </ThemeAppProvider>
-                </MusicBoxProvider>
-              </PopupFrSettingsProvider>
-            </MemoProvider>
-          </UserQuoteProvider>
-        </OnEditNoteProvider>
-      </ArtikelProvider>
-    </API_URL_PROVIDER>
-
+                                      {/* Publikasi link */}
+                                      <Route path='/posts/:id' element={<SelectedPub />} />
+                                      <Route path='*' element={<Page404 />} />
+                                    </Routes>
+                                  </BrowserRouter>
+                                </WriteNoteProvider>
+                              </CatatanProvider>
+                            </AnimateLoadPageProvider>
+                          </ToggleAllProvider>
+                        </BrainFProvider>
+                      </ThemeAppProvider>
+                    </MusicBoxProvider>
+                  </PopupFrSettingsProvider>
+                </MemoProvider>
+              </UserQuoteProvider>
+            </OnEditNoteProvider>
+          </ArtikelProvider>
+        </OVERALL_CONTEXT_PROVIDER>
+      </API_URL_PROVIDER>
+    </SkeletonTheme>
   );
 }
 

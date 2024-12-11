@@ -38,6 +38,7 @@ export default function SelectedPub({ items }) {
                 const data = await response.json()
                 if (response.ok) {
                     setSelectedPub(data)
+                    console.log(selectedPub)
                 }
             } catch (err) {
                 console.error(err)
@@ -81,12 +82,18 @@ export default function SelectedPub({ items }) {
                         <div className="leading-[1] pb-[12px]">
                             <h1 className={`text-[32px] ${themeActive ? 'text-[white]' : 'text-black'} font-[700] `} style={{ fontFamily: 'newspaper bold' }}>{selectedPub.judulContent}</h1>
                         </div>
-                        <div>
-                            <img src={selectedPub.imageUrl} alt="pub-image" />
-                        </div>
+
+                        {selectedPub.imageUrl && (
+                            <div className="w-full max-h-[93.75rem] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
+                                <img src={`${API_URL_PUB}/pub/${selectedPub.imageUrl}`} alt="pub-image" className="w-full h-auto max-h-full object-cover rounded-[8px]" loading="lazy" />
+                            </div>
+                        )}
+
+
                         <div>
                             <p className="text-[14px] text-white">{selectedPub.content}</p>
                         </div>
+
                         <div className={`flex flex-row gap-[8px] ${themeActive ? 'text-white' : 'text-black'}`}>
                             <p>{selectedPub.userName}</p>
                             <p>{selectedPub.timeStamp}</p>

@@ -13,7 +13,10 @@ import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
 import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
 import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
 import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
+import { OVERALL_CONTEXT } from "./Context/OVERALL_CONTEXT"
 import 'react-quill/dist/quill.snow.css';
+
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import { motion } from 'framer-motion'
 
