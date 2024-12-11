@@ -38,7 +38,7 @@ export default function Publikasi() {
         const fetchPub = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pu`)
+                const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
                 if(response.ok) {
                     const data = await response.json()
                     setPublikasi(data)
@@ -183,9 +183,8 @@ export default function Publikasi() {
             {/* Daftar publikasi */}
 
             <div className="flex flex-col-reverse " >
-                {publikasi}
                 {isLoading ? (
-                    <Skeleton count={3} width={'100%'} height={'200px'}  className="animate-pulse"/>
+                    <Skeleton count={3} width={'100%'} height={'160px'} className="animate-pulse" style={{borderRadius: '12px'}}/>
                 ) : (
                     <>
                         {publikasi.map((pub) => (

@@ -9,6 +9,7 @@ import { ThemeAppContext } from "../Features/Theme/toggleTheme.jsx/ThemeAppConte
 import LoginPage from "../../Auth/loginPage/loginPage";
 import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
+import Skeleton from "react-loading-skeleton";
 
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     // AUTH
@@ -237,7 +238,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                                                 </div>
                                             </>
                                         ) : (
-                                            <p className={`${themeActive ? 'text-white' : 'text-black'} text-[12px]`}>Load data..</p>
+                                            <Skeleton count={1} height={'16px'} className="animate-pulse"/>
                                         )}
                                     </div>
                                 </div>
