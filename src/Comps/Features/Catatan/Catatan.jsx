@@ -138,9 +138,9 @@ export default function Catatan() {
 
     return (
         <>
-            <div className={`w-[360px] h-[90lvh] ${themeActive ? 'bg-black' : 'bg-white'} flex jusitfy-center relative`}>
+            <div className={`w-[360px] h-[90lvh] ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
                 {/* Main content */}
-                <div className={`${themeActive ? "bg-black" : "bg-white"} flex flex-col gap-[12px] h-full p-[16px] text-white w-full`}>
+                <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} flex flex-col gap-[12px] h-full p-[16px] text-white w-full`}>
                     {writeingNote ? (
                         <WriteNotePage />
                     ) : (

@@ -79,10 +79,17 @@ export default function SelectedPub({ items }) {
                         }
                     />
                     <div className={`p-[16px] h-full w-full`}>
+                        {/* JUDUL */}
                         <div className="leading-[1] pb-[12px]">
                             <h1 className={`text-[32px] ${themeActive ? 'text-[white]' : 'text-black'} font-[700] `} style={{ fontFamily: 'newspaper bold' }}>{selectedPub.judulContent}</h1>
                         </div>
 
+                        {/* CONTENT */}
+                        <div>
+                            <p className="text-[14px] text-white">{selectedPub.content}</p>
+                        </div>
+
+                        {/* IMAGE  */}
                         {selectedPub.imageUrl && (
                             <div className="w-full max-h-[93.75rem] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
                                 <img src={`${API_URL_PUB}/pub/${selectedPub.imageUrl}`} alt="pub-image" className="w-full h-auto max-h-full object-cover rounded-[8px]" loading="lazy" />
@@ -90,12 +97,8 @@ export default function SelectedPub({ items }) {
                         )}
 
 
-                        <div>
-                            <p className="text-[14px] text-white">{selectedPub.content}</p>
-                        </div>
-
                         <div className={`flex flex-row gap-[8px] ${themeActive ? 'text-white' : 'text-black'}`}>
-                            <p>{selectedPub.userName}</p>
+                            <p className="text-[12px] font-[600]">{selectedPub.userName}</p>
                             <p>{selectedPub.timeStamp}</p>
                         </div>
                     </div>

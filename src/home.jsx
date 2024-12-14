@@ -25,6 +25,7 @@ import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeApp
 import AuthPage from "./Auth/authPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
+import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
 
 
 export default function Home() {
@@ -244,14 +245,21 @@ export default function Home() {
 
                             {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
                             <div>
-                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "0px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(118px)", transition: "transform 0.3s ease" }}>
+                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "54px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(164px)", transition: "transform 0.3s ease" }}>
                                     <div>
-                                        <MusicBox />
+                                        <div>
+                                            <MusicBox />
+                                        </div>
+                                        <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
+                                            <UserQuote />
+                                        </div>
                                     </div>
-                                    <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
-                                        <UserQuote />
-                                    </div>
+
+
                                 </footer>
+                                <div className="fixed bottom-0 h-[54px] w-[360px] bg-[var(--bg-12)] z-[16]">
+                                    <NavFooter />
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -67,7 +67,7 @@ export default function WriteNotePage() {
       };
 
     return (
-        <div className={`w-full h-full ${themeActive ? 'bg-black' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col gap-[12px]`}>
+        <div className={`w-full h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col gap-[12px]`}>
             {/* TEKS EDITOR */}
             <div className="flex flex-col h-[100vh] ">
                 <ReactQuill
@@ -80,7 +80,7 @@ export default function WriteNotePage() {
                         outline: 'none',
                         height: "100%",
                         zIndex: '9',
-                        color: 'red'
+                        color: 'white'
                     }}
                     modules={{
                         toolbar: [

@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom"
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import { MemoContext } from "../Features/Memo/MemoContext";
 import { PopupFrSettingsContext } from "../Popup_settings/popupSetting/boxPopupFromSetting";
 import { ThemeAppContext } from "../Features/Theme/toggleTheme.jsx/ThemeAppContext";
@@ -14,7 +13,6 @@ import Skeleton from "react-loading-skeleton";
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     // AUTH
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
-
     // GET TOKEN    
     const { token, setToken } = useContext(API_URL_CONTEXT)
     useEffect(() => {
