@@ -301,7 +301,7 @@ export default function Publikasi() {
                     </div>
                 ) : (
                     <>
-                        {AlgorithmPub.map((pub, index) => (
+                        {publikasi.map((pub, index) => (
                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                 <div className={`font-[inter] flex flex-col `}>
