@@ -9,7 +9,7 @@
 /coverage
 
 change hp git
-
+.env
 
 # production
 /build
@@ -24,3 +24,25 @@ change hp git
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folder
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Python-specific
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+gitignore
+.gitignore
+

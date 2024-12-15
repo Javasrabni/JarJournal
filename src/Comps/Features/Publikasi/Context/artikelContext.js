@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const ArtikelContext = createContext()
 
-export default function ArtikelProvider({children}) {
+export default function ArtikelProvider({ children }) {
     // STATE
     const [publikasi, setPublikasi] = useState([])
     const [judulPublikasi, setJudulPublikasi] = useState('')
@@ -14,8 +14,15 @@ export default function ArtikelProvider({children}) {
     // LIKE PUB
     const [likePub, setLikePub] = useState(false)
 
+    // IMAGE PUB
+    const [onRenderImg, setOnRenderImg] = useState(false)
+
+    // INFINITE SCROLL
+    const [infiniteScrollPub, setInfiniteScrollPub] = useState(2)
+
+
     return (
-        <ArtikelContext.Provider value={{likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi}}>
+        <ArtikelContext.Provider value={{infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
             {children}
         </ArtikelContext.Provider>
     )

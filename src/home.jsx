@@ -245,7 +245,7 @@ export default function Home() {
 
                             {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
                             <div>
-                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "54px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(164px)", transition: "transform 0.3s ease" }}>
+                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "54px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
                                     <div>
                                         <div>
                                             <MusicBox />

@@ -183,6 +183,14 @@ export default function Publikasi() {
         });
     }
 
+    // IMAGE PART
+    const { onRenderImg, setOnRenderImg } = useContext(ArtikelContext)
+    function HandleRenderImg() {
+        setOnRenderImg(true)
+    }
+
+    console.log(onRenderImg)
+
     // COMMENT PART
     const commentPub = useRef(null)
     const commentPubRef = commentPub.current
@@ -200,16 +208,45 @@ export default function Publikasi() {
     const [valueComment, setValueComment] = useState([])
     const [valueINPUTComment, setValueINPUTComment] = useState('')
 
+    const AddComentPub = async (pubId) => {
+        try {
+            const response = await fetch(`${API_URL_PUB}/pub/add-comment`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }, body: JSON.stringify({ username: username, pubIndex: pubId, valueComment: valueINPUTComment })
+            })
+
+            if (response.ok) {
+                const { publication, message } = await response.json()
+                // setValueComment(publication.komentar)
+
+                // Update komentar hanya pada publikasi tertentu
+                setPublikasi((prevPublikasi) =>
+                    prevPublikasi.map((pub) =>
+                        pub.id === pubId
+                            ? { ...pub, komentar: publication.komentar }
+                            : pub
+                    )
+                );
+
+                if (commentPub.current) {
+                    commentPub.current.value = ''
+                }
+                setValueINPUTComment('')
+                console.log(message)
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
+
     function HandleChangeComment(e) {
         setValueINPUTComment(e.target.value)
     }
-
-    function HandleClickComment() {
-        setValueComment((prevValue) => [valueINPUTComment, ...prevValue])
-        setValueINPUTComment('')
-        commentPubRef.value = ''
-    }
-
 
     // ICON 
     const userIcon = <svg xmlns="http://www.w3.org/2000/svg" fill={`${themeActive ? '' : 'white'}`} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
@@ -237,6 +274,20 @@ export default function Publikasi() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
     </svg>
 
+    // SIMULASI ALGORITMA FEED
+    const { infiniteScrollPub, setInfiniteScrollPub } = useContext(ArtikelContext)
+
+    function ShufflePub(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array
+    }
+    
+    const AlgorithmPub = ShufflePub([...publikasi])
+    console.log(AlgorithmPub)
+    
     return (
         <div>
             {/* Daftar publikasi */}
@@ -250,23 +301,43 @@ export default function Publikasi() {
                     </div>
                 ) : (
                     <>
-                        {publikasi.map((pub, index) => (
+                        {AlgorithmPub.map((pub, index) => (
                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                 <div className={`font-[inter] flex flex-col `}>
 
                                     <span role="button" tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
+
+                                        {/* JUDUL PUB */}
                                         <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
 
+                                        {/* KONTEN PUB */}
                                         <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
 
-                                        {pub.imageUrl && (
-                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
-                                                <img src={`${API_URL_PUB}/pub/${pub.imageUrl}`} alt="pub-image" className="w-full h-auto max-h-full object-cover rounded-[8px]" loading="lazy" />
-                                            </div>
-                                        )}
+                                        {/* IMAGE PUB*/}
+                                        <div>
+                                            {pub.imageUrl && (
+                                                <>
+                                                    {/* {onRenderImg ? ( */}
+                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+                                                        <img
+                                                            src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                            alt="pub-image"
+                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
+                                                            loading="lazy"
+                                                            onLoad={HandleRenderImg}
+                                                        />
+                                                    </div>
+                                                    {/* ) : (
+                                                        <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                                                    )} */}
+
+                                                </>
+                                            )}
+                                        </div>
                                     </span>
 
+                                    {/* AUTHOR PUB */}
                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
                                         <div className="flex flex-row gap-[8px] items-center">
                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -279,6 +350,8 @@ export default function Publikasi() {
 
 
                                         </div>
+
+                                        {/* CTA PUB */}
                                         <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                             <div className="flex flex-row items-center gap-[12px] text-white">
 
@@ -304,6 +377,7 @@ export default function Publikasi() {
                                         </div>
                                     </div>
 
+                                    {/* LIKE PUB */}
                                     <div className="pt-[2px] flex flex-col gap-[4px]">
                                         <div className="flex flex-row text-white pt-[4px]">
                                             {pub.likes.length >= 1 && (
@@ -322,14 +396,14 @@ export default function Publikasi() {
                                         <div className="pt-[6px]">
                                             <div className="flex flex-row justify-between items-center ">
 
-                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} />
+                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
 
-                                                <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={HandleClickComment}>{sendIcon}</button>
+                                                <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                             </div>
                                             <div className="gap-[4px] flex flex-col pt-[12px]">
-                                                {valueComment.map((item, index) =>
+                                                {pub.komentar.map((item, index) =>
                                                     <p key={index} className="text-[11px] text-white pl-[4px]">
-                                                        {item}
+                                                        <span className="font-[600]">{item.username}</span> {item.valueKomentar}
                                                     </p>
                                                 )}
                                             </div>
