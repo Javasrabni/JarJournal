@@ -7,7 +7,7 @@ import { ThemeAppContext } from "../../Theme/toggleTheme.jsx/ThemeAppContext";
 export default function DateTimePlan() {
     const [dateTime, setDateTime] = useState({})
 
-    useEffect(()=> {
+    useEffect(() => {
         const date = new Date();
         const tanggal = date.getDate();
         const bulan = date.getMonth();
@@ -17,7 +17,7 @@ export default function DateTimePlan() {
 
         const namaBulan = listBulan[bulan]
 
-        setDateTime({tanggal, bulan: namaBulan, tahun})
+        setDateTime({ tanggal, bulan: namaBulan, tahun })
     }, [])
 
     // Theme App
@@ -30,7 +30,7 @@ export default function DateTimePlan() {
                     <p className={`text-xs font-[600] text-${themeActive ? "white" : "black"}`}>Hari ini</p>
                     <p className={`text-[11px] text-${themeActive ? "white" : "black"}`}>{dateTime.tanggal} {dateTime.bulan} {dateTime.tahun}</p>
                 </div>
-                <div className="flex " style={{color: themeActive ? "white" : "black"}}>
+                <div className="flex " style={{ color: themeActive ? "white" : "black" }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m11.99 16.5 3.75 3.75m0 0 3.75-3.75m-3.75 3.75V3.75H4.49" />
                     </svg>

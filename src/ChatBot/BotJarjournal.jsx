@@ -52,7 +52,29 @@ export default function Chatbot() {
             sedih: ["sedih", "kecewa", "galau", "hampa", "menangis"],
             senang: ["senang", "seneng", "bahagia", "gembira", "bersyukur", "ceria"],
             marah: ["marah", "kesal", "benci", "sebal"],
+            orang: ['javas', 'javas anggaraksa rabbani', 'dafa', 'daffa', 'daffa adnan', 'fiska', 'fiska andini putri']
         };
+
+        // Cek untuk nama khusus
+        if (emotionKeywords.orang.some((name) => input.toLowerCase().includes(name))) {
+            const lowerInput = input.toLowerCase();
+
+            // Respons untuk Javas
+            if (lowerInput.includes("javas") || lowerInput.includes("javas anggaraksa rabbani")) {
+                return `Ohh Javas yaa, aku tauuu, dia sebagai developer aplikasi ini atau JarJournal dengan 1 rekannya Daffa Adnan, dia yang membangun aplikasi ini dan dia juga yang merancang kepribadian saya agar kamu nyaman untuk berbicara dengan saya. apakah kamu mengenalnya? 😊`;
+            }
+
+            // Respons untuk Dafa
+            if (lowerInput.includes("daffa") || lowerInput.includes("daffa adnan") || lowerInput.includes("dafa")) {
+                return `Ohh tauuu, Dia adalah rekannya javas, daffa bagian dari tim jarjournal dia sang pemilik ide ide yang luar biasa ini, dia sangat inovator, dia selalu memiliki ide ide yang brilian, termasuk jarjournal ini, jarjournal hadir karena ide dia. 😊`
+            }
+
+            // Respons untuk Fiska
+            if (lowerInput.includes("fiska") || lowerInput.includes('fiska andini putri')) {
+                return `Ohh Fiska Andini Putri yaa? aku tauuu, dia orangnya dingin banget, tapi dibalik dinginnya dia punya senyuman yang manis dan punya hati yang baik ❤, dia orangnya pinter banget lho dikelas dan ga sombong, dia temannya Javas dan daffa, apakah kamu mengenalnya? 😊`;
+            }
+        }
+
 
         for (const [emotion, keywords] of Object.entries(emotionKeywords)) {
             if (keywords.some((word) => input.toLowerCase().includes(word))) {
@@ -91,6 +113,22 @@ export default function Chatbot() {
 
         // Tambahkan pesan pengguna ke UI
         appendMessage("user", userInput);
+
+        // Jika respons statis terdeteksi, kirim langsung tanpa AI
+        if (userEmotion.startsWith("Ohh Javas yaa, aku tauuu, dia sebagai developer") || userEmotion.startsWith("Ohh Javas yaa")) {
+            simulateTypingEffect(userEmotion);
+            return;
+        }
+
+        if (userEmotion.startsWith("Ohh Dia adalah rekannya javas, daffa bagian dari tim jarjournal") || userEmotion.startsWith("Ohh Dia adalah rekannya javas")) {
+            simulateTypingEffect(userEmotion);
+            return;
+        }
+
+        if (userEmotion.startsWith("Ohh Fiska Andini Putri yaa?") || userEmotion.startsWith("Javas?")) {
+            simulateTypingEffect(userEmotion);
+            return;
+        }
 
         // Ambil riwayat pesan untuk konteks
         const messageHistory = messages
@@ -143,13 +181,13 @@ export default function Chatbot() {
 
 
         // CURERNT AI PERSONAL ***
-            // Anda adalah sosok yang sangat nyaman jika diajak bicara, 
-            // Anda memiliki sikap tenang dan cool, sehingga percakapan terasa ringan dan menyenangkan. 
-            // Anda juga humoris, tetapi tetap ramah dan sopan.
-            // Tugas Anda adalah merespons dengan bahasa Indonesia yang baik dan sopan, membantu pengguna dengan pertanyaan mereka, dan menjawab dengan cara yang menyenangkan dan tidak membosankan.
-            // Anda adalah sosok asisten yang sangat membantu dan bijaksana, terkadang kamu bisa menjadi guru bisa juga menjadi teman bicara, oleh karena itu kamu pandai memposiskan diri.
-            // Pastikan untuk memberikan jawaban yang ber-isi, berkualitas, padat, dan jelas, tanpa bertele-tele, dengan cara yang elegan, tanpa terkesan kaku atau formal.
-            // Jika mereka menanyakan sesuatu hal yang terkesan bercanda atau mereka mencoba untuk melakukan sedikit candaan, respon candaan mereka dengan candaan pula, jangan terlalu kaku, tetapi jika mereka menyanyakan sesuatu hal yang terkesan tidak bercanda, respon mereka dengan jawaban yang membantu.
+        // Anda adalah sosok yang sangat nyaman jika diajak bicara, 
+        // Anda memiliki sikap tenang dan cool, sehingga percakapan terasa ringan dan menyenangkan. 
+        // Anda juga humoris, tetapi tetap ramah dan sopan.
+        // Tugas Anda adalah merespons dengan bahasa Indonesia yang baik dan sopan, membantu pengguna dengan pertanyaan mereka, dan menjawab dengan cara yang menyenangkan dan tidak membosankan.
+        // Anda adalah sosok asisten yang sangat membantu dan bijaksana, terkadang kamu bisa menjadi guru bisa juga menjadi teman bicara, oleh karena itu kamu pandai memposiskan diri.
+        // Pastikan untuk memberikan jawaban yang ber-isi, berkualitas, padat, dan jelas, tanpa bertele-tele, dengan cara yang elegan, tanpa terkesan kaku atau formal.
+        // Jika mereka menanyakan sesuatu hal yang terkesan bercanda atau mereka mencoba untuk melakukan sedikit candaan, respon candaan mereka dengan candaan pula, jangan terlalu kaku, tetapi jika mereka menyanyakan sesuatu hal yang terkesan tidak bercanda, respon mereka dengan jawaban yang membantu.
 
         function generateAIResponse(context, currentMessage, topicChanged) {
             if (topicChanged) {
@@ -370,7 +408,7 @@ export default function Chatbot() {
                         </button>
                     </span>
                     <span className="">
-                        <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Setiap penjelasan akan disampaikan dengan bahasa yang mudah kamu pahami.</p>
+                        <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Setiap penjelasan akan disampaikan dengan bahasa yang mudah dipahami.</p>
                     </span>
                 </div>
             </div>

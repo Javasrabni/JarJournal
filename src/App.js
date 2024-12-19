@@ -35,6 +35,7 @@ import SelectedPub from './Comps/Features/Publikasi/pubPage/selectedPub';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Chatbot from './ChatBot/BotJarjournal';
+import Explore from './Pages/explore/explore';
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
                                       <Route path='/Artikel/publish' element={<ArtikelForm />} />
                                       <Route path='/KalenderPlanner' element={<KalenderPage />} />
                                       <Route path='/JJR-ChatBot' element={<Chatbot />} />
+                                      <Route path='/Explore' element={<Explore />} />
                                       <Route path='/Auth' element={<AuthPage />} />
 
                                       {/* Publikasi link */}

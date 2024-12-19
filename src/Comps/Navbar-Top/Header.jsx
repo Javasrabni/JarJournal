@@ -20,7 +20,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         if (getToken) {
             setToken(getToken)
         }
-    }, [])
+    }, [token])
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
@@ -147,7 +147,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         if (token) {
             fetchUserInfo()
         }
-    }, [])
+    }, [token])
 
     const backIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -236,7 +236,16 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                                                 </div>
                                             </>
                                         ) : (
-                                            <Skeleton count={1} height={'16px'} className="animate-pulse"/>
+                                            <div className="flex flex-col gap-[8px]">
+                                                <span>
+                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
+                                                    <Skeleton count={1} height={'16px'} className="animate-pulse" />
+                                                </span>
+                                                <span>
+                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
+                                                    <Skeleton count={1} height={'16px'} className="animate-pulse" />
+                                                </span>
+                                            </div>
                                         )}
                                     </div>
                                 </div>

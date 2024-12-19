@@ -6,6 +6,7 @@ import { PopupFrSettingsContext } from "../../Popup_settings/popupSetting/boxPop
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
+import { Skeleton } from "antd"
 
 export default function Memo({ token }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
@@ -143,10 +144,6 @@ export default function Memo({ token }) {
         setKeyboardActive(false)
     }
 
-
-
-
-
     // change height after memo has more than 2 values
     // useEffect(() => {
     //     if (changeHeightMemo) {
@@ -156,8 +153,8 @@ export default function Memo({ token }) {
     //     }
     // }, [changeHeightMemo])
 
-    useEffect(()=> {
-        setValueMemo(prev => (prev.length > 2 ? prev.slice(0,2) : prev))
+    useEffect(() => {
+        setValueMemo(prev => (prev.length > 2 ? prev.slice(0, 2) : prev))
     })
 
     // Theme App
@@ -196,6 +193,9 @@ export default function Memo({ token }) {
     }
     // 
 
+    // Loading memo
+    const [readyMemo, setReadyMemo] = useState(false)
+
     const fetchMemo = async () => {
         try {
             const response = await fetch(`${API_URL_AUTH}/auth/get-memos`, {
@@ -206,6 +206,7 @@ export default function Memo({ token }) {
             });
             if (response.ok) {
                 const data = await response.json();
+                setReadyMemo(true)
                 setValueMemo(data.memos); // Atur memo user
             }
         } catch (err) {
@@ -359,7 +360,7 @@ export default function Memo({ token }) {
                         {/* Isi dari value memo */}
                         <div className="w-full h-fit flex flex-row justify-between items-end">
                             <ul className="flex flex-col gap-[8px]">
-                                {valueMemo.length < 1 ? (
+                                {!valueMemo ? (
                                     <div>
                                         {!indicator && (
                                             <span className="flex flex-row gap-[4px] items-center text-[#999999]">
@@ -416,7 +417,11 @@ export default function Memo({ token }) {
                                                         </div>
                                                     ) : (
                                                         <div className={`w-[136px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
+                                                            {readyMemo ? (
+                                                                <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
+                                                            ) : (
+                                                                <Skeleton count={2} height={'16px'} className="animate-pulse"/>
+                                                            )}
 
                                                         </div>
                                                     )}

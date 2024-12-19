@@ -153,7 +153,6 @@ export default function Home() {
                                     <Header token={token} setToken={setToken} />
                                 </header>
                                 <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'var(--bg-12)' : 'white' }}>
-
                                     <div className="flex flex-col gap-[12px] w-full h-full">
 
                                         {/* PANEL RIGHT n LEFT */}
