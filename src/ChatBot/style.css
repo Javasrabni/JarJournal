@@ -1,0 +1,25 @@
+/* RES IF INCLUDE AN <UL> */
+#ResAi ul,ol {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0px 0px 8px 0px;
+    padding-left: 16px;
+    list-style-type: disc;
+
+}
+
+/* Membuat marker (nomor atau simbol) menjadi bold */
+/* #ResAi li::before {
+    content: '-';
+    font-weight: bold; 
+    padding-right: 12px;
+} */
+
+#ResAi li {
+    white-space: normal;
+}
+
+/* #ResAi p{
+    padding-bottom: 16px;
+} */

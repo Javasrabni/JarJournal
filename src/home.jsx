@@ -62,8 +62,6 @@ export default function Home() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
 
-
-
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
@@ -74,6 +72,7 @@ export default function Home() {
 
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
+    console.log(token)
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -84,18 +83,20 @@ export default function Home() {
 
 
     function HandleGoPublish() {
-        let delay = setTimeout(() => {
-            navigate('/Artikel/publish')
-        }, 200)
-
-        return () => clearTimeout(delay)
+        if(!token) {
+            alert('Login untuk menggunakan fitur');
+            navigate('/Auth')
+        } else {
+            let delay = setTimeout(() => {
+                navigate('/Artikel/publish')
+            }, 200)
+            return () => clearTimeout(delay)
+        }
     }
 
     return (
         <>
-            {!token ? (
-                <AuthPage setToken={setToken} />
-            ) : (
+            
                 <>
                     {/* Popup from Reset in MusicBox */}
                     {popupReset && (
@@ -264,9 +265,6 @@ export default function Home() {
                         </div>
                     </div>
                 </>
-            )
-            }
-
         </>
     )
 }

@@ -31,7 +31,7 @@ const RegisterPage = () => {
             return
         }
 
-        if(!username || !email || !password){
+        if (!username || !email || !password) {
             alert("Masukkan nama / email / pass terlebih dahulu")
             return
         }
@@ -53,6 +53,12 @@ const RegisterPage = () => {
                 setEmail('');
                 setPassword('');
                 setUsername('')
+
+                // AUTO DIRECT INTO LOGIN
+                const delayDirect = setTimeout(() => {
+                    setIsRegister(false)
+                }, 2000)
+                return () => clearTimeout(delayDirect)
             } else {
                 const errorData = await response.json();
                 setError(errorData.message);
@@ -64,47 +70,74 @@ const RegisterPage = () => {
         }
     };
 
-    return (
-        <div className={`w-fit h-full flex flex-col gap-[12px] justify-center ${themeActive ? 'bg-[var(--white-bg-100)]' : 'bg-[var(--white-bg-100)]'} p-[16px] rounded-[16px]`}>
-            <h1 className='text-[16px] font-[600] font-[inter] text-center'>SignUp</h1>
-            <div className='flex flex-col gap-[12px] w-[240px]'>
-                <div className='flex flex-col'>
-                    <label htmlFor="username" className='text-[10px]'>Username</label>
-                    <input
-                        name='username'
-                        className='p-[8px] text-[10px] w-full rounded-[4px] outline-none'
-                        type="text"
-                        placeholder="Armstrong"
-                        value={username}
-                        maxLength={20}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className='flex flex-col'>
-                    <label htmlFor="email" className='text-[10px]'>Email</label>
-                    <input
-                        className='p-[8px] text-[10px] w-full rounded-[4px] outline-none'
-                        type="email"
-                        placeholder="armstrong@gmail.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className='flex flex-col'>
-                    <label htmlFor="password" className='text-[10px]'>Password</label>
-                    <input
-                        className='p-[8px] text-[10px] w-full rounded-[4px] outline-none'
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-            </div>
-            <button onClick={handleRegister} style={{ backgroundColor: 'var(--black-card)', color: 'white', fontSize: '12px', padding: '4px 16px', borderRadius: "4px", marginTop: '12px' }}>Daftar</button>
+    const viewPortHeightWindow = window.innerHeight;
+    const goldenRatioHeight = viewPortHeightWindow / 1.618;
+    const residualHeightOfGR = viewPortHeightWindow - goldenRatioHeight;
 
-            {error && <p style={{ color: 'tomato', fontSize: '12px', textAlign: 'center', fontWeight: "500" }}>{error}</p>}
-            {success && <p style={{ color: 'green', fontSize: '12px', textAlign: 'center', fontWeight: '500' }}>{success}</p>}
+    return (
+        <div className={`w-full h-full flex flex-col gap-[8px] justify-around items-center rounded-[16px]`}>
+
+            {/* <div style={{ height: residualHeightOfGR - (goldenRatioHeight / 2) }} className=' w-full flex flex-row gap-[16px] items-center justify-center'>
+                <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                <p className='text-[24px] font-[600]'>JarJournal</p>
+            </div> */}
+
+            <div className={`h-[${goldenRatioHeight}] mb-[64px]`}>
+                <h1 className='text-[16px] font-[600] text-center select-none pb-[16px]'>SignUp, Daftar gratis!</h1>
+                <div className='flex flex-col gap-[12px] w-full'>
+                    <div className='flex flex-col w-full '>
+                        <input
+                            name='username'
+                            className='p-[14px] text-[12px] w-full rounded-[8px] outline-none bg-[var(--white-bg-100)]'
+                            type="text"
+                            placeholder="Nama pengguna"
+                            value={username}
+                            maxLength={20}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </div>
+                    <div className='flex flex-col'>
+                        <input
+                            className='p-[14px] text-[12px] w-full rounded-[8px] outline-none bg-[var(--white-bg-100)]'
+                            type="email"
+                            placeholder="Alamat email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className='flex flex-col'>
+                        <input
+                            className='p-[14px] text-[12px] w-full rounded-[8px] outline-none bg-[var(--white-bg-100)]'
+                            type="password"
+                            placeholder="Password JarJournal"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div className='flex flex-col gap-[12px] mt-[12px]'>
+                        <p className='text-[11px] text-[var(--black-subtext)]'>JarJournal menciptakan ruang yang aman dan nyaman, serta menjaga sepenuhnya privasi para pengguna.</p>
+
+                        {/* CHECKBOX ACCEPT THE TERMS AND PRIVACY POLICY */}
+                        <div className='flex flex-row gap-[8px] items-center'>
+                            <input type='checkbox' />
+                            <p className='text-[11px] text-[var(--black-subtext)] select-none'>I accept the <a href="#" className='underline'>terms</a> & <a href="" className='underline'>privacy policy.</a></p>
+                        </div>
+
+                    </div>
+                </div>
+                <div className='flex flex-row items-center  justify-center w-full'>
+                    <button onClick={handleRegister} style={{ backgroundColor: 'var(--black-card)', color: 'white', width: '100%', height: '35px', fontSize: '12px', padding: '0 16px', borderRadius: "50px", marginTop: '12px' }}>Buat akun</button>
+                </div>
+
+                <p style={{ color: 'blue', fontSize: '12px', marginTop: '12px', textAlign: 'center' }}>
+                    <button onClick={() => setIsRegister(false)} className='text-[12px] text-black select-none'>Sudah punya akun?{' '}<span className='underline'>Masuk disini</span> </button>
+                </p>
+
+                {error && <p style={{ color: 'tomato', fontSize: '12px', textAlign: 'center', fontWeight: "500" }}>{error}</p>}
+                {success && <p style={{ color: 'green', fontSize: '12px', textAlign: 'center', fontWeight: '500' }}>{success}</p>}
+            </div>
+
+
         </div>
     );
 };

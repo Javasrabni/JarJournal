@@ -1,34 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import RegisterPage from './registerPage/registerPage';
 import LoginPage from './loginPage/loginPage';
 import { useContext } from 'react';
-import { ThemeAppContext } from '../Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext';
+// import { ThemeAppContext } from '../Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext';
 import { API_URL_CONTEXT } from './Context/API_URL';
 
-const AuthPage = ({ setToken }) => {
+const AuthPage = () => {
     // STATUS AUTH FORM
     const {isRegister, setIsRegister} = useContext(API_URL_CONTEXT);
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+    const navigate = useNavigate()
+    // GET TOKEN
+    useEffect(()=> {
+        const getToken = localStorage.getItem('token')
+        if(getToken) {
+            setToken(getToken)
+        }
+    }, [setToken])
+
+    // if user has login, direct into main page
+    useEffect(()=> {
+        if(token) {
+            navigate('/dashboard')
+        }
+    }, [token])
 
     // THEME
-    const { themeActive, setThemeActive } = useContext(ThemeAppContext)
+    // const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
     return (
-        <div className={`w-full h-[100vh] flex items-center justify-center ${themeActive ? 'bg-white' : 'bg-white'} p-[32px]`}>
+        <div className={`max-w-[400px] h-[100svh] flex items-center justify-between p-[16px] m-auto`}>
             {isRegister ? (
-                <div className='w-full h-fit p-[16px] flex flex-col items-center justify-center'>
-                    <RegisterPage setToken={setToken}/>
-                    <p style={{ color: 'blue',fontSize: '12px',marginTop: '12px' }}>
-
-                        <button onClick={() => setIsRegister(false)}>Sudah punya akun?{' '}<span className='underline'>Masuk</span> </button>
-                    </p>
+                <div className='w-full h-full p-[16px] flex flex-col items-center justify-center'>
+                    <RegisterPage/>
                 </div>
             ) : (
                 <div className='w-full h-fit p-[16px] flex flex-col items-center justify-center'>
-                    <LoginPage setToken={setToken} />
-                    <p style={{ color: 'blue',fontSize: '12px',marginTop: '12px' }}>
-
-                        <button onClick={() => setIsRegister(true)}>Tidak punya akun?{' '} <span className='underline'>Daftar</span></button>
-                    </p>
+                    <LoginPage />
                 </div>
             )}
         </div>

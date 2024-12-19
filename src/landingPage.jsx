@@ -7,12 +7,7 @@ import AuthPage from "./Auth/authPage"
 export default function LandingPage() {
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-
-    // NAVIGATE
     const navigate = useNavigate()
-
-    // LOGIN STATUS
-    const [onLogin, setOnLogin] = useState(false)
 
     // STORE TOKEN
     useEffect(() => {
@@ -21,6 +16,13 @@ export default function LandingPage() {
             setToken(savedToken); // Set token untuk menganggap user sudah login
         }
     }, []);
+
+    // Handle login
+    function HandleClickOnLogin() {
+        if(!token) {
+            navigate('/Auth')
+        }
+    }
 
     return (    
         <div>
@@ -34,13 +36,9 @@ export default function LandingPage() {
                 {!token && (
                     <>
                         <div>
-                            <button onClick={() => setOnLogin((prev) => !prev)} style={{fontWeight: '600', textDecoration: "underline"}}>Mulai Jarjournal</button>
+                            <button onClick={HandleClickOnLogin} style={{fontWeight: '600', textDecoration: "underline"}}>Mulai Jarjournal</button>
                         </div>
-                        <div>
-                            {onLogin && (
-                                <AuthPage setToken={setToken} />
-                            )}
-                        </div>
+
                     </>
                 )}
             </div>

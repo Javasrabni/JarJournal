@@ -62,6 +62,7 @@ function App() {
                                       <Route path='/Artikel/publish' element={<ArtikelForm />} />
                                       <Route path='/KalenderPlanner' element={<KalenderPage />} />
                                       <Route path='/JJR-ChatBot' element={<Chatbot />} />
+                                      <Route path='/Auth' element={<AuthPage />} />
 
                                       {/* Publikasi link */}
                                       <Route path='/posts/:id' element={<SelectedPub />} />
