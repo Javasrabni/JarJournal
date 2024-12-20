@@ -74,30 +74,32 @@ export default function Catatan() {
 
     // Note array
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
+
+    console.log(onNewNote)
     const { valueOnNewNote, setValueOnNewNote } = useContext(CatatanContext)
 
     // STATE TO START WRITEING NOTE
     const { writeingNote, setWriteingNote } = useContext(CatatanContext)
 
     // FETCHING GET USER NOTE
-    useEffect(() => {
-        const FetchDataNote = async () => {
-            try {
-                const response = await fetch(`${API_URL_NOTE}/auth/get-note`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                if (response.ok) {
-                    const data = await response.json()
-                    setOnNewNote(data.note || [])
+    const FetchDataNote = async () => {
+        try {
+            const response = await fetch(`${API_URL_NOTE}/auth/get-note`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-            } catch (err) {
-                console.error(err)
+            })
+            if (response.ok) {
+                const data = await response.json()
+                setOnNewNote(data.note || [])
             }
+        } catch (err) {
+            console.error(err)
         }
+    }
 
+    useEffect(() => {
         if (token) {
             FetchDataNote()
         }
@@ -115,9 +117,11 @@ export default function Catatan() {
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
     function HandleClickNote(item, index) {
-        setOnEditNote(item)
-        setOnEditNoteIndex(index)
-        navigate('/ftr/EditCatatan')
+        console.log("Editing note:", item); // Debugging line
+        setOnEditNote(item); // Set the note content to be edited
+        setOnEditNoteIndex(index); // Assuming item.id is the unique identifier for the note
+        console.log("Note ID set to:", index); // Debugging line
+        navigate('/ftr/EditCatatan');
     }
 
     const { lastEdit, setLastEdit } = useContext(CatatanContext)
@@ -147,17 +151,24 @@ export default function Catatan() {
                         <>
                             {onNewNote.length >= 1 ? (
                                 <div className="flex flex-col-reverse gap-[12px] pb-[40px]">
-                                    {onNewNote.map((item, index) =>
-                                        <div className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`} onClick={() => HandleClickNote(item, index)}>
-                                            <div className="flex flex-col gap-[0px]" >
-                                                <div key={index} id="outputCatatan" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item) }} />
-                                                {/* <p key={item.id} className={`${themeActive ? "text-white" : "text-[#00000099]"} text-[12px] font-[600] `}>{item}</p> */}
+                                    {onNewNote.map((item, index) => (
+                                        <div
+                                            key={index} // Use a unique identifier for the key
+                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                            onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                        >
+                                            <div className="flex flex-col gap-[0px]">
+                                                <div
+                                                    id="outputCatatan"
+                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item) }} // Assuming item.content holds the note text
+                                                />
                                             </div>
                                             <div>
-                                                {/* <p className=" text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p> */}
+                                                {/* Optional: You can display a timestamp or other info here */}
+                                                <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
                                             </div>
                                         </div>
-                                    )}
+                                    ))}
                                 </div>
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">

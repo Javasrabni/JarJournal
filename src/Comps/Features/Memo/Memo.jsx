@@ -208,6 +208,8 @@ export default function Memo({ token }) {
                 const data = await response.json();
                 setReadyMemo(true)
                 setValueMemo(data.memos); // Atur memo user
+            } else {
+                setReadyMemo(false)
             }
         } catch (err) {
             console.error('Error fetching memo:', err);

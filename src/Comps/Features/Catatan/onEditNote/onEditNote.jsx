@@ -35,29 +35,27 @@ export default function OnEditNote({ dataNote, indexNote }) {
     // EDIT VALUE NOTE STATE
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
-    console.log(onEditNote)
-    console.log(onEditNoteIndex)
 
-    const POST_NOTE_USER = async () => {
+    async function handleSaveEdit() {
         try {
-            const response = await fetch(`${API_URL_NOTE}/auth/save-note`, {
-                method: "POST",
+            const response = await fetch(`${API_URL_NOTE}/auth/update-note:id`, {
+                method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ editNote: onNewNote})
+                    'Authorization' : `Bearer ${token}`
+                }, body: JSON.stringify({noteIndex: onEditNoteIndex, editedNote: onEditNote})
             })
-
-            if (response.ok) {
-                // alert('berhasil tambah')
-                const { catatan } = await response.json()
-                setOnNewNote((prev) => [catatan, ...prev])
-                setWriteingNote((prev) => !prev)
+            const data = await response.json()
+            if(response.ok) {
+                setOnNewNote((prevNote)=> prevNote.map((note, i) => (i === onEditNoteIndex ? data.updatedNote : note)))
+                navigate('/ftr/Catatan')
             }
         } catch (err) {
             console.error(err)
         }
     }
+
+    
 
     return (
         <div className={`w-[360px] h-[90lvh] ${themeActive ? 'bg-black' : 'bg-white'} flex jusitfy-center relative`}>
@@ -95,8 +93,8 @@ export default function OnEditNote({ dataNote, indexNote }) {
                     />
                 </div>
                 {/* ON ADD */}
-                <div className="w-fit fixed bottom-[0px] right-[50%] m-auto flex flex-row-reverse items-center justify-center gap-[12px] z-[10] pb-[16px]" style={{transform: 'translateX(50%)'}}>
-                    <div className={`w-[40px] h-[40px] rounded-[50px] ${themeActive ? 'bg-white' : 'bg-black'} flex items-center justify-center cursor-pointer float-right`} onClick={POST_NOTE_USER}>
+                <div className="w-fit fixed bottom-[0px] right-[50%] m-auto flex flex-row-reverse items-center justify-center gap-[12px] z-[10] pb-[16px]" style={{ transform: 'translateX(50%)' }}>
+                    <div className={`w-[40px] h-[40px] rounded-[50px] ${themeActive ? 'bg-white' : 'bg-black'} flex items-center justify-center cursor-pointer float-right`} onClick={handleSaveEdit}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4" style={{ color: themeActive ? 'black' : 'white' }}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>

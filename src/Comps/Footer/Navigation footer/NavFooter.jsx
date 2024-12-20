@@ -25,19 +25,19 @@ export default function NavFooter() {
 
     return (
         <div className="w-full h-full flex flex-row items-center justify-around text-white" style={{ borderTop: '1px solid var(--black-border)' }}>
-            <div onClick={() => navigate('/dashboard')}>
+            <div onClick={() => navigate('/dashboard')} className="cursor-pointer">
                 <span>{homeIcon}</span>
             </div>
-            <div onClick={() => navigate('/Explore')}>
+            <div onClick={() => navigate('/Explore')} className="cursor-pointer">
                 <span>{searchIcon}</span>
             </div>
             <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
                 <i class="fa-solid fa-robot"></i>
             </div>
-            <div onClick={() => alert('soon')}>
+            <div onClick={() => alert('soon')} className="cursor-pointer">
                 <i class="fa-solid fa-user"></i>
             </div>
-            <div onClick={() => alert('soon')}>
+            <div onClick={() => alert('soon')} className="cursor-pointer">
                 <span>{userIcon}</span>
             </div>
         </div>
