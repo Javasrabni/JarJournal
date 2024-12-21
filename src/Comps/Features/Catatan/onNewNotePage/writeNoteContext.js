@@ -8,8 +8,6 @@ export default function WriteNoteProvider({children}) {
         return saveValueEditable ? JSON.parse(saveValueEditable) : ''
     })
 
-    
-
     useEffect(()=> {
         localStorage.setItem('saveNoteEditable', JSON.stringify(valueEditableDiv))
     }, [valueEditableDiv])

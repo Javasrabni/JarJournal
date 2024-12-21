@@ -6,7 +6,7 @@ import { PopupFrSettingsContext } from "../../Popup_settings/popupSetting/boxPop
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
-import { Skeleton } from "antd"
+// import Skeleton from "react-loading-skeleton";
 
 export default function Memo({ token }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
@@ -419,12 +419,11 @@ export default function Memo({ token }) {
                                                         </div>
                                                     ) : (
                                                         <div className={`w-[136px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            {readyMemo ? (
+                                                            {/* {readyMemo ? ( */}
                                                                 <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
-                                                            ) : (
+                                                            {/* ) : (
                                                                 <Skeleton count={2} height={'16px'} className="animate-pulse"/>
-                                                            )}
-
+                                                            )} */}
                                                         </div>
                                                     )}
                                                     {/* </li> */}

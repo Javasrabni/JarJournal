@@ -9,8 +9,10 @@ import LoginPage from "../../Auth/loginPage/loginPage";
 import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import Skeleton from "react-loading-skeleton";
+import { CatatanContext } from "../Features/Catatan/catatanContex";
 
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
+
     // AUTH
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     // GET TOKEN    
@@ -40,7 +42,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
     const [catatanPage, setCatatanPage] = useState(false)
     useEffect(() => {
-        if (pathLocation.pathname === "/ftr/Catatan") {
+        if (pathLocation.pathname === "/ftr/Catatan" || pathLocation.pathname === '/ftr/EditCatatan') {
             setCatatanPage(true)
         }
     }, [catatanPage])
@@ -153,19 +155,41 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
     </svg>
 
+    const { writeingNote, setWriteingNote } = useContext(CatatanContext)
+    const [hideSetting, setHideSetting] = useState(false)
+    function HandleBackPage() {
+        if (pathLocation.pathname === '/ftr/EditCatatan') {
+            navigate('/ftr/Catatan')
+        } else if (pathLocation.pathname === '/ftr/Catatan') {
+            if (writeingNote) {
+                setWriteingNote(false)
+            } else (
+                navigate('/dashboard')
+            )
+        }
+    }
+
+    // HIDE SETTING ON SETTING PAGE 
+    useEffect(() => {
+        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan']
+        if (pathToHideSetting.includes(pathLocation.pathname)) {
+            setHideSetting(true)
+        }
+    }, [pathLocation.pathname])
 
     return (
         <div className="flex flex-col gap-[8px]">
             <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
 
                 {!hideLogo ? (
-                    <div className="text-white flex gap-[8px]" onClick={() => navigate('/dashboard')}>
+                    <div className="text-white flex items-center gap-[12px]" onClick={HandleBackPage}>
                         {catatanPage ? (
                             <div className="flex items-center justify-center pr-[12px] cursor-pointer">
                                 {backIcon}
                             </div>
                         ) : (
-                            <img src="/Assets/Icon/star.svg" alt="JarJournal Icon" style={{ filter: "drop-shadow(0px 0px 12px gold)" }} width={'32px'} />
+                            // style={{ filter: "drop-shadow(0px 0px 12px gold)" }}
+                            < img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1734756936/LogoJJR_TrsprnLogo_n9ojre.webp" alt="JarJournal Icon" style={{ width: '28px', height: '28px' }} loading="lazy" />
                         )}
                         <div>
                             <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>
@@ -203,7 +227,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                     </div>
 
                     {/* SETTING  */}
-                    <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer" onClick={HandleSetting}>
+                    <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer" onClick={HandleSetting} style={{ display: hideSetting && 'none' }}>
                         {/* ICON */}
                         <div style={{ paddingLeft: "0px" }}>
                             {settingIcon}
@@ -212,42 +236,55 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                         <div>
                             {openSetting && (
                                 <div className="p-[12px] text-[12px]" style={{ position: "absolute", zIndex: '10', transform: 'translateX(-128px) translateY(18px)', width: `${280 / 2}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
-                                    <div className="flex flex-col w-full h-full gap-[8px]">
-                                        {/* name user */}
-                                        {username || userEmail ? (
-                                            <>
-                                                <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
-                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
-                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${username}`}</p>
+
+                                    {token ? (
+                                        <div className="flex flex-col w-full h-full gap-[8px]">
+                                            {/* name user */}
+                                            {username || userEmail ? (
+                                                <>
+                                                    <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
+                                                        <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
+                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${username}`}</p>
+                                                    </div>
+                                                    <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
+                                                        <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
+                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${userEmail}`}</p>
+                                                    </div>
+                                                    <div onClick={handleLogout}>
+                                                        {token && (
+                                                            <button className={`text-[12px] ${themeActive ? 'text-[tomato]' : 'text-[tomato]'}`}>
+                                                                <span className="flex flex-row gap-[4px] items-center">
+                                                                    {logoutIcon}
+                                                                    Logout
+                                                                </span>
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="flex flex-col gap-[8px]">
+                                                    <span>
+                                                        <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
+                                                        <Skeleton count={1} height={'16px'} className="animate-pulse" />
+                                                    </span>
+                                                    <span>
+                                                        <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
+                                                        <Skeleton count={1} height={'16px'} className="animate-pulse" />
+                                                    </span>
                                                 </div>
-                                                <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
-                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
-                                                    <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${userEmail}`}</p>
-                                                </div>
-                                                <div onClick={handleLogout}>
-                                                    {token && (
-                                                        <button className={`text-[12px] ${themeActive ? 'text-[tomato]' : 'text-[tomato]'}`}>
-                                                            <span className="flex flex-row gap-[4px] items-center">
-                                                                {logoutIcon}
-                                                                Logout
-                                                            </span>
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className="flex flex-col gap-[8px]">
-                                                <span>
-                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
-                                                    <Skeleton count={1} height={'16px'} className="animate-pulse" />
-                                                </span>
-                                                <span>
-                                                    <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
-                                                    <Skeleton count={1} height={'16px'} className="animate-pulse" />
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col w-full h-full gap-[8px]">
+                                            <span>
+                                                <button className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} onClick={() => navigate('/Auth')}>
+                                                    <span className="flex flex-row gap-[8px] items-center">
+                                                        {logoutIcon} <span className="underline">LogIn</span>
+                                                    </span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

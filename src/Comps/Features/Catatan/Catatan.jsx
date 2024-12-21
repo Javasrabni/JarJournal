@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import MusicBox from "../../Footer/musicBox/musicBox"
 import UserQuote from "../../Footer/userQuote/userQuote"
 import { useContext, useEffect, useState } from "react"
@@ -18,13 +18,14 @@ import './style.css'
 
 export default function Catatan() {
     const navigate = useNavigate()
+    const locations = useLocation()
 
     // THEME
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
-
     useEffect(() => {
-        document.body.style.backgroundColor = themeActive ? 'black' : 'white'
-    })
+        document.body.style.backgroundColor = themeActive ? 'var(--bg-12)' : 'white'
+    }, [])
+
     const { id } = useParams()
     const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
 
@@ -38,7 +39,7 @@ export default function Catatan() {
         if (localStorage.getItem('token')) {
             setToken(localStorage.getItem('token'))
         }
-    }, [])
+    }, [token])
 
     // FETCHING GET USER INFO
     useEffect(() => {
@@ -80,6 +81,9 @@ export default function Catatan() {
 
     // STATE TO START WRITEING NOTE
     const { writeingNote, setWriteingNote } = useContext(CatatanContext)
+    useEffect(() => {
+        setWriteingNote(false)
+    }, [setWriteingNote])
 
     // FETCHING GET USER NOTE
     const FetchDataNote = async () => {
@@ -118,23 +122,43 @@ export default function Catatan() {
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
     function HandleClickNote(item, index) {
         console.log("Editing note:", item); // Debugging line
-        setOnEditNote(item); // Set the note content to be edited
+        setOnEditNote(item.content); // Set the note content to be edited
         setOnEditNoteIndex(index); // Assuming item.id is the unique identifier for the note
         console.log("Note ID set to:", index); // Debugging line
         navigate('/ftr/EditCatatan');
     }
 
-    const { lastEdit, setLastEdit } = useContext(CatatanContext)
+    const [filteredNote, setFilteredNote] = useState([])
+    const [valueInputNote, setValueInputNote] = useState('')
+    const [visibleFilteredValue, setVisibleFilteredValue] = useState(false)
 
-    function lastEditNote(param) {
-        const lastEditNote = new Date(document.lastModified)
-        const formatLastEditNote = lastEditNote.toLocaleString('id-ID', {
-            year: '2-digit',
-            day: "2-digit",
-            hour: 'numeric',
-            month: "2-digit"
-        })
+    function HandleChangeNote(value) {
+        const userInputSearch = value.target.value.toLowerCase();
+        setValueInputNote(userInputSearch) // ValueInput sementara
+
+        if (userInputSearch === '') {
+            setFilteredNote(onNewNote)
+            setVisibleFilteredValue(false)
+        } else {
+            const delayOutput = setTimeout(() => {
+                const filterNote = onNewNote.filter(item =>
+                    item.content.includes(userInputSearch)
+                )
+                if (filterNote.length < 1) {
+                    setVisibleFilteredValue(true)
+                } else {
+                    setVisibleFilteredValue(false)
+                }
+
+                setFilteredNote(filterNote)
+            }, 300)
+
+            return () => clearTimeout(delayOutput)
+        }
+
     }
+
+
 
     // const lastModified = onNewNote.map((item)=> ({
     //     ...item, lastModified: lastEditNote()
@@ -142,7 +166,7 @@ export default function Catatan() {
 
     return (
         <>
-            <div className={`w-[360px] h-[90lvh] ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
+            <div className={`w-[360px] h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
                 {/* Main content */}
                 <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} flex flex-col gap-[12px] h-full p-[16px] text-white w-full`}>
                     {writeingNote ? (
@@ -150,28 +174,68 @@ export default function Catatan() {
                     ) : (
                         <>
                             {onNewNote.length >= 1 ? (
-                                <div className="flex flex-col-reverse gap-[12px] pb-[40px]">
-                                    {onNewNote.map((item, index) => (
-                                        <div
-                                            key={index} // Use a unique identifier for the key
-                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
-                                            onClick={() => HandleClickNote(item, index)} // Pass the item directly
-                                        >
-                                            <div className="flex flex-col gap-[0px]">
-                                                <div
-                                                    id="outputCatatan"
-                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item) }} // Assuming item.content holds the note text
-                                                />
-                                            </div>
+                                <div className="flex flex-col gap-[12px] pb-[40px]">
+
+                                    <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px]">
+
+                                        <input type="text" placeholder="Cari catatan" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full rounded-[8px]  p-[12px] outline-0 border-0 text-[12px]`} onChange={(e) => HandleChangeNote(e)} />
+                                        {visibleFilteredValue && (
                                             <div>
-                                                {/* Optional: You can display a timestamp or other info here */}
-                                                <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                                <p className="text-[12px] text-[#999999]">"{valueInputNote}" Tidak ada :/</p>
                                             </div>
-                                        </div>
-                                    ))}
+                                        )}
+                                    </div>
+
+                                    {/* TOTAL NOTE USER */}
+                                    <div>
+                                        <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.length} Catatan</p>
+                                    </div>
+
+                                    {/* TAMPILKAN NOTE USER JIKA FILTER = TRUE */}
+                                    {filteredNote.length >= 1 ? (
+                                        <>
+                                            {filteredNote.map((item, index) => (
+                                                <div
+                                                    key={index} // Use a unique identifier for the key
+                                                    className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                >
+                                                    <div className="flex flex-col gap-[0px]">
+                                                        <div
+                                                            id="outputCatatan"
+                                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <>
+                                            {onNewNote.map((item, index) => (
+                                                <div
+                                                    key={index} // Use a unique identifier for the key
+                                                    className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                >
+                                                    <div className="flex flex-col gap-[0px]">
+                                                        <div
+                                                            id="outputCatatan"
+                                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </>
+                                    )}
                                 </div>
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center">
+                                <div className="w-full h-[90vh] flex items-center justify-center">
                                     <p className={`${themeActive ? "text-[var(--black-subtext)]" : "text-[--black-subtext]"} text-[10px]`}>Tidak ada catatan</p>
                                 </div>
                             )}

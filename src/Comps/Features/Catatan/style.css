@@ -27,6 +27,88 @@
 #outputCatatan h1 {
     font-size: 24px;
 }
+
 #outputCatatan h2 {
     font-size: 18px;
 }
+
+.ql-container {
+    font-family: 'poppins', sans-serif;
+    font-size: 12px;
+    background-color: #121212;
+    /* Warna background editor */
+    border: 1px solid #ddd;
+    /* Border editor */
+}
+
+.ql-editor .ql-blank {
+    color: white;
+}
+
+.ql-toolbar.ql-snow {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 12;
+    right: 50%;
+    transform: translateX(50%);
+    background-color: #121212;
+    /* Warna toolbar */
+    padding: 0px;
+
+    /* Border toolbar */
+}
+
+
+.ql-snow.ql-toolbar button {
+    /* Border toolbar */
+    float: none;
+}
+
+.ql-editor {
+    padding: 0;
+    min-height: 200px;
+    /* Tinggi minimum area editor */
+    color: white;
+    /* Warna teks */
+    line-height: 1.6;
+    /* Jarak antar baris */
+}
+.ql-snow .ql-formats {
+    justify-items: center;
+    justify-content: space-between;
+}
+
+.ql-formats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+    width: 100%;
+    text-align: center;
+    height: fit-content;
+    padding: 12px;
+    background-color: black;
+}
+
+.ql-snow .ql-stroke {
+    stroke: white !important;
+    /* Ubah warna garis ikon */
+    stroke-width: 2px;
+    /* Ubah ketebalan garis */
+}
+
+.ql-snow .ql-active .ql-stroke {
+    stroke: yellow !important; /* Warna ikon saat aktif dan di-hover */
+  }
+.ql-snow .ql-active:hover .ql-stroke {
+    stroke: yellow !important; /* Warna ikon saat aktif dan di-hover */
+  }
+  
+  .ql-snow .ql-editor::before {
+    color: var(--black-subtext) !important; /* Ubah warna placeholder */
+    font-style: normal; /* Gaya opsional */
+    font-size: 12px;
+    margin-left: -12px;
+  }
+  
