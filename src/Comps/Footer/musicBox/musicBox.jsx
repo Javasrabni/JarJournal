@@ -78,8 +78,7 @@ export default function MusicBox() {
                 <ToggleDarkMode />
             </div>
             
-            <div className="flex flex-col items-center" >
-
+            <div className="flex flex-col items-center w-full" >
                 {/* Button to pull up/down */}
                 <div className={`flex justify-center relative items-center w-[52px] h-[14px] ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'} cursor-pointer`} style={{ borderRadius: "10px 10px 0px 0px",  borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)", bottom: "-1px"}} onClick={() => setStatusMusicAxisY((prev) => !prev)}>
                     {statusMusicAxisY ? (
@@ -94,7 +93,7 @@ export default function MusicBox() {
                 </div>
 
                 {/* Music */}
-                <div className={`${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'} w-[360px] h-[120px] p-[16px] ${themeActive ? "text-white" : "text-[var(--black-text)]"}`} style={{ borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }}>
+                <div className={`${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'} w-full h-[120px] p-[16px] ${themeActive ? "text-white" : "text-[var(--black-text)]"}`} style={{ borderTop: themeActive ? "1px solid var(--black-border)" : "1px solid var(--white-bg-200)" }}>
                     <div>
                         <div className="flex flex-col gap-[6px]">
                             <div className="flex flex-row justify-between items-center" >

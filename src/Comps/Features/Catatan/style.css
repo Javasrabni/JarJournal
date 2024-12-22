@@ -45,19 +45,7 @@
     color: white;
 }
 
-.ql-toolbar.ql-snow {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    z-index: 12;
-    right: 50%;
-    transform: translateX(50%);
-    background-color: #121212;
-    /* Warna toolbar */
-    padding: 0px;
 
-    /* Border toolbar */
-}
 
 
 .ql-snow.ql-toolbar button {
@@ -74,7 +62,9 @@
     line-height: 1.6;
     /* Jarak antar baris */
 }
+
 .ql-snow .ql-formats {
+    display: flex;
     justify-items: center;
     justify-content: space-between;
 }
@@ -99,16 +89,47 @@
 }
 
 .ql-snow .ql-active .ql-stroke {
-    stroke: yellow !important; /* Warna ikon saat aktif dan di-hover */
-  }
+    stroke: yellow !important;
+    /* Warna ikon saat aktif dan di-hover */
+}
+
 .ql-snow .ql-active:hover .ql-stroke {
-    stroke: yellow !important; /* Warna ikon saat aktif dan di-hover */
-  }
-  
-  .ql-snow .ql-editor::before {
-    color: var(--black-subtext) !important; /* Ubah warna placeholder */
-    font-style: normal; /* Gaya opsional */
+    stroke: yellow !important;
+    /* Warna ikon saat aktif dan di-hover */
+}
+
+.ql-snow .ql-editor::before {
+    color: var(--black-subtext) !important;
+    /* Ubah warna placeholder */
+    font-style: normal;
+    /* Gaya opsional */
     font-size: 12px;
     margin-left: -12px;
-  }
-  
+}
+
+.ql-toolbar.ql-snow {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 12;
+    right: 50%;
+    transform: translateX(50%);
+    background-color: #121212;
+    /* Warna toolbar */
+    padding: 0px;
+    /* Border toolbar */
+}
+
+.ql-toolbar.ql-snow.kalkulasiPosisiBottom {
+    width: 100%;
+    position: fixed;
+    bottom: 50px;
+    z-index: 12;
+    right: 50%;
+    transform: translateX(50%);
+    background-color: red;
+    /* Warna toolbar */
+    padding: 0px;
+    /* Border toolbar */
+
+}

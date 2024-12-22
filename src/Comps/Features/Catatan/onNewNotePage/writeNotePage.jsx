@@ -4,6 +4,7 @@ import { WriteNoteContext } from "./writeNoteContext"
 import { useRef } from "react"
 import { CatatanContext } from "../catatanContex"
 import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
+import '../style.css'
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -70,6 +71,25 @@ export default function WriteNotePage() {
         ],
     };
 
+    // Kalkulasi posisi bottom pada format text quill js
+    const [bottomFormaterQuill, setBottomFormaterQuill] = useState(0)
+    const currentHeight = window.innerHeight
+    const heightViewPort = window.screen.height
+
+    useEffect(() => {
+        const handleResizeHeight = () => {
+            const kalkulasiPosisiBottom = heightViewPort - currentHeight
+            setBottomFormaterQuill(kalkulasiPosisiBottom)
+        }
+
+        window.addEventListener('resize', handleResizeHeight)
+
+        return () => { window.removeEventListener('resize', handleResizeHeight) }
+    })
+
+    console.log(bottomFormaterQuill)
+
+
     return (
         <div className={`w-full h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col gap-[12px]`}>
             {/* TEKS EDITOR */}
@@ -108,7 +128,7 @@ export default function WriteNotePage() {
                     ]}
                 />
             </div>
-            
+
             {/* ON ADD */}
             {note.length > 1 && (
                 <div className="w-fit fixed top-[16px] right-[32px] m-auto flex flex-row-reverse items-center justify-center gap-[12px] z-[10] pb-[16px]" style={{ transform: 'translateX(50%)' }}>

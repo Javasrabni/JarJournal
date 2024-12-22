@@ -11,11 +11,11 @@ import html2canvas from "html2canvas"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function Publikasi() {
+export default function Publikasi({publikasiData}) {
     // THEME
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
     useEffect(() => {
-        document.body.style.backgroundColor = themeActive ? 'bg-[var(--black-card)]' : 'white'
+        document.body.style.backgroundColor = themeActive ? 'var(--black-card)' : 'white'
     }, [])
 
     // LOADING
@@ -36,26 +36,26 @@ export default function Publikasi() {
 
 
 
-    useEffect(() => {
-        const fetchPub = async () => {
-            setLoading(true)
-            try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
-                if (response.ok) {
-                    const data = await response.json()
-                    setPublikasi(data)
-                    setLoading(false)
-                } else {
-                    setLoading(true)
-                }
-                // console.log(data)
-            } catch (err) {
-                console.error(`gagal mendapatkan pub ${err}`)
-            }
-        };
+    // useEffect(() => {
+    //     const fetchPub = async () => {
+    //         setLoading(true)
+    //         try {
+    //             const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
+    //             if (response.ok) {
+    //                 const data = await response.json()
+    //                 setPublikasi(data)
+    //                 setLoading(false)
+    //             } else {
+    //                 setLoading(true)
+    //             }
+    //             // console.log(data)
+    //         } catch (err) {
+    //             console.error(`gagal mendapatkan pub ${err}`)
+    //         }
+    //     };
 
-        fetchPub()
-    }, [])
+    //     fetchPub()
+    // }, [])
 
 
 
@@ -301,7 +301,7 @@ export default function Publikasi() {
                     </div>
                 ) : (
                     <>
-                        {publikasi.map((pub, index) => (
+                        {publikasiData.map((pub, index) => (
                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                 <div className={`font-[inter] flex flex-col `}>
@@ -378,7 +378,7 @@ export default function Publikasi() {
                                     </div>
 
                                     {/* LIKE PUB */}
-                                    <div className="pt-[2px] flex flex-col gap-[4px]">
+                                    {/* <div className="pt-[2px] flex flex-col gap-[4px]">
                                         <div className="flex flex-row text-white pt-[4px]">
                                             {pub.likes.length >= 1 && (
                                                 <div className="leading-[1]" >
@@ -390,10 +390,10 @@ export default function Publikasi() {
                                                     )}
                                                 </div>
                                             )}
-                                        </div>
+                                        </div> */}
 
                                         {/* COMMENT SECTION */}
-                                        <div className="pt-[6px]">
+                                        {/* <div className="pt-[6px]">
                                             <div className="flex flex-row justify-between items-center ">
 
                                                 <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
@@ -407,8 +407,8 @@ export default function Publikasi() {
                                                     </p>
                                                 )}
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> */}
+                                    {/* </div> */}
                                 </div>
 
                             </div>

@@ -15,7 +15,7 @@ import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
 import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
 import { OVERALL_CONTEXT } from "./Context/OVERALL_CONTEXT"
 import 'react-quill/dist/quill.snow.css';
-
+import { useLocation } from "react-router-dom"
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { motion } from 'framer-motion'
@@ -38,6 +38,13 @@ export default function Home() {
         }
     }, [])
 
+    const location = useLocation()
+
+    useEffect(() => {
+        if (location.pathname === '/dashboard') {
+            document.body.style.backgroundColor = themeActive ? 'var(--bg-12)' : 'white'
+        }
+    }, [location.pathname])
 
     // Mobile Media Querry
     const MobileView = matchMedia(' (max-width: 600px) ')
@@ -72,7 +79,6 @@ export default function Home() {
 
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    console.log(token)
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -83,7 +89,7 @@ export default function Home() {
 
 
     function HandleGoPublish() {
-        if(!token) {
+        if (!token) {
             alert('Login untuk menggunakan fitur');
             navigate('/Auth')
         } else {
@@ -96,181 +102,168 @@ export default function Home() {
 
     return (
         <>
-            
-                <>
-                    {/* Popup from Reset in MusicBox */}
-                    {popupReset && (
-                        <div className="flex items-center justify-center w-full h-full fixed z-[15]">
-                            <motion.div
-                                className="popup"
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 50 }}
-                                transition={{ duration: 0.3 }}
-                                style={{
-                                    zIndex: "2",
-                                }}
-                            >
-                                <PopupLegend
-                                    resetInMusicBox={true}
-                                    Judul={'Reset timer?'}
-                                    Deskripsi={"Timer akan mulai dari 0 kembali."}
-                                />
-                            </motion.div>
-                            <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
-                        </div>
-                    )}
 
-                    {/* Popup from INFO in MusicBox */}
-                    {statePopupInfo && (
-                        <div className="flex items-center justify-center w-full h-full fixed z-[15]">
-                            <motion.div
-                                className="popup"
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 50 }}
-                                transition={{ duration: 0.3 }}
-                                style={{
-                                    zIndex: "2",
-                                }}
-                            >
-                                <PopupLegend
-                                    InfoMusicBox={true}
-                                    Judul={'Brain Focus'}
-                                    Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan timer dan musik yang tersedia.'}
-                                />
-                            </motion.div>
-                            <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />
-                        </div>
-                    )}
+            <>
+                {/* Popup from Reset in MusicBox */}
+                {popupReset && (
+                    <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                        <motion.div
+                            className="popup"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 50 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                                zIndex: "2",
+                            }}
+                        >
+                            <PopupLegend
+                                resetInMusicBox={true}
+                                Judul={'Reset timer?'}
+                                Deskripsi={"Timer akan mulai dari 0 kembali."}
+                            />
+                        </motion.div>
+                        <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
+                    </div>
+                )}
+
+                {/* Popup from INFO in MusicBox */}
+                {statePopupInfo && (
+                    <div className="flex items-center justify-center w-full h-full fixed z-[15]">
+                        <motion.div
+                            className="popup"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 50 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                                zIndex: "2",
+                            }}
+                        >
+                            <PopupLegend
+                                InfoMusicBox={true}
+                                Judul={'Brain Focus'}
+                                Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan timer dan musik yang tersedia.'}
+                            />
+                        </motion.div>
+                        <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />
+                    </div>
+                )}
 
 
-                    {/* {MobileView.matches ? ( */}
-                    <div className={`w-[360px] m-[auto] h-[100lvh] flex justify-center ${themeActive ? 'bg-black' : 'bg-white'}`} style={{ paddingBottom: '60px' }}>
-                        <div className={`w-[360px] h-full flex flex-col gap-[8px] bg-${themeActive ? "black" : "white"} justify-between`}>
-                            <div>
-                                <header>
-                                    <Header token={token} setToken={setToken} />
-                                </header>
-                                <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'var(--bg-12)' : 'white' }}>
-                                    <div className="flex flex-col gap-[12px] w-full h-full">
+                {/* {MobileView.matches ? ( */}
+                <div className={`max-w-[42rem] m-[auto] h-[100lvh] flex justify-center ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'}`} style={{ paddingBottom: '60px' }}>
+                    <div className={`w-full h-full flex flex-col gap-[8px] justify-between`}>
+                        <div>
+                            <header>
+                                <Header token={token} setToken={setToken} />
+                            </header>
+                            <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'var(--bg-12)' : 'white' }}>
+                                <div className="flex flex-col gap-[12px] w-full h-full">
 
-                                        {/* PANEL RIGHT n LEFT */}
-                                        <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[32px]">
+                                    {/* PANEL RIGHT n LEFT */}
+                                    <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[32px]">
 
-                                            {/* Left side */}
-                                            <div className="w-full grow-0 flex flex-col gap-[12px]">
-                                                <div>
-                                                    <CardFeatures
-                                                        onClickFeatures={'/ftr/Catatan'}
-                                                        heightCatatan={true}
-                                                        descFeatures={'Buat catatan harian kamu disini'}
-                                                        buttonFeatures={'Buat'}
-                                                        nameFeatures={"Catatan"}
-                                                        token={token}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <CardFeatures
-                                                        onClickFeatures={'/ftr/Jurnal'}
-                                                        heightJurnal={true}
-                                                        descFeatures={'Tulis jurnal harian kamu disini'}
-                                                        nameFeatures={"Jurnal"}
-                                                        buttonFeatures={'Tulis'}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <CardFeatures
-                                                        cardType2EBook={true}
-                                                        onClickFeatures={'/ftr/Library'}
-                                                        descFeatures={'Bacaan gratis'}
-                                                        nameFeatures={"Library"}
-                                                        buttonFeatures={'Baca'}
-                                                    />
-                                                </div>
+                                        {/* Left side */}
+                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                            <div>
+                                                <CardFeatures
+                                                    onClickFeatures={'/ftr/Catatan'}
+                                                    heightCatatan={true}
+                                                    descFeatures={'Buat catatan harian kamu disini'}
+                                                    buttonFeatures={'Buat'}
+                                                    nameFeatures={"Catatan"}
+                                                    token={token}
+                                                />
                                             </div>
-                                            {/* Right side */}
-                                            <div className="w-full grow-0 flex flex-col gap-[12px]">
-                                                <div>
-                                                    <DateTimePlan />
-                                                </div>
-                                                <div>
-                                                    <CardFeatures
-                                                        cardType2EBook={true}
-                                                        heightKalender={true}
-                                                        onClickFeatures={'/KalenderPlanner'}
-                                                        descFeatures={'Sisipkan acara'}
-                                                        nameFeatures={"Kalender Planner"}
-                                                        buttonFeatures={'Tambah'}
-                                                    />
-                                                </div>
-                                                <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
-                                                    <SisaHariToNewYear />
-                                                </div>
-                                                <div className="w-full">
-                                                    <Memo token={token} />
-                                                </div>
+                                            <div>
+                                                <CardFeatures
+                                                    onClickFeatures={'/ftr/Jurnal'}
+                                                    heightJurnal={true}
+                                                    descFeatures={'Tulis jurnal harian kamu disini'}
+                                                    nameFeatures={"Jurnal"}
+                                                    buttonFeatures={'Tulis'}
+                                                />
+                                            </div>
+                                            <div>
+                                                <CardFeatures
+                                                    cardType2EBook={true}
+                                                    onClickFeatures={'/ftr/Library'}
+                                                    descFeatures={'Bacaan gratis'}
+                                                    nameFeatures={"Library"}
+                                                    buttonFeatures={'Baca'}
+                                                />
                                             </div>
                                         </div>
-
-
-                                        {/* PUBLICATIONS */}
-                                        <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
-                                            {/* Judul */}
-                                            <div className={`mt-[16px] flex flex-row items-center justify-between`}>
-                                                <div className="flex flex-col gap-[4px]">
-                                                    <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
-                                                        <span className="flex flex-row gap-[6px] items-center">
-                                                            {artikelIcon}
-                                                            Ruang Publik
-                                                        </span>
-                                                    </p>
-
-                                                    <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
-                                                </div>
-                                                <div onClick={HandleGoPublish}>
-                                                    <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
-                                                        {plusIcon}
-                                                    </div>
-                                                </div>
+                                        {/* Right side */}
+                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                            <div>
+                                                <DateTimePlan />
                                             </div>
-
-                                            <div className="mt-[32px]" >
-                                                <Publikasi token={token} />
+                                            <div>
+                                                <CardFeatures
+                                                    cardType2EBook={true}
+                                                    heightKalender={true}
+                                                    onClickFeatures={'/KalenderPlanner'}
+                                                    descFeatures={'Sisipkan acara'}
+                                                    nameFeatures={"Kalender Planner"}
+                                                    buttonFeatures={'Tambah'}
+                                                />
+                                            </div>
+                                            <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px]`} style={{ outline: themeActive ? "1px solid var(--black-bg)" : "1px solid var(--white-bg-200)" }}>
+                                                <SisaHariToNewYear />
+                                            </div>
+                                            <div className="w-full">
+                                                <Memo token={token} />
                                             </div>
                                         </div>
                                     </div>
-                                </main>
-                            </div>
 
-                            {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
-                            <div>
-                                <footer className="p-[0px] h-fit" style={{ position: "fixed", bottom: "54px", left: "0px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
-                                    <div>
-                                        <div>
-                                            <MusicBox />
+
+                                    {/* PUBLICATIONS */}
+                                    <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
+                                        {/* Judul */}
+                                        <div className={`mt-[16px] flex flex-row items-center justify-between`}>
+                                            <div className="flex flex-col gap-[4px]">
+                                                <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
+                                                    <span className="flex flex-row gap-[6px] items-center">
+                                                        {artikelIcon}
+                                                        Ruang Publik
+                                                    </span>
+                                                </p>
+
+                                                <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
+                                            </div>
+                                            <div onClick={HandleGoPublish}>
+                                                <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
+                                                    {plusIcon}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={`w-[360px] h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
-                                            <UserQuote />
-                                        </div>
+
+                                        {/* <div className="mt-[32px]" >
+                                            <Publikasi token={token} />
+                                        </div> */}
                                     </div>
-
-
-                                </footer>
-                                <div className="fixed bottom-0 h-[54px] w-[360px] bg-[var(--bg-12)] z-[16]">
-                                    <NavFooter />
                                 </div>
-                            </div>
+                            </main>
+                        </div>
+
+                        {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
+                        <div>
+                            <footer style={{ position: "fixed", bottom: "54px", left: "0px", maxWidth: "42rem", height: 'fit-content', margin: 'auto',padding: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
+                                <div className="w-full">
+                                    <MusicBox />
+                                </div>
+                                <div className={`w-full h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
+                                    <UserQuote />
+                                </div>
+                            </footer>
+                            <NavFooter />
                         </div>
                     </div>
-                </>
+                </div>
+            </>
         </>
     )
 }
-
-// Lokasi path fitur aplikasi
-export const featuresPath = [
-    { id: "1", nameFeatures: "Catatan" },
-    { id: "2", nameFeatures: "Jurnal" },
-    { id: "3", nameFeatures: "rabbani" }
-]

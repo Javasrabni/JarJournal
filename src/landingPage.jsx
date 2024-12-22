@@ -9,6 +9,11 @@ export default function LandingPage() {
     const { token, setToken } = useContext(API_URL_CONTEXT)
     const navigate = useNavigate()
 
+    useEffect(() => {
+        navigate('/dashboard')
+    }, [])
+
+
     // STORE TOKEN
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -19,24 +24,24 @@ export default function LandingPage() {
 
     // Handle login
     function HandleClickOnLogin() {
-        if(!token) {
+        if (!token) {
             navigate('/Auth')
         }
     }
 
-    return (    
+    return (
         <div>
             <p>Jarjournal</p>
             <div>
                 {token && (
                     <div>
-                        <button onClick={()=> navigate('/dashboard')}>Dashboard</button>
+                        <button onClick={() => navigate('/dashboard')}>Dashboard</button>
                     </div>
                 )}
                 {!token && (
                     <>
                         <div>
-                            <button onClick={HandleClickOnLogin} style={{fontWeight: '600', textDecoration: "underline"}}>Mulai Jarjournal</button>
+                            <button onClick={HandleClickOnLogin} style={{ fontWeight: '600', textDecoration: "underline" }}>Mulai Jarjournal</button>
                         </div>
 
                     </>

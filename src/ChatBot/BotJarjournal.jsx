@@ -4,7 +4,7 @@ import { ThemeAppContext } from "../Comps/Features/Theme/toggleTheme.jsx/ThemeAp
 import ReactMarkdown from 'react-markdown';
 import './style.css';
 import { useNavigate } from "react-router-dom";
-import debounce from 'lodash.debounce'; // Pastikan untuk menginstal lodash.debounce
+import NavFooter from "../Comps/Footer/Navigation footer/NavFooter";
 
 // Komponen untuk merender pesan dengan ReactMarkdown
 const MarkdownMessage = React.memo(({ message }) => (
@@ -269,31 +269,36 @@ export default function Chatbot() {
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100vh]`}>
             <div className={`h-[45px] w-full flex flex-row gap-[16px] items-center justify-between px-[16px] fixed ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'}`} role="heading">
-                <div className="flex flex-row items-center gap-[18px]">
-                    <span className={`${themeActive ? 'text-white' : 'text-black'}`} onClick={() => navigate('/dashboard')}>{backIcon}</span>
+
+                <div>
+                    <p className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] font-[600]`}>JJR Chatbot</p>
+                </div>
+
+                {/* -------------------- HEADING -------------------- */} 
+                {/* <div className="flex flex-row items-center gap-[18px]">
+                    <span className={`${themeActive ? 'text-white' : 'text-black'}`} onClick={() => navigate('/dashboard')}>{backIcon}</span> */}
 
                     {/* DROPDOWN AGENT ROLE */}
-                    <span className="flex flex-row gap-[12px] items-center">
+                    {/* <span className="flex flex-row gap-[12px] items-center"> */}
                         {/* DROPDOWN SECT */}
-                        <div className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} flex flex-row gap-[6px] items-center rounded-[4px] py-[2px] px-[6px]`}>
+                        {/* <div className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} flex flex-row gap-[6px] items-center rounded-[4px] py-[2px] px-[6px]`}>
                             <select name="role" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} text-[12px] outline-0 border-0 `} tabIndex={0}>
                                 <option value="RoleAgent">Set RoleAgent</option>
                                 <option value="Partner">Interactive AI</option>
                                 <option value="Asking">OnPoint AI</option>
                             </select>
-                        </div>
+                        </div> */}
                         {/* INFO ICON */}
-                        <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" tabIndex={0}>{askIcon}</span>
-                    </span>
-
-
+                        {/* <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" tabIndex={0}>{askIcon}</span> */}
+                    {/* </span> */}
 
                     {/* <div className="flex flex-row items-center gap-[16px]">
                         <p className={`font-[600] text-[14px] ${themeActive ? 'text-white' : 'text-black'}`}>JJRC Chat</p>
                     </div> */}
-                </div>
+                {/* </div> */}
+                {/* -------------------- || -------------------- */}
 
-                <div className="flex flex-row gap-[16px] items-center" style={{ color: themeActive ? "white" : "black" }}>
+                <div className="flex flex-row gap-[16px] items-center ml-auto" style={{ color: themeActive ? "white" : "black" }}>
 
                     <div>
                         <span role="button" tabIndex={0} className={`${themeActive ? 'text-white' : 'text-black'}`}>
@@ -378,7 +383,7 @@ export default function Chatbot() {
                         </div>
                     )}
                 </div>
-                <div className="flex flex-col items-center w-full gap-[8px]">
+                <div className="flex flex-col items-center w-full gap-[8px] pb-[64px]">
                     <span className="flex flex-row w-full h-[45px]">
                         <textarea
                             type="text"
@@ -411,6 +416,7 @@ export default function Chatbot() {
                         <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Setiap penjelasan akan disampaikan dengan bahasa yang mudah dipahami.</p>
                     </span>
                 </div>
+                <NavFooter />
             </div>
         </div>
     );

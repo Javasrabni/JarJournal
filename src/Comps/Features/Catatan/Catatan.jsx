@@ -11,7 +11,6 @@ import WriteNotePage from "./onNewNotePage/writeNotePage"
 import { useNavigate } from "react-router-dom"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { UseEditNoteContext } from "./onEditNote/onEditNContext"
-
 import DOMPurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 import './style.css'
@@ -19,7 +18,6 @@ import './style.css'
 export default function Catatan() {
     const navigate = useNavigate()
     const locations = useLocation()
-
     // THEME
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
     useEffect(() => {
@@ -158,22 +156,16 @@ export default function Catatan() {
 
     }
 
-
-
-    // const lastModified = onNewNote.map((item)=> ({
-    //     ...item, lastModified: lastEditNote()
-    // }))
-
     return (
         <>
-            <div className={`w-[360px] h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
+            <div className={`min-w-[360px] h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
                 {/* Main content */}
                 <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} flex flex-col gap-[12px] h-full p-[16px] text-white w-full`}>
                     {writeingNote ? (
                         <WriteNotePage />
                     ) : (
                         <>
-                            {onNewNote.length >= 1 ? (
+                            {onNewNote.length > 0 ? (
                                 <div className="flex flex-col gap-[12px] pb-[40px]">
 
                                     <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px]">

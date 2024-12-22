@@ -157,6 +157,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
     const { writeingNote, setWriteingNote } = useContext(CatatanContext)
     const [hideSetting, setHideSetting] = useState(false)
+    const [filterFuncNote, setFilterFuncNote] = useState(false)
+
     function HandleBackPage() {
         if (pathLocation.pathname === '/ftr/EditCatatan') {
             navigate('/ftr/Catatan')
@@ -174,6 +176,16 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan']
         if (pathToHideSetting.includes(pathLocation.pathname)) {
             setHideSetting(true)
+        }
+
+      
+    }, [pathLocation.pathname])
+
+    useEffect(()=> {
+        if (pathLocation.pathname === '/ftr/Catatan') {
+            setFilterFuncNote(true)
+        } else if (pathLocation.pathname === '/ftr/EditCatatan') {
+            setFilterFuncNote(false)
         }
     }, [pathLocation.pathname])
 
@@ -225,6 +237,18 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                             </svg>
                         )}
                     </div>
+
+                    {filterFuncNote && !writeingNote &&(
+                        <div className="cursor-pointer">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5" style={{color: themeActive ? 'white' : 'black'}}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                                </svg>
+
+                            </span>
+                        </div>
+
+                    )}
 
                     {/* SETTING  */}
                     <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer" onClick={HandleSetting} style={{ display: hideSetting && 'none' }}>
