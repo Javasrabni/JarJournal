@@ -125,31 +125,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { username, setUsername } = useContext(API_URL_CONTEXT)
     const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
 
-    // FETCHING GET USER INFO
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                const data = await response.json()
-
-                if (response.ok) {
-                    setUsername(data.username)
-                    setUserEmail(data.email)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        if (token) {
-            fetchUserInfo()
-        }
-    }, [token])
+    
 
     const backIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />

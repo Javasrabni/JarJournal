@@ -17,6 +17,7 @@ import ArtikelProvider from './Comps/Features/Publikasi/Context/artikelContext';
 import OnEditNoteProvider from './Comps/Features/Catatan/onEditNote/onEditNContext';
 import OVERALL_CONTEXT_PROVIDER from './Context/OVERALL_CONTEXT';
 import ExploreProvider from './Pages/explore/Context/exploreContext';
+import UserProfileProvider from './Pages/userProfile/Context/userProfileContext';
 
 // Components
 import Home from './home';
@@ -35,57 +36,61 @@ import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Chatbot from './ChatBot/BotJarjournal';
 import Explore from './Pages/explore/explore';
+import UserProfile from './Pages/userProfile/userProfile';
 
 function App() {
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
       <API_URL_PROVIDER>
         <OVERALL_CONTEXT_PROVIDER>
-          <ArtikelProvider>
-            <ExploreProvider>
-              <OnEditNoteProvider>
-                <UserQuoteProvider>
-                  <MemoProvider>
-                    <PopupFrSettingsProvider>
-                      <MusicBoxProvider>
-                        <ThemeAppProvider>
-                          <BrainFProvider>
-                            <ToggleAllProvider>
-                              <AnimateLoadPageProvider>
-                                <CatatanProvider>
-                                  <WriteNoteProvider>
-                                    <BrowserRouter>
-                                      <Routes>
+          <UserProfileProvider>
+            <ArtikelProvider>
+              <ExploreProvider>
+                <OnEditNoteProvider>
+                  <UserQuoteProvider>
+                    <MemoProvider>
+                      <PopupFrSettingsProvider>
+                        <MusicBoxProvider>
+                          <ThemeAppProvider>
+                            <BrainFProvider>
+                              <ToggleAllProvider>
+                                <AnimateLoadPageProvider>
+                                  <CatatanProvider>
+                                    <WriteNoteProvider>
+                                      <BrowserRouter>
+                                        <Routes>
 
-                                        <Route index element={<LandingPage />} />
-                                        <Route path='/Auth' element={<AuthPage />} />
-                                        <Route path='/dashboard' element={<Home />} />
-                                        <Route path='/Explore' element={<Explore />} />
-                                        <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                                        <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                                        <Route path='/Artikel/publish' element={<ArtikelForm />} />
-                                        <Route path='/KalenderPlanner' element={<KalenderPage />} />
-                                        <Route path='/JJR-ChatBot' element={<Chatbot />} />
+                                          <Route index element={<LandingPage />} />
+                                          <Route path='/Auth' element={<AuthPage />} />
+                                          <Route path='/dashboard' element={<Home />} />
+                                          <Route path='/Explore' element={<Explore />} />
+                                          <Route path='/JJR-User/:usernameId' element={<UserProfile />} />
+                                          <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                                          <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                                          <Route path='/Artikel/publish' element={<ArtikelForm />} />
+                                          <Route path='/KalenderPlanner' element={<KalenderPage />} />
+                                          <Route path='/JJR-ChatBot' element={<Chatbot />} />
 
-                                        {/* Publikasi link */}
-                                        <Route path='/posts/:id' element={<SelectedPub />} />
-                                        <Route path='*' element={<Page404 />} />
+                                          {/* Publikasi link */}
+                                          <Route path='/posts/:id' element={<SelectedPub />} />
+                                          <Route path='*' element={<Page404 />} />
 
-                                      </Routes>
-                                    </BrowserRouter>
-                                  </WriteNoteProvider>
-                                </CatatanProvider>
-                              </AnimateLoadPageProvider>
-                            </ToggleAllProvider>
-                          </BrainFProvider>
-                        </ThemeAppProvider>
-                      </MusicBoxProvider>
-                    </PopupFrSettingsProvider>
-                  </MemoProvider>
-                </UserQuoteProvider>
-              </OnEditNoteProvider>
-            </ExploreProvider>
-          </ArtikelProvider>
+                                        </Routes>
+                                      </BrowserRouter>
+                                    </WriteNoteProvider>
+                                  </CatatanProvider>
+                                </AnimateLoadPageProvider>
+                              </ToggleAllProvider>
+                            </BrainFProvider>
+                          </ThemeAppProvider>
+                        </MusicBoxProvider>
+                      </PopupFrSettingsProvider>
+                    </MemoProvider>
+                  </UserQuoteProvider>
+                </OnEditNoteProvider>
+              </ExploreProvider>
+            </ArtikelProvider>
+          </UserProfileProvider>
         </OVERALL_CONTEXT_PROVIDER>
       </API_URL_PROVIDER>
     </SkeletonTheme >

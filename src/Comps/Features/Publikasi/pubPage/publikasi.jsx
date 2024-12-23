@@ -11,7 +11,7 @@ import html2canvas from "html2canvas"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function Publikasi({publikasiData}) {
+export default function Publikasi({ publikasiData }) {
     // THEME
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
     useEffect(() => {
@@ -284,10 +284,10 @@ export default function Publikasi({publikasiData}) {
         }
         return array
     }
-    
+
     const AlgorithmPub = ShufflePub([...publikasi])
     console.log(AlgorithmPub)
-    
+
     return (
         <div>
             {/* Daftar publikasi */}
@@ -378,7 +378,7 @@ export default function Publikasi({publikasiData}) {
                                     </div>
 
                                     {/* LIKE PUB */}
-                                    {/* <div className="pt-[2px] flex flex-col gap-[4px]">
+                                    <div className="pt-[2px] flex flex-col gap-[4px]">
                                         <div className="flex flex-row text-white pt-[4px]">
                                             {pub.likes.length >= 1 && (
                                                 <div className="leading-[1]" >
@@ -390,10 +390,10 @@ export default function Publikasi({publikasiData}) {
                                                     )}
                                                 </div>
                                             )}
-                                        </div> */}
+                                        </div>
 
                                         {/* COMMENT SECTION */}
-                                        {/* <div className="pt-[6px]">
+                                        <div className="pt-[6px]">
                                             <div className="flex flex-row justify-between items-center ">
 
                                                 <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
@@ -407,10 +407,9 @@ export default function Publikasi({publikasiData}) {
                                                     </p>
                                                 )}
                                             </div>
-                                        </div> */}
-                                    {/* </div> */}
+                                        </div>
+                                    </div>
                                 </div>
-
                             </div>
                         ))
                         }

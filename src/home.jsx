@@ -80,29 +80,28 @@ export default function Home() {
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
 
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []);
+    // useEffect(() => {
+    //     const savedToken = localStorage.getItem('token');
+    //     if (savedToken) {
+    //         setToken(savedToken); // Set token untuk menganggap user sudah login
+    //     }
+    // }, []);
 
-
-    function HandleGoPublish() {
-        if (!token) {
-            alert('Login untuk menggunakan fitur');
-            navigate('/Auth')
-        } else {
-            let delay = setTimeout(() => {
-                navigate('/Artikel/publish')
-            }, 200)
-            return () => clearTimeout(delay)
-        }
-    }
+    // HANDLE ADD POST
+    // function HandleGoPublish() {
+    //     if (!token) {
+    //         alert('Login untuk menggunakan fitur');
+    //         navigate('/Auth')
+    //     } else {
+    //         let delay = setTimeout(() => {
+    //             navigate('/Artikel/publish')
+    //         }, 200)
+    //         return () => clearTimeout(delay)
+    //     }
+    // }
 
     return (
         <>
-
             <>
                 {/* Popup from Reset in MusicBox */}
                 {popupReset && (
@@ -234,11 +233,11 @@ export default function Home() {
 
                                                 <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
                                             </div>
-                                            <div onClick={HandleGoPublish}>
+                                            {/* <div onClick={HandleGoPublish}>
                                                 <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
                                                     {plusIcon}
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         {/* <div className="mt-[32px]" >
