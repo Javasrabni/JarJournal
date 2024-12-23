@@ -7,6 +7,7 @@
   font-family: 'poppins', sans-serif;
   box-sizing: border-box;
   /* transition: opacity 0.5s ease, outline 0.3s ease, border 0.3s ease, ; */
+  -webkit-tap-highlight-color: transparent;
 }
 
 @font-face {

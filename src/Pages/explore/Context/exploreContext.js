@@ -11,6 +11,7 @@ export default function ExploreProvider({ children }) {
     const { isLoading, setLoading } = useContext(OVERALL_CONTEXT)
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
     const { setPublikasi } = useContext(ArtikelContext)
+    const [statusSearchExplore, setStatusSearchExplore] = useState(false)
 
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function ExploreProvider({ children }) {
         fetchPub()
     }, [])
     return (
-        <ExploreContext.Provider value={{ filteredPub, setFilteredPub, setDataPubToFilter, dataPubToFilter}}>
+        <ExploreContext.Provider value={{statusSearchExplore, setStatusSearchExplore, filteredPub, setFilteredPub, setDataPubToFilter, dataPubToFilter }}>
             {children}
         </ExploreContext.Provider>
     )

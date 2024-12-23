@@ -37,8 +37,12 @@
     font-size: 12px;
     background-color: #121212;
     /* Warna background editor */
-    border: 1px solid #ddd;
     /* Border editor */
+}
+
+.ql-container.ql-snow {
+    border: none;
+    outline: none;
 }
 
 .ql-editor .ql-blank {
@@ -79,6 +83,8 @@
     height: fit-content;
     padding: 12px;
     background-color: black;
+    border: none;
+    outline: none;
 }
 
 .ql-snow .ql-stroke {
@@ -112,12 +118,14 @@
     position: fixed;
     bottom: 0;
     z-index: 12;
-    right: 50%;
-    transform: translateX(50%);
+    right: 0;
+    outline: none;
+    border: none;
     background-color: #121212;
     /* Warna toolbar */
     padding: 0px;
     /* Border toolbar */
+
 }
 
 .ql-toolbar.ql-snow.kalkulasiPosisiBottom {
