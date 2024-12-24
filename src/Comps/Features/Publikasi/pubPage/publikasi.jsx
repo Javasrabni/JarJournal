@@ -343,7 +343,7 @@ export default function Publikasi({ publikasiData }) {
                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                                 <span className="flex flex-col gap-[2px] justify-center">
                                                     {/* {userIcon} */}
-                                                    @{pub.userName}
+                                                    <span onClick={() => navigate(`/JJR-User/${pub.userName}`)}>@{pub.userName}</span>
                                                     <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
                                                 </span>
                                             </p>
