@@ -6,6 +6,7 @@ import { API_URL_CONTEXT } from "../../Auth/Context/API_URL"
 import { ArtikelContext } from "../../Comps/Features/Publikasi/Context/artikelContext"
 import { ExploreContext } from "./Context/exploreContext"
 import { useNavigate } from "react-router-dom"
+import { UserProfileContext } from "../userProfile/Context/userProfileContext"
 
 export default function Explore() {
     const navigate = useNavigate()
@@ -28,7 +29,9 @@ export default function Explore() {
     const [valueInputExploreSementara, setValueInputExploreSementara] = useState('')
     const inputSearchExploreRef = useRef()
     const [valueDsntMatchWithPub, setValueDsntMatchWithPub] = useState(false)
-    const { username, setUsername } = useContext(API_URL_CONTEXT) // GET USERNAME
+
+    const { usernameProfileData, setUsernameProfileData } = useContext(UserProfileContext) // GET API USERNAME DATA 
+    const [outputSearchUsernameProfileData, setOutputSearchUsernameProfileData] = useState([])
 
     const mergeJudulnContentPub = publikasi.map(item => ({
         // GET OBJ OF PUBLICATION STRUCTURE TO MAPPING OUTPUT
@@ -67,7 +70,10 @@ export default function Explore() {
     }
 
     function HandleChangeSearch(event) {
-        
+        const filteringPublicUsername = usernameProfileData.filter(user =>
+            user.includes(valueInputExplore)
+        )
+        setOutputSearchUsernameProfileData(filteringPublicUsername)
     }
 
     useEffect(() => {
@@ -89,9 +95,6 @@ export default function Explore() {
             return () => clearTimeout(delay)
         }
     }
-
-    console.log(filteredPub)
-    console.log(statusSearchExplore + "STATUS SEARCH")
 
     const searchIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-5" style={{ color: themeActive ? "var(--black-subtext)" : "black" }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -116,7 +119,7 @@ export default function Explore() {
 
                         <input type="text" value={valueInputExploreSementara} placeholder="Cari pengguna atau topik" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full rounded-[8px] p-[10px] px-[12px] outline-0 border-0 text-[12px]`}
                             ref={inputSearchExploreRef}
-                            onChange={(e) => { setValueInputExplore(e.target.value); setValueInputExploreSementara(e.target.value) }}
+                            onChange={(e) => {HandleChangeSearch(); setValueInputExplore(e.target.value); setValueInputExploreSementara(e.target.value) }}
                             // FUNC IF USER PRESSING ENTER
                             onKeyDown={(e) => e.key === "Enter" && HandleSearchExplore()}
                             onFocus={() => setValueDsntMatchWithPub(false)}
@@ -128,6 +131,11 @@ export default function Explore() {
                         {valueDsntMatchWithPub && statusSearchExplore && filteredPub.length <= 0 && (
                             <p className="text-[12px] text-[var(--black-subtext)]">Mungkin hasil dari "{valueInputExplore}" kurang relevan nihh..</p>
                         )}
+
+                        {/* LOGIC FOR SEARCH PUBLIC USER */}
+                        {outputSearchUsernameProfileData.length >= 1 && valueInputExploreSementara.length >= 5 && (
+                            <p className="text-[12px] text-white" onClick={()=> navigate(`/JJR-User/${outputSearchUsernameProfileData}`)}>{outputSearchUsernameProfileData}</p>
+                        ) }
                     </div>
 
                     <main className="mt-[16px] pb-[64px]">
