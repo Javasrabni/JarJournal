@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { UserProfileContext } from "../../../Pages/userProfile/Context/userProfileContext"
+import { ChooseAvatarContext } from "../../../introWeb/chooseAvatar/Context/choseAvtContext"
 
 export default function NavFooter() {
     // AUTH SECT
@@ -13,6 +14,9 @@ export default function NavFooter() {
             setToken(savedToken); // Set token untuk menganggap user sudah login
         }
     }, []); // GET USER TOKEN
+
+
+    const { getAvatarNavBar, setGetAvatarNavBar } = useContext(ChooseAvatarContext) // get avatar 
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -53,8 +57,8 @@ export default function NavFooter() {
             <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
                 <i class="fa-solid fa-robot"></i>
             </div>
-            <div onClick={() => navigate(`/JJR-User/${outputUsernameData}`)} className="cursor-pointer">
-                <span>{userIcon}</span>
+            <div onClick={() => navigate(`/JJR-User/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
+                <span><img src={getAvatarNavBar} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" /></span>
             </div>
         </div>
     )

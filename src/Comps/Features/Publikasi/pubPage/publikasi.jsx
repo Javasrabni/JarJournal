@@ -189,7 +189,6 @@ export default function Publikasi({ publikasiData }) {
         setOnRenderImg(true)
     }
 
-    console.log(onRenderImg)
 
     // COMMENT PART
     const commentPub = useRef(null)
@@ -235,14 +234,11 @@ export default function Publikasi({ publikasiData }) {
                     commentPub.current.value = ''
                 }
                 setValueINPUTComment('')
-                console.log(message)
             }
         } catch (err) {
             console.error(err)
         }
     }
-
-
 
     function HandleChangeComment(e) {
         setValueINPUTComment(e.target.value)
@@ -286,7 +282,6 @@ export default function Publikasi({ publikasiData }) {
     }
 
     const AlgorithmPub = ShufflePub([...publikasi])
-    console.log(AlgorithmPub)
 
     return (
         <div>

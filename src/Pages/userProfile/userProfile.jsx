@@ -3,8 +3,11 @@ import { ThemeAppContext } from "../../Comps/Features/Theme/toggleTheme.jsx/Them
 import { useState, useEffect, useContext } from "react"
 import { UserProfileContext } from "./Context/userProfileContext"
 import NavFooter from "../../Comps/Footer/Navigation footer/NavFooter"
+import { API_URL_CONTEXT } from "../../Auth/Context/API_URL"
+import { ChooseAvatarContext } from "../../introWeb/chooseAvatar/Context/choseAvtContext"
 
 export default function UserProfile() {
+    const { username, setUsername } = useContext(API_URL_CONTEXT) // username from token
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
     useEffect(() => {
         document.body.style.backgroundColor = themeActive ? 'var(--black-card)' : 'white'
@@ -13,6 +16,10 @@ export default function UserProfile() {
     const { usernameId } = useParams()
     const { usernameProfileData, setUsernameProfileData } = useContext(UserProfileContext) // GET RAW DATA USERNAME 
     const getRawDataUsername = usernameProfileData.filter(item => item === usernameId)
+
+    // GET AVATAR NAVBAR (FROM INTRO AFTER LOGIN )
+    const { getAvatarNavBar, setGetAvatarNavBar } = useContext(ChooseAvatarContext)
+
 
     // Golden ratio
     const fullClientHeight = window.innerHeight
@@ -35,7 +42,9 @@ export default function UserProfile() {
                         {/* PHOTO PROFILE */}
                         <div style={{ height: lebarGRSisaFullHeightGR, width: '100%' }} className="bg-[transparent] w-full flex flex-row gap-[32px] items-center">
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
-                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1734633330/IMG-20241020-WA0051_1__1_egjcnu.jpg" alt={`${getRawDataUsername} Photo Profile`} width={'100%'} className="rounded-[50px] object-cover" />
+                                {username == getRawDataUsername && (
+                                    <img src={getAvatarNavBar} alt={`${getRawDataUsername} Photo Profile`} width={'100%'} className="rounded-[50px] object-cover" />
+                                )}
                             </div>
                             <div className="w-full flex flex-col gap-[16px]">
                                 <div className="flex flex-row justify-between gap-[16px] text-[12px]">

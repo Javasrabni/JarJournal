@@ -17,6 +17,7 @@ import { OVERALL_CONTEXT } from "./Context/OVERALL_CONTEXT"
 import 'react-quill/dist/quill.snow.css';
 import { useLocation } from "react-router-dom"
 import 'react-loading-skeleton/dist/skeleton.css';
+import { ChooseAvatar } from "./introWeb/chooseAvatar/chooseAvatar"
 
 import { motion } from 'framer-motion'
 
@@ -100,9 +101,20 @@ export default function Home() {
     //     }
     // }
 
+    const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
+    
+
     return (
         <>
             <>
+                {/* choose avatar (intro after login) */}
+                {token && introAfterLogin && (
+                    <span>
+                        <ChooseAvatar />
+                    </span>
+                )}
+
+
                 {/* Popup from Reset in MusicBox */}
                 {popupReset && (
                     <div className="flex items-center justify-center w-full h-full fixed z-[15]">
@@ -220,9 +232,9 @@ export default function Home() {
 
 
                                     {/* PUBLICATIONS */}
-                                    <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
+                                    {/* <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}> */}
                                         {/* Judul */}
-                                        <div className={`mt-[16px] flex flex-row items-center justify-between`}>
+                                        {/* <div className={`mt-[16px] flex flex-row items-center justify-between`}>
                                             <div className="flex flex-col gap-[4px]">
                                                 <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
                                                     <span className="flex flex-row gap-[6px] items-center">
@@ -232,25 +244,25 @@ export default function Home() {
                                                 </p>
 
                                                 <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
-                                            </div>
+                                            </div> */}
                                             {/* <div onClick={HandleGoPublish}>
                                                 <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
                                                     {plusIcon}
                                                 </div>
                                             </div> */}
-                                        </div>
+                                        {/* </div> */}
 
                                         {/* <div className="mt-[32px]" >
                                             <Publikasi token={token} />
                                         </div> */}
-                                    </div>
+                                    {/* </div> */}
                                 </div>
                             </main>
                         </div>
 
                         {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
                         <div>
-                            <footer style={{ position: "fixed", bottom: "54px", left: "0px", maxWidth: "42rem", height: 'fit-content', margin: 'auto',padding: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
+                            <footer style={{ position: "fixed", bottom: "54px", left: "0px", maxWidth: "42rem", height: 'fit-content', margin: 'auto', padding: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
                                 <div className="w-full">
                                     <MusicBox />
                                 </div>
