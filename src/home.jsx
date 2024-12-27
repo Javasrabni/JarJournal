@@ -28,8 +28,8 @@ import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
 import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
 
-
 export default function Home() {
+    const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     // Smooth render page
     const { animatePageMain, setAnimatePageMain } = useContext(AnimateLoadPageContext)
     useEffect(() => {
@@ -102,7 +102,7 @@ export default function Home() {
     // }
 
     const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
-    
+
 
     return (
         <>
@@ -171,7 +171,6 @@ export default function Home() {
                             </header>
                             <main className="p-[16px] h-full flex flex-col" style={{ opacity: animatePageMain ? '1' : '0', backgroundColor: themeActive ? 'var(--bg-12)' : 'white' }}>
                                 <div className="flex flex-col gap-[12px] w-full h-full">
-
                                     {/* PANEL RIGHT n LEFT */}
                                     <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[32px]">
 
@@ -233,8 +232,8 @@ export default function Home() {
 
                                     {/* PUBLICATIONS */}
                                     {/* <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}> */}
-                                        {/* Judul */}
-                                        {/* <div className={`mt-[16px] flex flex-row items-center justify-between`}>
+                                    {/* Judul */}
+                                    {/* <div className={`mt-[16px] flex flex-row items-center justify-between`}>
                                             <div className="flex flex-col gap-[4px]">
                                                 <p className={`${themeActive ? 'text-white' : 'text-black'} font-[600] text-[12px] leading-[1]`}>
                                                     <span className="flex flex-row gap-[6px] items-center">
@@ -245,17 +244,20 @@ export default function Home() {
 
                                                 <p className={`text-[var(--black-subtext)] text-[11px]`}>Baca pesan atau informasi dari warga JarJournal</p>
                                             </div> */}
-                                            {/* <div onClick={HandleGoPublish}>
+                                    {/* <div onClick={HandleGoPublish}>
                                                 <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer">
                                                     {plusIcon}
                                                 </div>
                                             </div> */}
-                                        {/* </div> */}
+                                    {/* </div> */}
 
-                                        {/* <div className="mt-[32px]" >
+                                    {/* <div className="mt-[32px]" >
                                             <Publikasi token={token} />
                                         </div> */}
                                     {/* </div> */}
+                                    <div>
+                                        {publicDataUser.forEach(user => <p>{user.username}</p>)}
+                                    </div>
                                 </div>
                             </main>
                         </div>

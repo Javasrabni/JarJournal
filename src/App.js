@@ -66,7 +66,7 @@ function App() {
                                             <Route path='/Auth' element={<AuthPage />} />
                                             <Route path='/dashboard' element={<Home />} />
                                             <Route path='/Explore' element={<Explore />} />
-                                            <Route path='/JJR-User/:usernameId' element={<UserProfile />} />
+                                            <Route path='/user/:usernameId' element={<UserProfile />} />
                                             <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
                                             <Route path='/BrainFocus' element={<BrainFocusPage />} />
                                             <Route path='/Artikel/publish' element={<ArtikelForm />} />

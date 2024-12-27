@@ -59,7 +59,7 @@ export function ChooseAvatar() {
                 const data = await response.json()
                 setGetAvatarNavBar(data.urlAvt)
                 alert(data.message)
-                // setIntroAfterLogin(false)
+                setIntroAfterLogin(false)
 
             }
         } catch (err) {

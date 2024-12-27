@@ -11,7 +11,7 @@ import html2canvas from "html2canvas"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function Publikasi({ publikasiData }) {
+export default function Publikasi({ publikasiData, profilePage }) {
     // THEME
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
     useEffect(() => {
@@ -296,118 +296,235 @@ export default function Publikasi({ publikasiData }) {
                     </div>
                 ) : (
                     <>
-                        {publikasiData.map((pub, index) => (
-                            <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
+                        {profilePage ? (
+                            <>
+                                {publikasiData.filter(user => user.userName === profilePage).map((pub) =>
+                                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
-                                <div className={`font-[inter] flex flex-col `}>
+                                        <div className={`font-[inter] flex flex-col `}>
 
-                                    <span role="button" tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
+                                            <span role="button" tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
 
-                                        {/* JUDUL PUB */}
-                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+                                                {/* JUDUL PUB */}
+                                                <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
 
-                                        {/* KONTEN PUB */}
-                                        <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
+                                                {/* KONTEN PUB */}
+                                                <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
 
-                                        {/* IMAGE PUB*/}
-                                        <div>
-                                            {pub.imageUrl && (
-                                                <>
-                                                    {/* {onRenderImg ? ( */}
-                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
-                                                        <img
-                                                            src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
-                                                            alt="pub-image"
-                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
-                                                            loading="lazy"
-                                                            onLoad={HandleRenderImg}
-                                                        />
+                                                {/* IMAGE PUB*/}
+                                                <div>
+                                                    {pub.imageUrl && (
+                                                        <>
+                                                            {/* {onRenderImg ? ( */}
+                                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+                                                                <img
+                                                                    src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                                    alt="pub-image"
+                                                                    className="w-full h-auto max-h-full object-cover rounded-[8px]"
+                                                                    loading="lazy"
+                                                                    onLoad={HandleRenderImg}
+                                                                />
+                                                            </div>
+                                                            {/* ) : (
+                                             <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                                         )} */}
+
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </span>
+
+                                            {/* AUTHOR PUB */}
+                                            <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
+                                                <div className="flex flex-row gap-[8px] items-center">
+                                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
+                                                        <span className="flex flex-col gap-[2px] justify-center">
+                                                            {/* {userIcon} */}
+                                                            <span onClick={() => navigate(`/user/${pub.userName}`)}>@{pub.userName}</span>
+                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
+                                                        </span>
+                                                    </p>
+
+
+                                                </div>
+
+                                                {/* CTA PUB */}
+                                                <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
+                                                    <div className="flex flex-row items-center gap-[12px] text-white">
+
+                                                        <div role="button" tabIndex={0} onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                            {shareIcon}
+                                                        </div>
+                                                        <div>
+                                                            {saveIcon}
+                                                        </div>
+                                                        <div role="button" tabIndex={0} onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                            <span className="flex flex-row gap-[2px] items-center">
+                                                                {loveIcon}
+                                                                <p className="text-[12px] text-white pt-[2px]">{pub.totalLikePub}</p>
+                                                            </span>
+                                                        </div>
+                                                        {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
                                                     </div>
-                                                    {/* ) : (
+                                                    <div>
+                                                        {username === pub.userName && (
+                                                            <button role="button" tabIndex={0} onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* LIKE PUB */}
+                                            <div className="pt-[2px] flex flex-col gap-[4px]">
+                                                <div className="flex flex-row text-white pt-[4px]">
+                                                    {pub.likes.length >= 1 && (
+                                                        <div className="leading-[1]" >
+                                                            <span className="text-[11px] pr-[4px]">Disukai oleh</span>
+                                                            {pub.likes.length >= 2 ? (
+                                                                <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
+                                                            ) : (
+                                                                <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* COMMENT SECTION */}
+                                                <div className="pt-[6px]">
+                                                    <div className="flex flex-row justify-between items-center ">
+
+                                                        <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+
+                                                        <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
+                                                    </div>
+                                                    <div className="gap-[4px] flex flex-col pt-[12px]">
+                                                        {pub.komentar.map((item, index) =>
+                                                            <p key={index} className="text-[11px] text-white pl-[4px]">
+                                                                <span className="font-[600]">{item.username}</span> {item.valueKomentar}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                {publikasiData.map((pub, index) => (
+                                    <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
+
+                                        <div className={`font-[inter] flex flex-col `}>
+
+                                            <span role="button" tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
+
+                                                {/* JUDUL PUB */}
+                                                <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+
+                                                {/* KONTEN PUB */}
+                                                <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
+
+                                                {/* IMAGE PUB*/}
+                                                <div>
+                                                    {pub.imageUrl && (
+                                                        <>
+                                                            {/* {onRenderImg ? ( */}
+                                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+                                                                <img
+                                                                    src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                                    alt="pub-image"
+                                                                    className="w-full h-auto max-h-full object-cover rounded-[8px]"
+                                                                    loading="lazy"
+                                                                    onLoad={HandleRenderImg}
+                                                                />
+                                                            </div>
+                                                            {/* ) : (
                                                         <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
                                                     )} */}
 
-                                                </>
-                                            )}
-                                        </div>
-                                    </span>
-
-                                    {/* AUTHOR PUB */}
-                                    <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
-                                        <div className="flex flex-row gap-[8px] items-center">
-                                            <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
-                                                <span className="flex flex-col gap-[2px] justify-center">
-                                                    {/* {userIcon} */}
-                                                    <span onClick={() => navigate(`/JJR-User/${pub.userName}`)}>@{pub.userName}</span>
-                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
-                                                </span>
-                                            </p>
-
-
-                                        </div>
-
-                                        {/* CTA PUB */}
-                                        <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
-                                            <div className="flex flex-row items-center gap-[12px] text-white">
-
-                                                <div role="button" tabIndex={0} onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
-                                                    {shareIcon}
-                                                </div>
-                                                <div>
-                                                    {saveIcon}
-                                                </div>
-                                                <div role="button" tabIndex={0} onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
-                                                    <span className="flex flex-row gap-[2px] items-center">
-                                                        {loveIcon}
-                                                        <p className="text-[12px] text-white pt-[2px]">{pub.totalLikePub}</p>
-                                                    </span>
-                                                </div>
-                                                {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
-                                            </div>
-                                            <div>
-                                                {username === pub.userName && (
-                                                    <button role="button" tabIndex={0} onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* LIKE PUB */}
-                                    <div className="pt-[2px] flex flex-col gap-[4px]">
-                                        <div className="flex flex-row text-white pt-[4px]">
-                                            {pub.likes.length >= 1 && (
-                                                <div className="leading-[1]" >
-                                                    <span className="text-[11px] pr-[4px]">Disukai oleh</span>
-                                                    {pub.likes.length >= 2 ? (
-                                                        <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
-                                                    ) : (
-                                                        <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                        </>
                                                     )}
                                                 </div>
-                                            )}
-                                        </div>
+                                            </span>
 
-                                        {/* COMMENT SECTION */}
-                                        <div className="pt-[6px]">
-                                            <div className="flex flex-row justify-between items-center ">
-
-                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
-
-                                                <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
-                                            </div>
-                                            <div className="gap-[4px] flex flex-col pt-[12px]">
-                                                {pub.komentar.map((item, index) =>
-                                                    <p key={index} className="text-[11px] text-white pl-[4px]">
-                                                        <span className="font-[600]">{item.username}</span> {item.valueKomentar}
+                                            {/* AUTHOR PUB */}
+                                            <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
+                                                <div className="flex flex-row gap-[8px] items-center">
+                                                    <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
+                                                        <span className="flex flex-col gap-[2px] justify-center">
+                                                            {/* {userIcon} */}
+                                                            <span onClick={() => navigate(`/user/${pub.userName}`)}>@{pub.userName}</span>
+                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
+                                                        </span>
                                                     </p>
-                                                )}
+
+
+                                                </div>
+
+                                                {/* CTA PUB */}
+                                                <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
+                                                    <div className="flex flex-row items-center gap-[12px] text-white">
+
+                                                        <div role="button" tabIndex={0} onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                            {shareIcon}
+                                                        </div>
+                                                        <div>
+                                                            {saveIcon}
+                                                        </div>
+                                                        <div role="button" tabIndex={0} onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                            <span className="flex flex-row gap-[2px] items-center">
+                                                                {loveIcon}
+                                                                <p className="text-[12px] text-white pt-[2px]">{pub.totalLikePub}</p>
+                                                            </span>
+                                                        </div>
+                                                        {/* <p className={`text-[10px] pt-[1px]`}>27</p> */}
+                                                    </div>
+                                                    <div>
+                                                        {username === pub.userName && (
+                                                            <button role="button" tabIndex={0} onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)]`}>Del</button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* LIKE PUB */}
+                                            <div className="pt-[2px] flex flex-col gap-[4px]">
+                                                <div className="flex flex-row text-white pt-[4px]">
+                                                    {pub.likes.length >= 1 && (
+                                                        <div className="leading-[1]" >
+                                                            <span className="text-[11px] pr-[4px]">Disukai oleh</span>
+                                                            {pub.likes.length >= 2 ? (
+                                                                <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
+                                                            ) : (
+                                                                <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* COMMENT SECTION */}
+                                                <div className="pt-[6px]">
+                                                    <div className="flex flex-row justify-between items-center ">
+
+                                                        <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+
+                                                        <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
+                                                    </div>
+                                                    <div className="gap-[4px] flex flex-col pt-[12px]">
+                                                        {pub.komentar.map((item, index) =>
+                                                            <p key={index} className="text-[11px] text-white pl-[4px]">
+                                                                <span className="font-[600]">{item.username}</span> {item.valueKomentar}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))
-                        }
+                                ))}
+                            </>
+                        )}
                     </>
                 )}
 

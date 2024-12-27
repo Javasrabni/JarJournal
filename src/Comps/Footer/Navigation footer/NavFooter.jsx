@@ -57,7 +57,7 @@ export default function NavFooter() {
             <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
                 <i class="fa-solid fa-robot"></i>
             </div>
-            <div onClick={() => navigate(`/JJR-User/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
+            <div onClick={() => navigate(`/user/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
                 <span><img src={getAvatarNavBar} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" /></span>
             </div>
         </div>

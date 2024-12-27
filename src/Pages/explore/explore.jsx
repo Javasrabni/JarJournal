@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom"
 import { UserProfileContext } from "../userProfile/Context/userProfileContext"
 
 export default function Explore() {
+
+
     const navigate = useNavigate()
     const { token, setToken } = useContext(API_URL_CONTEXT)
     useEffect(() => {
@@ -71,7 +73,7 @@ export default function Explore() {
 
     function HandleChangeSearch(event) {
         const filteringPublicUsername = usernameProfileData.filter(user =>
-            user.includes(valueInputExplore)
+            user.includes(valueInputExploreSementara)
         )
         setOutputSearchUsernameProfileData(filteringPublicUsername)
     }
@@ -96,6 +98,19 @@ export default function Explore() {
         }
     }
 
+    // FUNC FOR FIND USER ON EXPLORE
+    const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT)
+    const [findedPublicUsers, setFindedPublicUsers] = useState([])
+
+    // console.log(findedPublicUsers)
+    useEffect(() => {
+        if (outputSearchUsernameProfileData.length < 1) {
+            return
+        }
+        const userFinded = publicDataUser.filter(user => outputSearchUsernameProfileData.includes(user.username))
+        setFindedPublicUsers(userFinded)
+    }, [outputSearchUsernameProfileData, publicDataUser])
+
     // tinggi full height client 
     const innerHeightWindowPortClient = window.innerHeight
 
@@ -109,7 +124,6 @@ export default function Explore() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
 
-    console.log(outputSearchUsernameProfileData)
 
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100vh] max-w-[42rem] px-[16px] m-auto py-[16px]`}>
@@ -140,13 +154,17 @@ export default function Explore() {
                         )}
 
                         {/* LOGIC FOR SEARCH PUBLIC USER */}
-                        {outputSearchUsernameProfileData.length >= 1 && valueInputExploreSementara.length >= 4 && (
-                            <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`}>
-                                <span>
-                                    <img src="" alt="" />
-                                    <p className="text-[12px] text-white" onClick={() => navigate(`/JJR-User/${outputSearchUsernameProfileData}`)}>{outputSearchUsernameProfileData}</p>
-                                </span>
-                            </div>
+                        {outputSearchUsernameProfileData && valueInputExploreSementara.length >= 4 && (
+                            <>
+                                {findedPublicUsers.map(user => (
+                                    <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)}>
+                                        <span className="flex flex-row gap-[8px] items-center">
+                                            <img src={user.avatar.urlAvt} alt="" className="w-[30px] h-[30px] rounded-[50px]" />
+                                            <p className="text-[12px] text-white">{user.username}</p>
+                                        </span>
+                                    </div>
+                                ))}
+                            </>
                         )}
                     </div>
 
@@ -170,6 +188,6 @@ export default function Explore() {
                     <NavFooter />
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
