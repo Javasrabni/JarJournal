@@ -74,7 +74,6 @@ export default function Catatan() {
     // Note array
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
 
-    console.log(onNewNote)
     const { valueOnNewNote, setValueOnNewNote } = useContext(CatatanContext)
 
     // STATE TO START WRITEING NOTE
@@ -112,7 +111,6 @@ export default function Catatan() {
         const delayPage = setTimeout(() => {
             setWriteingNote((prev) => !prev) // if true, it will change the page into writing page  
         }, 500)
-
         return () => clearTimeout(delayPage)
     }
 
@@ -169,7 +167,7 @@ export default function Catatan() {
                                 <div className="flex flex-col gap-[12px] pb-[40px]">
 
                                     <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px]">
-
+                                        {/* SEARCH NOTE */}
                                         <input type="text" placeholder="Cari catatan" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full rounded-[8px]  p-[12px] outline-0 border-0 text-[12px]`} onChange={(e) => HandleChangeNote(e)} />
                                         {visibleFilteredValue && (
                                             <div>

@@ -77,9 +77,14 @@ export default function Home() {
     const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
     const { popupReset, setPopupReset } = useContext(MusicBoxContext)
 
-
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
+    useEffect(() => {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) {
+            setToken(savedToken); // Set token untuk menganggap user sudah login
+        }
+    }, []); // GET USER TOKEN
 
     // useEffect(() => {
     //     const savedToken = localStorage.getItem('token');

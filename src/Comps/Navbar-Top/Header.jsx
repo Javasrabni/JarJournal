@@ -10,6 +10,7 @@ import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import Skeleton from "react-loading-skeleton";
 import { CatatanContext } from "../Features/Catatan/catatanContex";
+import { OVERALL_CONTEXT } from "../../Context/OVERALL_CONTEXT";
 
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
@@ -105,9 +106,12 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
     // AUTH SECT
     // Handle logout
+    const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
+
     const handleLogout = () => {
         navigate('/')
         localStorage.removeItem('token'); // Hapus token
+        setIntroAfterLogin(true)
         setToken(null); // Set token menjadi null untuk memaksa user login ulang
     };
 
@@ -125,7 +129,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { username, setUsername } = useContext(API_URL_CONTEXT)
     const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
 
-    
+
 
     const backIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
@@ -154,10 +158,10 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             setHideSetting(true)
         }
 
-      
+
     }, [pathLocation.pathname])
 
-    useEffect(()=> {
+    useEffect(() => {
         if (pathLocation.pathname === '/ftr/Catatan') {
             setFilterFuncNote(true)
         } else if (pathLocation.pathname === '/ftr/EditCatatan') {
@@ -214,10 +218,10 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                         )}
                     </div>
 
-                    {filterFuncNote && !writeingNote &&(
+                    {filterFuncNote && !writeingNote && (
                         <div className="cursor-pointer">
                             <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5" style={{color: themeActive ? 'white' : 'black'}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5" style={{ color: themeActive ? 'white' : 'black' }}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                                 </svg>
 
@@ -275,9 +279,9 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                                             )}
                                         </div>
                                     ) : (
-                                        <div className="flex flex-col w-full h-full gap-[8px]">
+                                        <div className="flex flex-col w-full h-full gap-[8px]" onClick={() => navigate('/Auth')}>
                                             <span>
-                                                <button className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} onClick={() => navigate('/Auth')}>
+                                                <button className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} >
                                                     <span className="flex flex-row gap-[8px] items-center">
                                                         {logoutIcon} <span className="underline">LogIn</span>
                                                     </span>

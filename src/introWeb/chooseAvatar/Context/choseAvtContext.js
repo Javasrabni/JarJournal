@@ -34,20 +34,10 @@ export default function ChosseAvatarProvider({ children }) {
             }
         }
         GetAllAvatarAPI()
-    }, [token])
-
-    // Set photoprofile for navbar profile page
-    const [getAvatarNavBar, setGetAvatarNavBar] = useState(() => {
-        const saveAvatarNavBar = localStorage.getItem('saveAvtNavbar')
-        return saveAvatarNavBar ? JSON.parse(saveAvatarNavBar) : []
-    })
-
-    useEffect(() => {
-        localStorage.setItem('saveAvtNavbar', JSON.stringify(getAvatarNavBar))
-    }, [getAvatarNavBar])
+    }, [])
 
     return (
-        <ChooseAvatarContext.Provider value={{ getAllAvatar, setGetAllAvatar, getAvatarNavBar, setGetAvatarNavBar }}>
+        <ChooseAvatarContext.Provider value={{ getAllAvatar, setGetAllAvatar }}>
             {children}
         </ChooseAvatarContext.Provider>
     )
