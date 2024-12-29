@@ -4,15 +4,11 @@ export const API_URL_CONTEXT = createContext()
 
 export default function API_URL_PROVIDER({ children }) {
     // ENDPOINT PATH
-    const pathLink_endPoint_AUTH = 'https://0l45qcjl-5001.asse.devtunnels.ms';
-    const pathLink_endPoint_PUB = 'https://0l45qcjl-5001.asse.devtunnels.ms';
-    const pathLink_endPoint_NOTE = 'https://0l45qcjl-5001.asse.devtunnels.ms';
-    const pathLink_endPoint_CHATBOT = 'https://0l45qcjl-5001.asse.devtunnels.ms';
-
-    const [API_URL_AUTH] = useState(pathLink_endPoint_AUTH)
-    const [API_URL_PUB] = useState(pathLink_endPoint_PUB)
-    const [API_URL_NOTE] = useState(pathLink_endPoint_NOTE)
-    const [API_URL_CHATBOT] = useState(pathLink_endPoint_CHATBOT)
+    const [MainDomain] = useState('http:localhost:3000')
+    const [API_URL_AUTH] = useState('https://0l45qcjl-5001.asse.devtunnels.ms')
+    const [API_URL_PUB] = useState('https://0l45qcjl-5001.asse.devtunnels.ms')
+    const [API_URL_NOTE] = useState('https://0l45qcjl-5001.asse.devtunnels.ms')
+    const [API_URL_CHATBOT] = useState('https://0l45qcjl-5001.asse.devtunnels.ms')
 
     // USER TOKEN
     const [token, setToken] = useState(null)
@@ -77,7 +73,7 @@ export default function API_URL_PROVIDER({ children }) {
     }, [])
 
     return (
-        <API_URL_CONTEXT.Provider value={{ publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
+        <API_URL_CONTEXT.Provider value={{MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
             {children}
         </API_URL_CONTEXT.Provider>
     )

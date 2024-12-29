@@ -23,6 +23,7 @@ export default function UserProfile() {
 
     const navigate = useNavigate()
     const { usernameId } = useParams()
+    const { MainDomain } = useContext(API_URL_CONTEXT)
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
     const [statusPostRrSave, setStatusPostRrSave] = useState(true)
@@ -32,7 +33,7 @@ export default function UserProfile() {
     useEffect(() => {
         const userPost = publikasi.filter((user) => user.userName === getRawDataUsername.username)
         setLengthUserPost(userPost.length)
-    }, [lengthUserPost, getRawDataUsername?.username])
+    }, [getRawDataUsername?.username])
 
     const { username, setUsername } = useContext(API_URL_CONTEXT) // username from token
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
@@ -66,6 +67,17 @@ export default function UserProfile() {
     const { bioUser, setBioUser, linkUser, setLinkUser } = useOnEditUserProfileContext()
     const ignoreProtocol = ['https://', 'http://', 'www.']
 
+    // HANDLE COPY LINK (SHARE USER)
+    async function HandleShareUser() {
+        const CopyText = `${MainDomain}/user/${usernameId}`;
+        try {
+            await navigator.clipboard.writeText(CopyText);
+            alert('berhasil di copy bray');
+        } catch (err) {
+            console.error('Gagal mendapatkan user link', err);
+            alert('Gagal mendapatkan user link');
+        }
+    }
 
     // ICON
     const postIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: statusPostRrSave ? 'white' : 'var(--black-subtext)' }}>
@@ -77,8 +89,6 @@ export default function UserProfile() {
     const loveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill={!statusPostRrSave ? 'white' : 'var(--black-subtext)'} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: !statusPostRrSave ? 'white' : 'var(--black-subtext)' }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
     </svg>
-
-    // Kalender icon
     const kalenderIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
     </svg>
@@ -105,7 +115,7 @@ export default function UserProfile() {
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
                                 {getRawDataUsername && usernameId == getRawDataUsername.username && (
                                     <>
-                                        <img src={getRawDataUsername.avatar.urlAvt} alt={`${getRawDataUsername.username} Photo Profile`} width={'100%'} className="rounded-[50px] object-cover" />
+                                        <img src={getRawDataUsername.avatar.urlAvt} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e)=> e.preventDefault()}/>
                                     </>
                                 )}
                             </div>
@@ -131,13 +141,13 @@ export default function UserProfile() {
                                         <span className="flex flex-row items-center justify-start gap-[6px]">
                                             <button className={`px-[12px] w-full h-[24px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] font-[600]`} onClick={() => navigate(`/${username}/profile/edit`)}>Atur Profil</button>
 
-                                            <button className={`h-[24px] w-[32px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] flex items-center justify-center`}>{shareIcon}</button>
+                                            <button className={`h-[24px] w-[32px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] flex items-center justify-center`} onClick={HandleShareUser}>{shareIcon}</button>
                                         </span>
                                     ) : (
                                         <span className="flex flex-row items-center justify-start gap-[6px]">
                                             <button className={`px-[12px] w-full h-[24px] ${themeActive ? 'bg-[#1585FF]' : 'bg-[var(--black-bg)]'} text-[12px] rounded-[6px] font-[600]`}>Follow</button>
 
-                                            <button className={`h-[24px] w-[32px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] flex items-center justify-center`}>{shareIcon}</button>
+                                            <button className={`h-[24px] w-[32px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] flex items-center justify-center`} onClick={HandleShareUser}>{shareIcon}</button>
                                         </span>
                                     )}
                                 </div>
@@ -148,10 +158,17 @@ export default function UserProfile() {
                         <div className="w-full flex flex-col justify-between gap-[16px] text-[12px]">
                             {/* BIO USER */}
                             <div className="mt-[6px] flex flex-col justify-center gap-[2px]">
-                                <p className="text-[12px]">{bioUser}</p>
-                                {/* <a className="text-[12px] font-[600] w-fit" href={linkUser} target="_blank">
-                                    <span className="flex flex-row gap-[6px] items-center">{linkIcon} {linkUser.map(item => item.replace(ignoreProtocol, ''))}</span>
-                                </a> */}
+                                {getRawDataUsername && usernameId === getRawDataUsername.username && (
+                                    <>
+                                        <p className="text-[12px]">{getRawDataUsername.userBio}</p>
+
+                                        {getRawDataUsername?.userLink && (
+                                            <a className="text-[12px] font-[600] w-fit" href={linkUser} target="_blank">
+                                                <span className="flex flex-row gap-[6px] items-center">{linkIcon} {getRawDataUsername.userLink}</span>
+                                            </a>
+                                        )}
+                                    </>
+                                )}
                             </div>
 
 
@@ -162,11 +179,11 @@ export default function UserProfile() {
                                     <p>Clips</p>
                                 </span>
                                 <span className="flex flex-row gap-[6px] items-center">
-                                    <p className="font-[600]">234</p>
+                                    <p className="font-[600]">0</p>
                                     <p>Followers</p>
                                 </span>
                                 <span className="flex flex-row gap-[6px] items-center">
-                                    <p className="font-[600]">544</p>
+                                    <p className="font-[600]">0</p>
                                     <p>Following</p>
                                 </span>
                             </div>

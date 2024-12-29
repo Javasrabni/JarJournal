@@ -25,6 +25,7 @@ export default function Publikasi({ publikasiData, profilePage }) {
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
     const { token, setToken } = useContext(API_URL_CONTEXT)
+    const { MainDomain } = useContext(API_URL_CONTEXT)
 
     // GET USERNAME CONTEXT
     const { username, setUsername } = useContext(API_URL_CONTEXT)
@@ -91,9 +92,15 @@ export default function Publikasi({ publikasiData, profilePage }) {
     }
 
     // HANDLE SHARE PUB
-    function HandleSharePub(pubId) {
-        const params = 'http://localhost:3000/posts'
-        console.log(`Link copied! "${params}/${pubId}"`)
+    async function HandleSharePub(pubId) {
+        const postUrl = `${MainDomain}/posts/${pubId}`
+        try {
+            navigator.clipboard.writeText(postUrl)
+            alert('Link tersalin!')
+        } catch (err) {
+            console.error(err)
+            alert('gagal mendapatkan link.')
+        }
     }
 
 

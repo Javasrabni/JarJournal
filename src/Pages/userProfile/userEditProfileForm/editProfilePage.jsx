@@ -34,6 +34,38 @@ export default function EditProfilePage() {
     const [bioUserValue, setBioUserValue] = useState('')
     const [linkUserValue, setLinkUserValue] = useState('')
 
+    // GET VALUE BIO N LINK
+    useEffect(() => {
+        const getBionLinkUser = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    console.log(data)
+                    console.log('ASDASDASd')
+                    setBioUser(data.getBioUser)
+                    setLinkUser(data.getLinkUser)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        getBionLinkUser()
+    }, [])
+
+    console.log(bioUser)
+
+    // VALUE SEMENTARA
+    useEffect(() => {
+        setBioUserValue(bioUser)
+        setLinkUserValue(linkUser)
+    }, [bioUser, linkUser])
+
     const OnEditProfileBE = async () => {
         // Validasi form Link
         // const protocol = ['https://', 'http://', 'www.']
@@ -52,12 +84,13 @@ export default function EditProfilePage() {
             })
             if (response.ok) {
                 const data = await response.json()
-                setBioUser(data.userBio)
-                setLinkUser([linkUser, ...data.userLink])
+                console.log(data)
 
-                setBioUserValue('')
-                setLinkUserValue('')
-                navigate(-1)
+                setBioUser(data.userBio)
+                setLinkUser(data.userLink)
+
+                navigate(`/user/${username}`, { replace: true })
+                window.location.reload()
             } else {
                 alert('belum berhasil')
             }
@@ -66,33 +99,41 @@ export default function EditProfilePage() {
         }
     }
 
-    console.log(linkUser)
-
+    const backIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+    </svg>
 
     return (
-        <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
+        <>
+            {/* heading */}
+            <div className="flex w-full h-[65px] justify-between items-center px-[16px] text-white" role="heading">
+                <div className="flex flex-row gap-[12px] items-center text-[14px] font-[600]">
+                    <span onClick={()=> navigate(-1)} className="pr-[6px] cursor-pointer">{backIcon}</span>
+                    <p className="select-none">Edit profil</p>
+                </div>
+                <button onClick={OnEditProfileBE} className="text-[12px] text-[var(--blue-clr)]">Simpan</button>
+            </div>
 
-            {/* FORM INPUT EDIT PROFILE */}
-            <div className="flex flex-col gap-[16px] justify-center">
-                <span>
-                    <label htmlFor="userBio" >Bio</label>
-                    <input type="text"
-                        className="text-12 text-black p-[8px]"
-                        value={bioUser}
-                        onChange={(e) => setBioUserValue(e.target.value)} />
-                </span>
-                <span>
-                    <label htmlFor="userBio" >Links</label>
-                    <input type="text"
-                        value={linkUserValue}
-                        className="text-12 text-black p-[8px]"
-                        onChange={(e) => setLinkUserValue(e.target.value)} />
-                </span>
+            <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
 
-                <div>
-                    <button onClick={OnEditProfileBE}>Ok</button>
+                {/* FORM INPUT EDIT PROFILE */}
+                <div className="flex flex-col gap-[16px] justify-center">
+                    <span className="flex flex-col gap-[4px]">
+                        <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Bio</label>
+                        <input type="text"
+                            className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
+                            value={bioUserValue}
+                            onChange={(e) => setBioUserValue(e.target.value)} />
+                    </span>
+                    <span className="flex flex-col gap-[4px]">
+                        <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Link</label>
+                        <input type="text"
+                            value={linkUserValue}
+                            className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
+                            onChange={(e) => setLinkUserValue(e.target.value)} />
+                    </span>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
