@@ -4,8 +4,11 @@ export function OnEditUserProfileProvider({ children }) {
     // BIO 
     const [bioUser, setBioUser] = useState([])
     const [linkUser, setLinkUser] = useState([])
+
+    const [showAllAvatar, setShowAllAvatar] = useState(false)
+
     return (
-        <OnEditUserProfileContext.Provider value={{ bioUser, setBioUser, linkUser, setLinkUser }}>
+        <OnEditUserProfileContext.Provider value={{ showAllAvatar, setShowAllAvatar, bioUser, setBioUser, linkUser, setLinkUser }}>
             {children}
         </OnEditUserProfileContext.Provider>
     )

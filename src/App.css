@@ -35,6 +35,14 @@
   --black-border: rgb(38, 38, 38);
 }
 
+/* Hidden scrollbar overflow pada elemen tertentu */
+.max-w-scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Sembunyikan scrollbar di browser berbasis WebKit */
+}
+
+.max-w-scrollbar-hidden {
+  scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
+}
 .progress-bar::-webkit-progress-bar {
   background-color: transparent;
   /* Latar belakang progress */

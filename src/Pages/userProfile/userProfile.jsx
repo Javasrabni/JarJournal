@@ -7,8 +7,8 @@ import { API_URL_CONTEXT } from "../../Auth/Context/API_URL"
 import { ChooseAvatarContext } from "../../introWeb/chooseAvatar/Context/choseAvtContext"
 import Publikasi from "../../Comps/Features/Publikasi/pubPage/publikasi"
 import { ArtikelContext } from "../../Comps/Features/Publikasi/Context/artikelContext"
-import { useOnEditUserProfileContext } from "./Context/onEditUserProfileCTX"
 import { useNavigate } from "react-router-dom"
+import { useOnEditUserProfileContext } from "./Context/onEditUserProfileCTX"
 
 
 export default function UserProfile() {
@@ -26,6 +26,8 @@ export default function UserProfile() {
     const { MainDomain } = useContext(API_URL_CONTEXT)
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
+    const { getBadge, setGetBadge } = useContext(UserProfileContext)
+
     const [statusPostRrSave, setStatusPostRrSave] = useState(true)
     const getRawDataUsername = publicDataUser.find(item => item.username === usernameId) //Filtering user porfile
 
@@ -103,10 +105,12 @@ export default function UserProfile() {
 
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
+
+            {/*  height profile nama bio link `${sisaHeightGoldenRatio}px`  */}
             {getRawDataUsername && usernameId === getRawDataUsername.username ? (
                 <div className={`w-full h-full flex flex-col w-full`}>
                     {/* IDENTITY PROFILE */}
-                    <div className="w-full flex flex-col items-start bg-[transparent]" style={{ height: `${sisaHeightGoldenRatio}px` }}>
+                    <div className="w-full flex flex-col items-start bg-[transparent]" style={{ height: 'fit-content' }}>
 
                         {/* CTA SECT */}
                         <div style={{ height: lebarGRSisaFullHeightGR, width: '100%' }} className="bg-[transparent] w-full flex flex-row gap-[32px] items-center">
@@ -115,7 +119,7 @@ export default function UserProfile() {
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
                                 {getRawDataUsername && usernameId == getRawDataUsername.username && (
                                     <>
-                                        <img src={getRawDataUsername.avatar.urlAvt} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e)=> e.preventDefault()}/>
+                                        <img src={getRawDataUsername.avatar.urlAvt} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
                                     </>
                                 )}
                             </div>
@@ -154,38 +158,68 @@ export default function UserProfile() {
                             </div>
                         </div>
 
-                        {/* ABOUT USER SECT */}
+                        {/* INFO SECT */}
                         <div className="w-full flex flex-col justify-between gap-[16px] text-[12px]">
-                            {/* BIO USER */}
-                            <div className="mt-[6px] flex flex-col justify-center gap-[2px]">
-                                {getRawDataUsername && usernameId === getRawDataUsername.username && (
-                                    <>
-                                        <p className="text-[12px]">{getRawDataUsername.userBio}</p>
+                            {/* ABOUT USER SECT */}
+                            {(getRawDataUsername && getRawDataUsername?.userBio || getRawDataUsername?.userLink) && (
+                                <div className="w-full flex flex-col justify-between gap-[16px] text-[12px]">
+                                    {/* BIO N LNK */}
+                                    <div className="mt-[6px] flex flex-col justify-center gap-[2px]">
+                                        {getRawDataUsername && usernameId === getRawDataUsername.username && (
+                                            <>
+                                                {getRawDataUsername?.userBio && (
+                                                    <p className="text-[12px]">{getRawDataUsername.userBio}</p>
+                                                )}
 
-                                        {getRawDataUsername?.userLink && (
-                                            <a className="text-[12px] font-[600] w-fit" href={linkUser} target="_blank">
-                                                <span className="flex flex-row gap-[6px] items-center">{linkIcon} {getRawDataUsername.userLink}</span>
-                                            </a>
+                                                {getRawDataUsername?.userLink && (
+                                                    <a className="text-[12px] font-[600] w-fit" href={linkUser} target="_blank">
+                                                        <span className="flex flex-row gap-[6px] items-center">{linkIcon} {getRawDataUsername.userLink}</span>
+                                                    </a>
+                                                )}
+                                            </>
                                         )}
-                                    </>
-                                )}
-                            </div>
+                                    </div>
+                                </div>
+                            )}
 
+                            {/* FOLLOWER N BADGE */}
+                            <div className="w-full flex flex-col justify-between gap-[8px] text-[12px]">
+                                {/* FOLLOW FOLLOWING CLIPS */}
+                                <div className="w-full h-fit flex flex-row items-center justify-start gap-[16px]">
+                                    <span className="flex flex-row gap-[6px] items-center">
+                                        <p className="font-[600]">{lengthUserPost}</p>
+                                        <p>Clips</p>
+                                    </span>
+                                    <span className="flex flex-row gap-[6px] items-center">
+                                        <p className="font-[600]">0</p>
+                                        <p>Followers</p>
+                                    </span>
+                                    <span className="flex flex-row gap-[6px] items-center">
+                                        <p className="font-[600]">0</p>
+                                        <p>Following</p>
+                                    </span>
+                                </div>
 
-                            {/* FOLLOW FOLLOWING CLIPS */}
-                            <div className="w-full h-fit flex flex-row items-center justify-start gap-[16px]">
-                                <span className="flex flex-row gap-[6px] items-center">
-                                    <p className="font-[600]">{lengthUserPost}</p>
-                                    <p>Clips</p>
-                                </span>
-                                <span className="flex flex-row gap-[6px] items-center">
-                                    <p className="font-[600]">0</p>
-                                    <p>Followers</p>
-                                </span>
-                                <span className="flex flex-row gap-[6px] items-center">
-                                    <p className="font-[600]">0</p>
-                                    <p>Following</p>
-                                </span>
+                                {/* BADGE */}
+                                <div className="max-w-scrollbar-hidden max-w-[42rem] h-fit flex flex-col gap-[8px] pb-[12px]" style={{ overflowX: 'scroll' }}>
+                                    <p className="text-[12px]">Achievements</p>
+                                    <div className="flex flex-row h-full h-fit gap-[16px]">
+                                        {getRawDataUsername && getRawDataUsername.username === usernameId && (
+                                            <>
+                                                {getBadge.map((item, idx) =>
+                                                    <>
+                                                        <div className="flex flex-row items-center justify-center w-fit h-full shrink-0 gap-[8px]">
+                                                            <div className="w-[25px] h-[25px] flex items-center justify-center">
+                                                                <img src={item.url} alt={item.nameBadge} className="w-full h-full rounded-[50px]" />
+                                                            </div>
+                                                            <p className="text-[12px] font-[600]">{item.nameBadge}</p>
+                                                        </div>
+                                                    </>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,7 +244,7 @@ export default function UserProfile() {
                                     {statusPostRrSave ? (
                                         <Publikasi publikasiData={publikasi} profilePage={getRawDataUsername.username} />
                                     ) : (
-                                        <p>Likes</p>
+                                        <Publikasi publikasiData={publikasi} profilePageUserLikes={getRawDataUsername.username} />
                                     )}
                                 </>
                             ) : (

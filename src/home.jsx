@@ -30,6 +30,8 @@ import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
 
 export default function Home() {
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
+
     // Smooth render page
     const { animatePageMain, setAnimatePageMain } = useContext(AnimateLoadPageContext)
     useEffect(() => {
@@ -115,8 +117,8 @@ export default function Home() {
             <>
                 {/* choose avatar (intro after login) */}
                 {token && introAfterLogin && (
-                    <span>
-                        <ChooseAvatar />
+                    <span className="fixed z-[15]">
+                        <ChooseAvatar heading={`Baguss ${username}!`} subHeading={'Sekarang, kita pilih avatar dulu yukk'} />
                     </span>
                 )}
 
@@ -284,5 +286,18 @@ export default function Home() {
                 </div>
             </>
         </>
+    )
+}
+
+export const FeedBackELM = () => {
+    return (
+        <div className="flex flex-col gap-[12px] mt-[32px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
+            <div>
+                <p className="text-[14px] text-[var(--blue-clr)]"><a href="https://saweria.co/JJRCS">Supoort Us ✨</a></p>
+            </div>
+            <div>
+                <p className="text-[14px] text-[var(--blue-clr)]"><a href="https://saweria.co/JJRCS" target="_blank">Punya masukkan <span className="text-[11px]">/</span> kritik dan saran?</a></p>
+            </div>
+        </div>
     )
 }

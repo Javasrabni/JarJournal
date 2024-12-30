@@ -2,8 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { OVERALL_CONTEXT } from "../../Context/OVERALL_CONTEXT"
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import { ChooseAvatarContext } from "./Context/choseAvtContext";
+import { OnEditUserProfileContext } from "../../Pages/userProfile/Context/onEditUserProfileCTX";
 
-export function ChooseAvatar() {
+export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeAvatar }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     const { token, setToken } = useContext(API_URL_CONTEXT)
     useEffect(() => {
@@ -17,6 +18,7 @@ export function ChooseAvatar() {
     const { username, setUsername } = useContext(API_URL_CONTEXT)
     const { getAllAvatar, setGetAllAvatar, getAvatarNavBar, setGetAvatarNavBar } = useContext(ChooseAvatarContext)
     const avtScroll = useRef()
+    const { showAllAvatar, setShowAllAvatar } = useContext(OnEditUserProfileContext)
 
     // Golden Ratio
     const fullWidthClient = window.innerWidth;
@@ -57,10 +59,15 @@ export function ChooseAvatar() {
             })
             if (response.ok) {
                 const data = await response.json()
-                setGetAvatarNavBar(data.urlAvt)
+                // setGetAvatarNavBar(data.urlAvt)
                 alert(data.message)
                 setIntroAfterLogin(false)
 
+                // CHANGE AVATAR IN PROFILE
+                if (onChangeAvatar) {
+                    setShowAllAvatar(false)
+                    return () => setShowAllAvatar(true)
+                }
             }
         } catch (err) {
             console.error(err)
@@ -68,18 +75,21 @@ export function ChooseAvatar() {
     }
 
     return (
-        <div className="w-full h-full bg-[#00000050] flex items-center justify-center fixed left-0 top-0 z-[15]">
+        <div className="w-full h-full flex items-center justify-center fixed ">
+            <div className="fixed w-full h-full bg-[#00000050] left-0 top-0 z-[15]" onClick={closeChooseAvatar} />
+
             <div
-                className={`bg-[var(--bg-12)] outline outline-1 outline-[var(--black-border)] flex items-center justify-center p-4 rounded-[12px]`}
+                className={`bg-[var(--bg-12)] outline outline-1 outline-[var(--black-border)] flex items-center justify-center p-4 rounded-[12px] fixed z-[16] top-[25%]  left-[50%]`}
                 style={{
                     width: `${outputGRWidth}px`,
                     height: `${outputGRHeight}px`,
                     maxWidth: "90vw", // Responsif untuk tampilan mobile
                     maxHeight: "90vh", // Membatasi tinggi pada layar kecil
+                    transform: 'translateX(-50%)',
                 }}
             >
                 <div className="text-center p-[16px]">
-                    <p className="text-[14px] text-white">Baguss <b>{username}!</b></p>
+                    <p className="text-[14px] text-white">{heading}</p>
                     <div
                         ref={avtScroll}
                         className={`flex flex-row gap-[16px] h-fit overflow-x-scroll p-[16px] mx-[16px] mb-[8px]`}
@@ -96,20 +106,22 @@ export function ChooseAvatar() {
                             </div>
                         ))}
                     </div>
-                    <p className="text-[12px] text-[var(--black-subtext)]">Sekarang, kita pilih avatar dulu yukk</p>
-                    <span>
-                        <input type="file"
-                            className="text-[12px]"
-                            onChange={(evnt) => HandleFileUpload(evnt)}
-                        />
+                    <p className="text-[12px] text-[var(--black-subtext)]">{subHeading}</p>
+                    <div className="flex flex-col justify-center items-center gap-[8px]">
+                        <span>
+                            <input type="file"
+                                className="text-[12px] mt-[8px]"
+                                onChange={(evnt) => HandleFileUpload(evnt)}
+                            />
 
-                    </span>
-                    <button
-                        onClick={HandleSubmitAvatar}
-                        className="text-[12px] mt-4 px-[12px] py-[4px] bg-[#1585FF] text-white rounded"
-                    >
-                        Okee
-                    </button>
+                        </span>
+                        <button
+                            onClick={HandleSubmitAvatar}
+                            className="text-[12px] mt-4 px-[12px] py-[4px] bg-[#1585FF] text-white rounded"
+                        >
+                            Simpan
+                        </button>
+                    </div>
                 </div>
             </div>
         </div >
