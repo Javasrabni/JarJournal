@@ -93,8 +93,8 @@ export default function EditProfilePage() {
                 setBioUser(data.userBio)
                 setLinkUser(data.userLink)
 
+                navigate(0)
                 navigate(`/user/${username}`, { replace: true })
-                window.location.reload()
             } else {
                 alert('belum berhasil')
             }
@@ -175,8 +175,11 @@ export default function EditProfilePage() {
                     </span>
 
                     {/* FEEDBACK SECT */}
-                    <div>
-                        <FeedBackELM />
+                    <div className="mt-[32px]">
+                        <FeedBackELM
+                            Text01={'Supoort Us ✨'}
+                            Text02={'Punya kritik dan saran?'}
+                        />
                     </div>
 
 

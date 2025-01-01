@@ -33,9 +33,10 @@ export default function UserProfile() {
 
     const [lengthUserPost, setLengthUserPost] = useState(0)
     useEffect(() => {
-        const userPost = publikasi.filter((user) => user.userName === getRawDataUsername.username)
+        const userPost = publikasi.filter((user) => user.userName === usernameId)
         setLengthUserPost(userPost.length)
-    }, [getRawDataUsername?.username])
+    }, [usernameId, publikasi])
+
 
     const { username, setUsername } = useContext(API_URL_CONTEXT) // username from token
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
@@ -201,9 +202,9 @@ export default function UserProfile() {
                                 </div>
 
                                 {/* BADGE */}
-                                <div className="max-w-scrollbar-hidden max-w-[42rem] h-fit flex flex-col gap-[8px] pb-[12px]" style={{ overflowX: 'scroll' }}>
+                                <div className=" max-w-[42rem] h-fit flex flex-col gap-[4px] pb-[12px]" >
                                     <p className="text-[12px]">Achievements</p>
-                                    <div className="flex flex-row h-full h-fit gap-[16px]">
+                                    <div className="max-w-scrollbar-hidden flex flex-row h-full h-fit gap-[16px]" style={{ overflowX: 'scroll' }}>
                                         {getRawDataUsername && getRawDataUsername.username === usernameId && (
                                             <>
                                                 {getBadge.map((item, idx) =>

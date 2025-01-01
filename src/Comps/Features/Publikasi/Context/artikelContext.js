@@ -22,7 +22,9 @@ export default function ArtikelProvider({ children }) {
         const fetchPub = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
+                const response = await fetch(`${API_URL_PUB}/pub/get-pub`, {
+                    method: "GET"
+                })
                 if (response.ok) {
                     const data = await response.json()
                     setPublikasi(data)

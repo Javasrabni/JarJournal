@@ -36,7 +36,7 @@ export default function OVERALL_CONTEXT_PROVIDER({ children }) {
             }, 1000)
             return () => clearTimeout(delayOutput)
         }
-    }, [publicDataUser, username])
+    }, [publicDataUser, username, token])
 
     useEffect(() => {
         localStorage.setItem('introAfterLogin', JSON.stringify(introAfterLogin))

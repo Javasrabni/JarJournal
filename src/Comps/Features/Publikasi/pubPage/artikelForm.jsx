@@ -89,7 +89,7 @@ export default function ArtikelForm() {
                 />
                 <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
 
-                <button onClick={HandleAddPub} style={{ padding: '5px 10px' }}>
+                <button onClick={HandleAddPub} className="text-[yellow]" style={{ padding: '5px 10px' }}>
                     Publish
                 </button>
             </div>

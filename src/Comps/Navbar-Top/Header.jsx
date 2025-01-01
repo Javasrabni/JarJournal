@@ -11,6 +11,7 @@ import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import Skeleton from "react-loading-skeleton";
 import { CatatanContext } from "../Features/Catatan/catatanContex";
 import { OVERALL_CONTEXT } from "../../Context/OVERALL_CONTEXT";
+import { FeedBackELM } from "../../home";
 
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
@@ -239,7 +240,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                         {/* ON POPUP */}
                         <div>
                             {openSetting && (
-                                <div className="p-[12px] text-[12px]" style={{ position: "absolute", zIndex: '10', transform: 'translateX(-128px) translateY(18px)', width: `${280 / 2}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
+                                <div className="p-[12px] text-[12px]" style={{ position: "absolute", zIndex: '10', transform: 'translateX(-173px) translateY(18px)', width: `${280 / 1.5}px`, height: 'fit-content', borderRadius: '8px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', outline: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}>
 
                                     {token ? (
                                         <div className="flex flex-col w-full h-full gap-[8px]">
@@ -263,6 +264,13 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                                                                 </span>
                                                             </button>
                                                         )}
+                                                    </div>
+                                                    <div>
+                                                        <FeedBackELM
+                                                            inHeader={true}
+                                                            Text01={'Supoort'}
+                                                            Text02={'Feedback'}
+                                                        />
                                                     </div>
                                                 </>
                                             ) : (

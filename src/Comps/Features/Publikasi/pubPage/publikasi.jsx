@@ -309,7 +309,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                     <>
                         {profilePage ? (
                             <>
-                                {publikasiData.filter(user => user.userName === profilePage).map((pub) =>
+                                {profilePage && publikasiData && publikasiData.filter(user => user.userName === profilePage).map((pub) =>
                                     <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                         <div className={`font-[inter] flex flex-col `}>
@@ -425,7 +425,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                             <>
                                 {profilePageUserLikes ? (
                                     <>
-                                        {publikasiData.filter(user => user.likes.includes(profilePageUserLikes  )).map((pub) =>
+                                        {profilePageUserLikes && publikasiData.filter(user => user.likes.includes(profilePageUserLikes  )).map((pub) =>
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>

@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { OVERALL_CONTEXT } from "../../Context/OVERALL_CONTEXT"
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import { ChooseAvatarContext } from "./Context/choseAvtContext";
+import { useNavigate } from "react-router-dom";
 import { OnEditUserProfileContext } from "../../Pages/userProfile/Context/onEditUserProfileCTX";
 
 export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeAvatar }) {
@@ -19,6 +20,7 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
     const { getAllAvatar, setGetAllAvatar, getAvatarNavBar, setGetAvatarNavBar } = useContext(ChooseAvatarContext)
     const avtScroll = useRef()
     const { showAllAvatar, setShowAllAvatar } = useContext(OnEditUserProfileContext)
+    const navigate = useNavigate()
 
     // Golden Ratio
     const fullWidthClient = window.innerWidth;
@@ -43,7 +45,9 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
 
     // Submit data into server
     const [selectedAllAvatar, setSelectedAllAvatar] = useState([])
+    const [clickedAvt, setClickedAvt] = useState(null)
     function HandleChooseAvatar(avt, idx) {
+        setClickedAvt(idx)
         setSelectedAllAvatar({ allAvatar: avt.urlAvt, idxAvatar: avt.Id })
     }
 
@@ -60,14 +64,16 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
             if (response.ok) {
                 const data = await response.json()
                 // setGetAvatarNavBar(data.urlAvt)
-                alert(data.message)
+                // alert(data.message)
                 setIntroAfterLogin(false)
+                navigate(0)
 
                 // CHANGE AVATAR IN PROFILE
                 if (onChangeAvatar) {
                     setShowAllAvatar(false)
                     return () => setShowAllAvatar(true)
                 }
+
             }
         } catch (err) {
             console.error(err)
@@ -98,7 +104,10 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
                         {getAllAvatar.map((avt, idx) => (
                             <div className="w-[100px] h-[100px] flex-shrink-0" key={idx}>
                                 <img
+                                    draggable='false'
+                                    onContextMenu={(e) => e.preventDefault()}
                                     src={avt.urlAvt}
+                                    style={{ border: clickedAvt === idx ? '2px solid var(--blue-clr)' : 'none', transform: clickedAvt === idx ? 'scale(95%)' : 'none' }}
                                     alt="all avatar"
                                     className="w-full h-full object-cover rounded-[50px]"
                                     onClick={() => HandleChooseAvatar(avt, idx)}

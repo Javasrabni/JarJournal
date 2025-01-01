@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { UserProfileContext } from "../../../Pages/userProfile/Context/userProfileContext"
 import { ChooseAvatarContext } from "../../../introWeb/chooseAvatar/Context/choseAvtContext"
+import { OVERALL_CONTEXT } from "../../../Context/OVERALL_CONTEXT"
 
 export default function NavFooter() {
     // AUTH SECT
@@ -14,6 +15,8 @@ export default function NavFooter() {
             setToken(savedToken); // Set token untuk menganggap user sudah login
         }
     }, []); // GET USER TOKEN
+
+    const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
 
 
 
@@ -62,7 +65,7 @@ export default function NavFooter() {
             <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
                 <i class="fa-solid fa-robot"></i>
             </div>
-            {token && (
+            {token && !introAfterLogin && (
                 <div onClick={() => navigate(`/user/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
                     <span>
                         {findUser && username == findUser.username && token && (

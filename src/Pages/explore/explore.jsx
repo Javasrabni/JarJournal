@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom"
 import { UserProfileContext } from "../userProfile/Context/userProfileContext"
 
 export default function Explore() {
-
-
     const navigate = useNavigate()
     const { token, setToken } = useContext(API_URL_CONTEXT)
     useEffect(() => {
@@ -52,9 +50,10 @@ export default function Explore() {
 
 
     function HandleSearchExplore() {
+        if (!valueInputExploreSementara || !valueInputExplore) return
         // setValueInputExplore(event.target.value.toLowerCase())
         setStatusSearchExplore(true)
-        setValueInputExploreSementara('') // clear input
+        // setValueInputExploreSementara('') // clear input
         if (inputSearchExploreRef.current) inputSearchExploreRef.current.blur() // unfocus input 
         const delayOutput = setTimeout(() => {
             const filteringPub = mergeJudulnContentPub.filter(item =>
@@ -134,11 +133,11 @@ export default function Explore() {
                     {/* ON SEARCH */}
                     <div className="w-full flex flex-row gap-[8px] items-center">
                         {statusSearchExplore && (
-                            <span className="cursor-pointer" onClick={() => setStatusSearchExplore(false)}>{backIcon}</span>
+                            <span className="cursor-pointer" onClick={() => { setStatusSearchExplore(false); setValueInputExploreSementara('') }}>{backIcon}</span>
                         )}
 
                         <input type="text" value={valueInputExploreSementara} placeholder="Cari pengguna atau topik" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full p-[10px] px-[12px] outline-0 border-0 text-[12px]`}
-                            style={{ borderRadius: valueInputExploreSementara.length >= 4 && outputSearchUsernameProfileData.length >= 1 ? '8px 8px 0px 0px' : '8px' }}
+                            style={{ borderRadius: valueInputExploreSementara.length >= 4 && (outputSearchUsernameProfileData.length >= 1 || outputSearchUsernameProfileData.length < 1) ? '8px 8px 0px 0px' : '8px' }}
                             ref={inputSearchExploreRef}
                             onChange={(e) => { HandleChangeSearch(); setValueInputExplore(e.target.value); setValueInputExploreSementara(e.target.value) }}
                             // FUNC IF USER PRESSING ENTER
@@ -150,11 +149,11 @@ export default function Explore() {
                     </div>
                     <div>
                         {valueDsntMatchWithPub && statusSearchExplore && filteredPub.length <= 0 && (
-                            <p className="text-[12px] text-[var(--black-subtext)]">Mungkin hasil dari "{valueInputExplore}" kurang relevan nihh..</p>
+                            <p className="text-[12px] text-[var(--black-subtext)]">Mungkin hasil dari "{valueInputExplore}" kurang relevan...</p>
                         )}
 
                         {/* LOGIC FOR SEARCH PUBLIC USER */}
-                        {outputSearchUsernameProfileData && valueInputExploreSementara.length >= 4 && (
+                        {!statusSearchExplore && outputSearchUsernameProfileData && valueInputExploreSementara.length >= 4 && (
                             <>
                                 {findedPublicUsers.map(user => (
                                     <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)}>

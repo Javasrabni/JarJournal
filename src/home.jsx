@@ -289,14 +289,14 @@ export default function Home() {
     )
 }
 
-export const FeedBackELM = () => {
+export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
     return (
-        <div className="flex flex-col gap-[12px] mt-[32px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
+        <div className="flex flex-col gap-[12px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
             <div>
-                <p className="text-[14px] text-[var(--blue-clr)]"><a href="https://saweria.co/JJRCS">Supoort Us ✨</a></p>
+                <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS">{Text01}</a></p>
             </div>
             <div>
-                <p className="text-[14px] text-[var(--blue-clr)]"><a href="https://saweria.co/JJRCS" target="_blank">Punya masukkan <span className="text-[11px]">/</span> kritik dan saran?</a></p>
+                <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS" target="_blank">{Text02} </a></p>
             </div>
         </div>
     )
