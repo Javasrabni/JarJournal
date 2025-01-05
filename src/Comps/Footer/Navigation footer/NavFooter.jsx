@@ -53,6 +53,10 @@ export default function NavFooter() {
     const userIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
     </svg>
+    const cubeIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+  </svg>
+  
 
     return (
         <div className="fixed left-0 bottom-0 h-[54px] w-[100%] bg-[var(--bg-12)] z-[16] min-w-[360px] flex flex-row items-center justify-around text-white" style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -64,13 +68,12 @@ export default function NavFooter() {
             </div>
             <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
                 <i class="fa-solid fa-robot"></i>
+                {/* <span>{cubeIcon}</span> */}
             </div>
-            {token && !introAfterLogin && (
+            {findUser && username == findUser.username && token && !introAfterLogin && (
                 <div onClick={() => navigate(`/user/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
                     <span>
-                        {findUser && username == findUser.username && token && (
-                            <img src={findUser.avatar.urlAvt} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" />
-                        )}
+                        <img src={findUser.avatar.urlAvt} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" />
                     </span>
                 </div>
             )}

@@ -109,8 +109,18 @@ export default function Home() {
     //     }
     // }
 
-    const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
+    const { introAfterLogin, setIntroAfterLogin, isCheckingIntro, setIsCheckingIntro } = useContext(OVERALL_CONTEXT)
 
+
+    useEffect(() => {
+        if (!token) {
+            setIntroAfterLogin(false)
+        }
+
+        if (!publicDataUser) {
+            setIntroAfterLogin(false)
+        }
+    }, [publicDataUser, token])
 
     return (
         <>

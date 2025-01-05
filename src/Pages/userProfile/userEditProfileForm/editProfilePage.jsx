@@ -31,7 +31,7 @@ export default function EditProfilePage() {
     useEffect(() => {
         if (!token || user !== username) {
             navigate(-1)
-        }
+        } 
     }, [token, username, user])
 
     const { bioUser, setBioUser, linkUser, setLinkUser } = useOnEditUserProfileContext()
@@ -61,8 +61,6 @@ export default function EditProfilePage() {
         }
         getBionLinkUser()
     }, [])
-
-    console.log(bioUser)
 
     // VALUE SEMENTARA
     useEffect(() => {
@@ -119,72 +117,77 @@ export default function EditProfilePage() {
 
     return (
         <>
-            {/* heading */}
-            <div className="flex w-full h-[65px] justify-between items-center px-[16px] text-white" role="heading">
-                <div className="flex flex-row gap-[12px] items-center text-[14px] font-[600]">
-                    <span onClick={() => navigate(-1)} className="pr-[6px] cursor-pointer">{backIcon}</span>
-                    <p className="select-none">Edit profil</p>
-                </div>
-                <button onClick={OnEditProfileBE} className="text-[12px] text-[var(--blue-clr)]">Simpan</button>
-            </div>
+            {username == user && (
+                <>
 
-            <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
+                    {/* heading */}
+                    <div className="flex w-full h-[65px] justify-between items-center px-[16px] text-white" role="heading">
+                        <div className="flex flex-row gap-[12px] items-center text-[14px] font-[600]">
+                            <span onClick={() => navigate(-1)} className="pr-[6px] cursor-pointer">{backIcon}</span>
+                            <p className="select-none">Edit profil</p>
+                        </div>
+                        <button onClick={OnEditProfileBE} className="text-[12px] text-[var(--blue-clr)]">Simpan</button>
+                    </div>
 
-                {/* FORM INPUT EDIT PROFILE */}
-                <div className="flex flex-col gap-[16px] justify-center w-full h-full">
-                    {/* FOTO PROFIL */}
-                    <div>
-                        {showAllAvatar && (
-                            <div className="fixed z-[16]">
-                                <ChooseAvatar heading={'Ganti avatar'} subHeading={''} closeChooseAvatar={() => setShowAllAvatar(false)} onChangeAvatar={true} />
-                            </div>
-                        )}
+                    <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
 
-                        {publicDataUser.map((item, idx) =>
-                            <>
-                                {username == item.username && (
-                                    <div className="flex flex-col gap-[12px] items-center justify-center">
-                                        <div className="w-fit m-auto h-fit flex items-center justify-center cursor-pointer z-[12]" onClick={HandleEditAvatar}>
-                                            <div className="absolute w-[100px] h-[100px] bg-[#00000090] rounded-[50px]" />
-                                            <span className="absolute">{cameraIcon}</span>
-                                            <img src={item.avatar.urlAvt} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px]' draggable='false' />
-                                        </div>
-                                        <p className="text-[14px] text-[var(--black-subtext)] select-none">Foto profil</p>
-                                    </div >
+                        {/* FORM INPUT EDIT PROFILE */}
+                        <div className="flex flex-col gap-[16px] justify-center w-full h-full">
+                            {/* FOTO PROFIL */}
+                            <div>
+                                {showAllAvatar && (
+                                    <div className="fixed z-[16]">
+                                        <ChooseAvatar heading={'Ganti avatar'} subHeading={''} closeChooseAvatar={() => setShowAllAvatar(false)} onChangeAvatar={true} />
+                                    </div>
                                 )}
-                            </>
-                        )}
-                    </div>
 
-                    {/* BIO N LINK */}
-                    <span className="flex flex-col gap-[4px]">
-                        <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Bio</label>
-                        <input type="text"
-                            className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
-                            value={bioUserValue}
-                            placeholder="Deskripsikan diri"
-                            onChange={(e) => setBioUserValue(e.target.value)} />
-                    </span>
-                    <span className="flex flex-col gap-[4px]">
-                        <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Link</label>
-                        <input type="text"
-                            value={linkUserValue}
-                            placeholder="Perluas koneksi"
-                            className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
-                            onChange={(e) => setLinkUserValue(e.target.value)} />
-                    </span>
+                                {publicDataUser.map((item, idx) =>
+                                    <>
+                                        {username == item.username && (
+                                            <div className="flex flex-col gap-[12px] items-center justify-center">
+                                                <div className="w-fit m-auto h-fit flex items-center justify-center cursor-pointer z-[12]" onClick={HandleEditAvatar}>
+                                                    <div className="absolute w-[100px] h-[100px] bg-[#00000090] rounded-[50px]" />
+                                                    <span className="absolute">{cameraIcon}</span>
+                                                    <img src={item.avatar.urlAvt} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px]' draggable='false' />
+                                                </div>
+                                                <p className="text-[14px] text-[var(--black-subtext)] select-none">Foto profil</p>
+                                            </div >
+                                        )}
+                                    </>
+                                )}
+                            </div>
 
-                    {/* FEEDBACK SECT */}
-                    <div className="mt-[32px]">
-                        <FeedBackELM
-                            Text01={'Supoort Us ✨'}
-                            Text02={'Punya kritik dan saran?'}
-                        />
-                    </div>
+                            {/* BIO N LINK */}
+                            <span className="flex flex-col gap-[4px]">
+                                <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Bio</label>
+                                <input type="text"
+                                    className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
+                                    value={bioUserValue}
+                                    placeholder="Deskripsikan diri"
+                                    onChange={(e) => setBioUserValue(e.target.value)} />
+                            </span>
+                            <span className="flex flex-col gap-[4px]">
+                                <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Link</label>
+                                <input type="text"
+                                    value={linkUserValue}
+                                    placeholder="Perluas koneksi"
+                                    className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
+                                    onChange={(e) => setLinkUserValue(e.target.value)} />
+                            </span>
+
+                            {/* FEEDBACK SECT */}
+                            <div className="mt-[32px]">
+                                <FeedBackELM
+                                    Text01={'Supoort Us ✨'}
+                                    Text02={'Punya kritik dan saran?'}
+                                />
+                            </div>
 
 
-                </div>
-            </div >
+                        </div>
+                    </div >
+                </>
+            )}
         </>
     )
 }

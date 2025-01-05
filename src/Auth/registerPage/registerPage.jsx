@@ -22,7 +22,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    const { success, setSuccess, statusSuccess, setStatusSuccess } = useContext(API_URL_CONTEXT)
 
     const handleRegister = async () => {
 
@@ -53,12 +53,10 @@ const RegisterPage = () => {
                 setEmail('');
                 setPassword('');
                 setUsername('')
+                setStatusSuccess(true)
 
                 // AUTO DIRECT INTO LOGIN
-                const delayDirect = setTimeout(() => {
-                    setIsRegister(false)
-                }, 2000)
-                return () => clearTimeout(delayDirect)
+                setIsRegister(false)
             } else {
                 const errorData = await response.json();
                 setError(errorData.message);
@@ -130,7 +128,7 @@ const RegisterPage = () => {
                 </div>
 
                 <p style={{ color: 'blue', fontSize: '12px', marginTop: '12px', textAlign: 'center' }}>
-                    <button onClick={() => setIsRegister(false)} className='text-[12px] text-black select-none'>Sudah punya akun?{' '}<span className='underline'>Masuk disini</span> </button>
+                    <button onClick={() => setIsRegister(false)} className='text-[12px] text-black select-none'>Sudah punya akun?{' '}<span className='font-[600] text-[var(--blue-clr)]'>Masuk</span> </button>
                 </p>
 
                 {error && <p style={{ color: 'tomato', fontSize: '12px', textAlign: 'center', fontWeight: "500" }}>{error}</p>}

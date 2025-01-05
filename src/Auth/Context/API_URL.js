@@ -72,8 +72,14 @@ export default function API_URL_PROVIDER({ children }) {
         getPublicDataUser()
     }, [])
 
+    // STATUS REGISTER
+    const [success, setSuccess] = useState('');
+    const [statusSuccess, setStatusSuccess] = useState(false);
+
+
+
     return (
-        <API_URL_CONTEXT.Provider value={{MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
+        <API_URL_CONTEXT.Provider value={{ statusSuccess, setStatusSuccess, success, setSuccess, MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
             {children}
         </API_URL_CONTEXT.Provider>
     )

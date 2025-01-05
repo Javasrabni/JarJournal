@@ -35,16 +35,30 @@ const AuthPage = () => {
     // const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
     return (
-        <div className={`max-w-[400px] h-[100svh] flex items-center justify-between p-[16px] m-auto`}>
+        <div className={`max-w-[400px] h-[100svh] flex flex-col items-center justify-center p-[16px] m-auto`}>
             {isRegister ? (
                 <div className='w-full h-full p-[16px] flex flex-col items-center justify-center'>
-                    <RegisterPage />
+                    <RegisterPage />    
                 </div>
             ) : (
                 <div className='w-full h-fit p-[16px] flex flex-col items-center justify-center'>
                     <LoginPage />
+                    <div className='mt-[32px]'>
+                        <p className='text-[12px]'>Mengapa Akun atau LogIn diperlukan? Baca <span className='font-[500] text-[var(--blue-clr)] underline '>Ketentuan dan kebijakan privasi</span> disini.</p>
+                    </div>
                 </div>
             )}
+
+
+
+            <div className='absolute bottom-[32px] left-[50%]' style={{ transform: 'translateX(-50%)' }}>
+                <button
+                    className='w-fit rounded-[6px] text-[12px] px-[12px] py-[6px] text-black underline'
+                    onClick={() => navigate('/dashboard')}
+                >
+                    Coba Aplikasi
+                </button>
+            </div>
         </div>
     );
 };

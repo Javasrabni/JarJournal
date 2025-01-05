@@ -91,7 +91,7 @@ export default function Explore() {
             navigate('/Auth')
         } else {
             let delay = setTimeout(() => {
-                navigate('/Artikel/publish')
+                navigate('/clips/publish')
             }, 200)
             return () => clearTimeout(delay)
         }

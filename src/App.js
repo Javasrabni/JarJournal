@@ -73,7 +73,7 @@ function App() {
                                               <Route path='/:user/profile/edit' element={<EditProfilePage />} />
                                               <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
                                               <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                                              <Route path='/Artikel/publish' element={<ArtikelForm />} />
+                                              <Route path='/clips/publish' element={<ArtikelForm />} />
                                               <Route path='/KalenderPlanner' element={<KalenderPage />} />
                                               <Route path='/JJR-ChatBot' element={<Chatbot />} />
 

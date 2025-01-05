@@ -14,6 +14,7 @@ import { UseEditNoteContext } from "./onEditNote/onEditNContext"
 import DOMPurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 import './style.css'
+import { span } from "framer-motion/client"
 
 export default function Catatan() {
     const navigate = useNavigate()
@@ -128,7 +129,9 @@ export default function Catatan() {
     const [valueInputNote, setValueInputNote] = useState('')
     const [visibleFilteredValue, setVisibleFilteredValue] = useState(false)
 
-    function HandleChangeNote(value) {
+
+
+    function HandleChangeNote(value, id) {
         const userInputSearch = value.target.value.toLowerCase();
         setValueInputNote(userInputSearch) // ValueInput sementara
 
@@ -151,8 +154,52 @@ export default function Catatan() {
 
             return () => clearTimeout(delayOutput)
         }
-
     }
+
+    // Handle note checkbox delete
+    const [checkedNote, setCheckedNote] = useState([])
+    const [onDelNote, setOnDelNote] = useState(false)
+
+    function HandleCheckedNote(noteIdx) {
+        if (checkedNote.includes(noteIdx)) {
+            setCheckedNote(checkedNote.filter(item => item !== noteIdx))
+        } else {
+            setCheckedNote(prev => [...prev, noteIdx])
+        }
+    }
+
+    async function HandleDelteCheckedNote() {
+        try {
+            const response = await fetch(`${API_URL_NOTE}/auth/delete-note`, {
+                method: "DELETE",
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }, body: JSON.stringify({ noteIndex: checkedNote })
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                setOnNewNote(data.note)
+                setCheckedNote([])
+                setOnDelNote(false)
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
+    const delIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: onDelNote ? 'tomato' : 'var(--black-subtext)' }}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+    </svg>
+
+    const checkIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-3.5" style={{ color: 'var(--black-subtext)' }}>
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"></path>
+    </svg>
+
+
+
 
     return (
         <>
@@ -177,8 +224,17 @@ export default function Catatan() {
                                     </div>
 
                                     {/* TOTAL NOTE USER */}
-                                    <div>
+                                    <div className="flex flex-row items-center justify-between">
                                         <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.length} Catatan</p>
+                                        {onDelNote ? (
+                                            // DEL NOTE
+                                            <div className="flex flex-row gap-[12px] items-center cursor-pointer">
+                                                <p className="text-white text-[12px]" onClick={() => setOnDelNote(false)}>Cancle</p>
+                                                <span onClick={() => HandleDelteCheckedNote(checkedNote)}>{delIcon}</span>
+                                            </div>
+                                        ) : (
+                                            <span className="cursor-pointer" onClick={() => setOnDelNote(prev => !prev)}> {delIcon}</span>
+                                        )}
                                     </div>
 
                                     {/* TAMPILKAN NOTE USER JIKA FILTER = TRUE */}
@@ -205,21 +261,53 @@ export default function Catatan() {
                                     ) : (
                                         <>
                                             {onNewNote.map((item, index) => (
-                                                <div
-                                                    key={index} // Use a unique identifier for the key
-                                                    className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
-                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
-                                                >
-                                                    <div className="flex flex-col gap-[0px]">
+                                                <>
+                                                    {onDelNote ? (
                                                         <div
-                                                            id="outputCatatan"
-                                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
-                                                    </div>
-                                                </div>
+                                                            key={index} // Use a unique identifier for the key
+                                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-row p-[12px] rounded-[6px] gap-[12px] cursor-pointer`}
+
+                                                        >
+                                                            <div className="flex items-center justify-center">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    className="rounded w-[14px] h-[14px] p-[6px]"
+                                                                    // checked={checkedNote.includes(item.id)}
+                                                                    onChange={() => HandleCheckedNote(index)}
+                                                                />
+                                                            </div>
+                                                            <div>
+
+                                                                <div className="flex flex-col gap-[0px]">
+                                                                    <div
+                                                                        id="outputCatatan"
+                                                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                                                        onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            key={index} // Use a unique identifier for the key
+                                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                                            onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                        >
+                                                            <div className="flex flex-col gap-[0px]">
+                                                                <div
+                                                                    id="outputCatatan"
+                                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </>
                                             ))}
                                         </>
                                     )}
@@ -240,7 +328,7 @@ export default function Catatan() {
                         )}
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

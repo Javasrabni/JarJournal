@@ -7,9 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 // import Skeleton from "react-loading-skeleton";
+import { useNavigate } from "react-router-dom"
 
 export default function Memo({ token }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+    const navigate = useNavigate()
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)
@@ -74,6 +76,11 @@ export default function Memo({ token }) {
     const [activePopupMemo, setActivePopupMemo] = useState(false)
 
     const HandleClickMemo = async () => {
+        if (!token) {
+            alert('Login untuk menggunakan fitur');
+            navigate('/Auth')
+            return
+        }
         // setIndicator((prev)=> !prev)
         // setIndicatorFromMemo(true)
         setActivePopupMemo(true)
@@ -153,9 +160,9 @@ export default function Memo({ token }) {
     //     }
     // }, [changeHeightMemo])
 
-    useEffect(() => {
-        setValueMemo(prev => (prev.length > 2 ? prev.slice(0, 2) : prev))
-    })
+    // useEffect(() => {
+    //     setValueMemo(prev => (prev.length > 2 ? prev.slice(0, 2) : prev))
+    // })
 
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
@@ -243,6 +250,7 @@ export default function Memo({ token }) {
 
     // Add memo func in btn
     const HandleAddMemo = () => {
+
         let delayAddMemo;
 
         if (!memoInputValue) {
@@ -331,7 +339,8 @@ export default function Memo({ token }) {
                 )}
 
 
-                <div className={`w-[158px] ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px] gap-[12px]`} style={{ overflowWrap: "break-word", whiteSpace: "normal", outline: themeActive ? '1px solid var(--black-bg)' : "1px solid var(--white-bg-200)" }}>
+                {/* w-[158px] */}
+                <div className={`w-full ${themeActive ? 'bg-[var(--black-card)]' : 'bg-[var(--white-bg-100)]'} text-white rounded-[8px] p-[12px] gap-[12px]`} style={{ overflowWrap: "break-word", whiteSpace: "normal", outline: themeActive ? '1px solid var(--black-bg)' : "1px solid var(--white-bg-200)" }}>
                     <div className="flex flex-row items-center justify-between" style={{ marginBottom: valueMemo.length < 1 ? "0px" : "8px" }}>
                         <div className="flex flex-row gap-[4px] items-center">
                             <p className={`font-semibold text-xs ${themeActive ? 'text-white' : 'text-[var(--black-text)]'}`}>Memo</p>
@@ -347,7 +356,7 @@ export default function Memo({ token }) {
                         </button>
                     </div>
 
-                    <div className="">
+                    <div className="w-full">
                         <div className="mb-[4px] flex">
                             {indicator && (
                                 <span className="flex flex-row mt-[4px]">
@@ -361,8 +370,8 @@ export default function Memo({ token }) {
                         </div>
                         {/* Isi dari value memo */}
                         <div className="w-full h-fit flex flex-row justify-between items-end">
-                            <ul className="flex flex-col gap-[8px]">
-                                {!valueMemo ? (
+                            <ul className="flex flex-col gap-[8px] w-full">
+                                {valueMemo.length < 1 ? (
                                     <div>
                                         {!indicator && (
                                             <span className="flex flex-row gap-[4px] items-center text-[#999999]">
@@ -400,7 +409,7 @@ export default function Memo({ token }) {
                                                             </div>
 
                                                             {/* Value memo on edit */}
-                                                            <div className={`w-[118px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
+                                                            <div className={`w-full ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
                                                                 <p className="whitespace-pre-wrap text-[10px] break-words"> {item}</p>
                                                             </div>
                                                             {/* {editValueMemoStatus ? ():()} */}
@@ -418,12 +427,8 @@ export default function Memo({ token }) {
 
                                                         </div>
                                                     ) : (
-                                                        <div className={`w-[136px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            {/* {readyMemo ? ( */}
-                                                                <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
-                                                            {/* ) : (
-                                                                <Skeleton count={2} height={'16px'} className="animate-pulse"/>
-                                                            )} */}
+                                                        <div className={`w-full  ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
+                                                            <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
                                                         </div>
                                                     )}
                                                     {/* </li> */}
@@ -437,9 +442,9 @@ export default function Memo({ token }) {
 
 
                         </div>
-                        {valueMemo.length >= 2 && (
+                        {/* {valueMemo.length >= 2 && (
                             <p className="text-[10px] text-[var(--aksen-color)] cursor-pointer text-center pt-[8px]">Buka semua memo</p>
-                        )}
+                        )} */}
                     </div>
                 </div>
                 {/* Setting 3 dots */}
