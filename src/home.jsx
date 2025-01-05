@@ -247,6 +247,40 @@ export default function Home() {
                                         </div>
                                     </div>
 
+                                    {/* REPORT JURNAL X CATATAN */}
+                                    <div className="flex flex-col gap-[12px] w-full h-full pb-[32px]">
+
+                                        {/* ORANG ORANG DI JARJOURNAL */}
+                                        <div className="flex flex-col gap-[16px] w-full h-full">
+                                            <div className="flex flex-col gap-[2px]">
+                                                <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
+                                                <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
+                                            </div>
+                                            <div className="flex flex-row gap-[32px] w-full h-fit overflow-x-auto pb-[16px]">
+                                                {publicDataUser.slice(0, 10).map((user, index) =>
+                                                    <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
+                                                        <span>
+                                                            <img src={user.avatar.urlAvt} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
+                                                        </span>
+                                                        <div className="flex flex-col gap-[2px] justify-center">
+                                                            <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
+                                                            <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">{user.joinedDate}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <ReportJurnal />
+                                        </div>
+                                        <div>
+                                            <ReportCatatan />
+                                        </div>
+
+
+                                    </div>
+
 
                                     {/* PUBLICATIONS */}
                                     {/* <div className="mb-[60px]" style={{ borderTop: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)' }}> */}
@@ -299,6 +333,7 @@ export default function Home() {
     )
 }
 
+// FEEDBACK /SUPOORT ELM
 export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
     return (
         <div className="flex flex-col gap-[12px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -307,6 +342,38 @@ export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
             </div>
             <div>
                 <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS" target="_blank">{Text02} </a></p>
+            </div>
+        </div>
+    )
+}
+
+//  REPORT JURNAL USER
+const ReportJurnal = () => {
+    return (
+        <div className="w-full  h-[200px]">
+            <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
+                <div>
+                    <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
+                </div>
+                <div>
+                    <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// REPORT CATATAN USER
+const ReportCatatan = () => {
+    return (
+        <div className="w-full  h-[200px]">
+            <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
+                <div>
+                    <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
+                </div>
+                <div>
+                    <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                </div>
             </div>
         </div>
     )

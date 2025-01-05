@@ -113,6 +113,9 @@ export default function Explore() {
     // tinggi full height client 
     const innerHeightWindowPortClient = window.innerHeight
 
+    // TIPE CLIPS
+    const [tipeExplore, setTipeExplore] = useState(true)
+
     const searchIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-5" style={{ color: themeActive ? "var(--black-subtext)" : "black" }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
     </svg>
@@ -165,17 +168,39 @@ export default function Explore() {
                                 ))}
                             </>
                         )}
+
+                        {/* TIPE CLIPS */}
+                        <div className="flex flex-row items-center text-[12px] pt-[12px] gap-[8px] text-[var(--black-subtext)] cursor-pointer w-fit">
+                            <span className={`${tipeExplore && 'text-white '}`} onClick={() => setTipeExplore(true)}>Utas</span>
+                            <span className={`${!tipeExplore && 'text-white '}`} onClick={() => setTipeExplore(false)}>Informasi</span>
+                        </div>
                     </div>
 
-                    <main className="mt-[16px] pb-[64px]">
+                    <main className="mt-[4px] pb-[64px]">
+
+
                         {statusSearchExplore && valueInputExplore.length > 0 ? (
                             <Publikasi publikasiData={filteredPub} />
                         ) : (
-                            <Publikasi publikasiData={publikasi} />
+                            <>
+                            {/* ON TIPE EXPLORE */}
+                                {tipeExplore ? (
+                                    <Publikasi publikasiData={publikasi} />
+                                ) : (
+                                    <p>lorem ipsum</p>
+                                )}
+                            </>
                         )}
 
                         {statusSearchExplore && filteredPub.length <= 0 && (
-                            <Publikasi publikasiData={publikasi} />
+                            <>
+                            {/* ON TIPE EXPLORE */}
+                                {tipeExplore ? (
+                                    <Publikasi publikasiData={publikasi} />
+                                ) : (
+                                    <p>lorem ipsum</p>
+                                )}
+                            </>
                         )}
 
                         <div onClick={HandleGoPublish} className="fixed bottom-[72px] right-[16px]">

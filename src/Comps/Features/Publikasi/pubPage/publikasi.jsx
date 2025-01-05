@@ -11,6 +11,7 @@ import { UserProfileContext } from "../../../../Pages/userProfile/Context/userPr
 import html2canvas from "html2canvas"
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { motion } from "framer-motion"
 
 export default function Publikasi({ publikasiData, profilePage, profilePageUserLikes }) {
     // THEME
@@ -370,8 +371,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             {/* AUTHOR PUB */}
                                             <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
                                                 <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                    {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user) =>
-                                                        <img src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                    {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
+                                                        <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                     )}
 
                                                     <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -489,8 +490,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user) =>
-                                                                <img src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
+                                                                <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                             )}
 
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -570,12 +571,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                     </>
                                 ) : (
                                     <>
-                                        {publikasiData.map((pub, index) => (
+                                        {/* EXPLORE VIEW */}
+                                        {publikasiData.map((pub) => (
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
-
-                                                    <span role="button" tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
+                                                    <span tabIndex={0} onClick={() => HandleSelectedPub(pub.id)}>
 
                                                         {/* JUDUL PUB */}
                                                         <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
@@ -609,8 +610,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user) =>
-                                                                <img src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
+                                                                <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                             )}
 
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -648,16 +649,17 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                             {onSettingPost && (
                                                                                 <OnPopupSetting
                                                                                     Heading={'Pengaturan Clips'}
+                                                                                    onClickFunc={() => setOnSettingPost(prev => !prev)}
                                                                                     Button1={<button role="button" tabIndex={0} onClick={() => DelPublikasi(pub.id)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
-                                                                                            {deletePost}
-                                                                                            <span className="text-[12px] text-white">Hapus </span>
+                                                                                            <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
+                                                                                            <span className="text-[12px] text-white">Edit</span>
                                                                                         </span>
                                                                                     </button>}
                                                                                     Button2={<button role="button" tabIndex={0} onClick={() => DelPublikasi(pub.id)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
                                                                                             {deletePost}
-                                                                                            <span className="text-[12px] text-white">Edit</span>
+                                                                                            <span className="text-[12px] text-white">Hapus </span>
                                                                                         </span>
                                                                                     </button>}
                                                                                 />
@@ -723,18 +725,38 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     )
 }
 
-export const OnPopupSetting = ({ Button1, Button2, Heading }) => {
+// SETTING MENU POPUP COMP
+export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc }) => {
+    const XIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
+
     return (
-        <div className="rounded-[24px_24px_0px_0px] z-[20] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] outline outline-[1px] outline-[var(--black-border)] fixed bottom-0 left-[50%] flex p-[16px]" style={{ transform: 'translateX(-50%)', transiti }}>
-            <div className="w-full flex flex-col items-start justify-between">
-                <span className="pb-[16px] w-full">
-                    <p className="text-[14px] font-[600] text-center">{Heading}</p>
-                </span>
-                <div className="w-full flex flex-col gap-[8px]">
-                    <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px]">{Button1}</span>
-                    <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px]">{Button2}</span>
+        <>
+            <div className="fixed w-full h-full bg-[#00000050] top-0 left-0 z-[19] cursor-auto" onClick={onClickFunc} />
+            <motion.div
+                className="rounded-[24px_24px_0px_0px] z-[20] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] outline outline-[1px] outline-[var(--black-border)] fixed bottom-0 left-[50%] flex p-[16px] cursor-auto"
+                style={{ transform: 'translateX(-50%)' }}
+                initial={{ y: 100, x: "-50%", opacity: 0 }}
+                animate={{ y: 0, x: "-50%", opacity: 1 }}
+                exit={{ y: 100, x: "-50%", opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }} // Transisi 0.2 detik
+            >
+                <div className="w-full flex flex-col items-start justify-between">
+                    <span className="pb-[16px] w-full flex flex-row items-center justify-between">
+                        <span>
+                            <p className="text-[12px] text-center select-none">{Heading}</p>
+                        </span>
+                        <span onClick={onClickFunc} className="cursor-pointer">
+                            {XIcon}
+                        </span>
+                    </span>
+                    <div className="w-full flex flex-col gap-[8px] cursor-pointer">
+                        <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button1}</span>
+                        <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button2}</span>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+        </>
     )
 }
