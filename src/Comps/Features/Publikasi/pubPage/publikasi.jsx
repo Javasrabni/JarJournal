@@ -726,7 +726,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 }
 
 // SETTING MENU POPUP COMP
-export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc }) => {
+export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalSect }) => {
     const XIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
@@ -745,15 +745,15 @@ export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc }) => {
                 <div className="w-full flex flex-col items-start justify-between">
                     <span className="pb-[16px] w-full flex flex-row items-center justify-between">
                         <span>
-                            <p className="text-[12px] text-center select-none">{Heading}</p>
+                            <p className="text-[12px] text-center text-white select-none">{Heading}</p>
                         </span>
-                        <span onClick={onClickFunc} className="cursor-pointer">
+                        <span onClick={onClickFunc} className="cursor-pointer text-white">
                             {XIcon}
                         </span>
                     </span>
                     <div className="w-full flex flex-col gap-[8px] cursor-pointer">
                         <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button1}</span>
-                        <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button2}</span>
+                        <span className={`w-full p-[12px] ${JurnalSect ? 'bg-[var(--blue-clr)]' : 'bg-[var(--black-bg)]'} flex items-center rounded-[12px] flex items-center justify-center`}>{Button2}</span>
                     </div>
                 </div>
             </motion.div>

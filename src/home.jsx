@@ -249,6 +249,12 @@ export default function Home() {
 
                                     {/* REPORT JURNAL X CATATAN */}
                                     <div className="flex flex-col gap-[12px] w-full h-full pb-[32px]">
+                                        <div>
+                                            <ReportJurnal />
+                                        </div>
+                                        <div>
+                                            <ReportCatatan />
+                                        </div>
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
                                         <div className="flex flex-col gap-[16px] w-full h-full">
@@ -270,15 +276,6 @@ export default function Home() {
                                                 )}
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <ReportJurnal />
-                                        </div>
-                                        <div>
-                                            <ReportCatatan />
-                                        </div>
-
-
                                     </div>
 
 
