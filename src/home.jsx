@@ -352,6 +352,11 @@ const ReportJurnal = () => {
     // GET DATA JURNAL USER
     const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
 
+    const arrowIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+    </svg>
+
+
     return (
         <div className="w-full  h-[200px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -363,22 +368,25 @@ const ReportJurnal = () => {
                         <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
                     ) : (
                         <div className="flex flex-col items-center justify-between h-full w-full mt-[16px]">
-                            <div className="flex flex-row items-center justify-between w-full">
+                            <div className="flex flex-row items-center justify-center gap-[32px] w-full">
                                 {/* DATA JURNAL PERTAMA */}
                                 <div>
                                     {dataDayJournal && dataDayJournal.slice(0, 1).map((item, index) =>
-                                        <div key={index} className="w-[60px] h-[60px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
-                                            <p className="text-[12px] text-white font-[600]">{item.day}</p>
+                                        <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[12px] shrink-0 px-[18px] py-[8px]" onClick={() => console.log(index)}>
+                                            <p className="text-[12px] text-white font-[600]">Hari ke-{item.day}</p>
                                             <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
                                         </div>
                                     )}
                                 </div>
+
+                                <div><span className="text-white">{arrowIcon}</span></div>
+
                                 {/* DATA JURNAL TERAKHIR */}
                                 <div>
-                                    {dataDayJournal && dataDayJournal.slice(-1).map((item, index) =>
-                                        <div key={index} className="w-[60px] h-[60px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
-                                            <p className="text-[12px] text-white font-[600]">{item.day}</p>
-                                            <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                    {dataDayJournal && dataDayJournal[dataDayJournal.length - 1] && (
+                                        <div className="w-fit h-fit py-[8px] px-[18px] bg-[var(--blue-clr)] rounded-[12px] shrink-0 p-[16px]">
+                                            <p className="text-[12px] text-white font-[600]">Hari Ke-{dataDayJournal[dataDayJournal.length - 1].day}</p>
+                                            <p className="text-[12px] text-[var(--white-bg-200)]">{dataDayJournal[dataDayJournal.length - 1].descJurnal}</p>
                                         </div>
                                     )}
                                 </div>
@@ -386,7 +394,7 @@ const ReportJurnal = () => {
 
                             {/* REPORT TOTAL JURNAL */}
                             <div className="mt-[16px]">
-                                <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{dataDayJournal.length} jurnal</span>  sejauh ini. Pertahankan!</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{dataDayJournal.length} jurnal harian</span>  sejauh ini.</p>
                             </div>
                         </div>
                     )}

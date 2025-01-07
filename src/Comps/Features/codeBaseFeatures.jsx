@@ -36,7 +36,7 @@ export default function CodeBaseFeatures() {
         <div className="w-full h-full flex justify-center">
             <div className="w-[360px] h-full flex justify-center">
                 <div className="w-full h-full flex justify-center flex-col">
-                    <Header nameTools={`${id}`} />
+                    <Header nameTools={`${id}`}  />
 
                     <div>
                         {pathLocation.pathname === "/ftr/Catatan" && (<Catatan />)}

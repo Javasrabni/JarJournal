@@ -41,6 +41,7 @@ import Chatbot from './ChatBot/BotJarjournal';
 import Explore from './Pages/explore/explore';
 import UserProfile from './Pages/userProfile/userProfile';
 import EditProfilePage from './Pages/userProfile/userEditProfileForm/editProfilePage';
+import JurnalPage from './Pages/Jurnal/jurnalPage';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
                                                 <Route path='/user/:usernameId' element={<UserProfile />} />
                                                 <Route path='/:user/profile/edit' element={<EditProfilePage />} />
                                                 <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                                                <Route path='/Jurnal/:index/:desc' element={<JurnalPage />} />
                                                 <Route path='/BrainFocus' element={<BrainFocusPage />} />
                                                 <Route path='/clips/publish' element={<ArtikelForm />} />
                                                 <Route path='/KalenderPlanner' element={<KalenderPage />} />
