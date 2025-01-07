@@ -122,6 +122,10 @@ export default function Home() {
         }
     }, [publicDataUser, token])
 
+    // GET DATA JURNAL USER
+    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+
+
     return (
         <>
             <>
@@ -353,7 +357,19 @@ const ReportJurnal = () => {
                     <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
                 </div>
                 <div>
-                    <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                    {dataDayJournal.length > 0 ? (
+                        <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                    ) : (
+                        <>
+                            {dataDayJournal && dataDayJournal.map((item, index) =>
+                                <div key={index} className="w-[120px] h-[120px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
+                                    <p className="text-[12px] text-white font-[600]">Day {index + 1}</p>
+                                    <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                </div>
+                            )}
+                        </>
+                    )}
+
                 </div>
             </div>
         </div>

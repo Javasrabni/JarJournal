@@ -20,6 +20,7 @@ import ExploreProvider from './Pages/explore/Context/exploreContext';
 import UserProfileProvider from './Pages/userProfile/Context/userProfileContext';
 import ChosseAvatarProvider from './introWeb/chooseAvatar/Context/choseAvtContext';
 import { OnEditUserProfileProvider } from './Pages/userProfile/Context/onEditUserProfileCTX';
+import JurnalContextProvider from './Comps/Features/Jurnal/Context/jurnalContext';
 
 // Components
 import Home from './home';
@@ -46,59 +47,61 @@ function App() {
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
       <API_URL_PROVIDER>
         <OVERALL_CONTEXT_PROVIDER>
-          <ChosseAvatarProvider>
-            <UserProfileProvider>
-              <OnEditUserProfileProvider>
-                <ArtikelProvider>
-                  <ExploreProvider>
-                    <OnEditNoteProvider>
-                      <UserQuoteProvider>
-                        <MemoProvider>
-                          <PopupFrSettingsProvider>
-                            <MusicBoxProvider>
-                              <ThemeAppProvider>
-                                <BrainFProvider>
-                                  <ToggleAllProvider>
-                                    <AnimateLoadPageProvider>
-                                      <CatatanProvider>
-                                        <WriteNoteProvider>
-                                          <BrowserRouter>
-                                            <Routes>
+          <JurnalContextProvider>
+            <ChosseAvatarProvider>
+              <UserProfileProvider>
+                <OnEditUserProfileProvider>
+                  <ArtikelProvider>
+                    <ExploreProvider>
+                      <OnEditNoteProvider>
+                        <UserQuoteProvider>
+                          <MemoProvider>
+                            <PopupFrSettingsProvider>
+                              <MusicBoxProvider>
+                                <ThemeAppProvider>
+                                  <BrainFProvider>
+                                    <ToggleAllProvider>
+                                      <AnimateLoadPageProvider>
+                                        <CatatanProvider>
+                                          <WriteNoteProvider>
+                                            <BrowserRouter>
+                                              <Routes>
 
-                                              <Route index element={<LandingPage />} />
-                                              <Route path='/Auth' element={<AuthPage />} />
-                                              <Route path='/dashboard' element={<Home />} />
-                                              <Route path='/Explore' element={<Explore />} />
-                                              <Route path='/user/:usernameId' element={<UserProfile />} />
-                                              <Route path='/:user/profile/edit' element={<EditProfilePage />} />
-                                              <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                                              <Route path='/BrainFocus' element={<BrainFocusPage />} />
-                                              <Route path='/clips/publish' element={<ArtikelForm />} />
-                                              <Route path='/KalenderPlanner' element={<KalenderPage />} />
-                                              <Route path='/JJR-ChatBot' element={<Chatbot />} />
+                                                <Route index element={<LandingPage />} />
+                                                <Route path='/Auth' element={<AuthPage />} />
+                                                <Route path='/dashboard' element={<Home />} />
+                                                <Route path='/Explore' element={<Explore />} />
+                                                <Route path='/user/:usernameId' element={<UserProfile />} />
+                                                <Route path='/:user/profile/edit' element={<EditProfilePage />} />
+                                                <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
+                                                <Route path='/BrainFocus' element={<BrainFocusPage />} />
+                                                <Route path='/clips/publish' element={<ArtikelForm />} />
+                                                <Route path='/KalenderPlanner' element={<KalenderPage />} />
+                                                <Route path='/JJR-ChatBot' element={<Chatbot />} />
 
-                                              {/* Publikasi link */}
-                                              <Route path='/posts/:id' element={<SelectedPub />} />
-                                              <Route path='*' element={<Page404 />} />
+                                                {/* Publikasi link */}
+                                                <Route path='/posts/:id' element={<SelectedPub />} />
+                                                <Route path='*' element={<Page404 />} />
 
-                                            </Routes>
-                                          </BrowserRouter>
-                                        </WriteNoteProvider>
-                                      </CatatanProvider>
-                                    </AnimateLoadPageProvider>
-                                  </ToggleAllProvider>
-                                </BrainFProvider>
-                              </ThemeAppProvider>
-                            </MusicBoxProvider>
-                          </PopupFrSettingsProvider>
-                        </MemoProvider>
-                      </UserQuoteProvider>
-                    </OnEditNoteProvider>
-                  </ExploreProvider>
-                </ArtikelProvider>
-              </OnEditUserProfileProvider>
-            </UserProfileProvider>
-          </ChosseAvatarProvider>
+                                              </Routes>
+                                            </BrowserRouter>
+                                          </WriteNoteProvider>
+                                        </CatatanProvider>
+                                      </AnimateLoadPageProvider>
+                                    </ToggleAllProvider>
+                                  </BrainFProvider>
+                                </ThemeAppProvider>
+                              </MusicBoxProvider>
+                            </PopupFrSettingsProvider>
+                          </MemoProvider>
+                        </UserQuoteProvider>
+                      </OnEditNoteProvider>
+                    </ExploreProvider>
+                  </ArtikelProvider>
+                </OnEditUserProfileProvider>
+              </UserProfileProvider>
+            </ChosseAvatarProvider>
+          </JurnalContextProvider>
         </OVERALL_CONTEXT_PROVIDER>
       </API_URL_PROVIDER>
     </SkeletonTheme >

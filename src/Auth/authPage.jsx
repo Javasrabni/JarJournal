@@ -44,7 +44,7 @@ const AuthPage = () => {
                 <div className='w-full h-fit p-[16px] flex flex-col items-center justify-center'>
                     <LoginPage />
                     <div className='mt-[32px]'>
-                        <p className='text-[12px]'>Mengapa Akun atau LogIn diperlukan? Baca <span className='font-[500] text-[var(--blue-clr)] underline '>Ketentuan dan kebijakan privasi</span> disini.</p>
+                        <p className='text-[12px] text-center'>Mengapa Akun atau LogIn diperlukan? Baca <span className='font-[500] text-[var(--blue-clr)] underline '>Ketentuan dan kebijakan privasi</span> disini.</p>
                     </div>
                 </div>
             )}
