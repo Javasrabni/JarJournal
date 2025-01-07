@@ -35,7 +35,7 @@ export default function JurnalContextProvider({ children }) {
             }
         }
         GetUserJurnal()
-    }, [token, dataDayJournal])
+    }, [token])
 
     return (
         <JurnalContext.Provider value={{ dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>

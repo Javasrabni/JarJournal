@@ -18,7 +18,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useLocation } from "react-router-dom"
 import 'react-loading-skeleton/dist/skeleton.css';
 import { ChooseAvatar } from "./introWeb/chooseAvatar/chooseAvatar"
-
+import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 import { motion } from 'framer-motion'
 
 // Theme App
@@ -124,7 +124,6 @@ export default function Home() {
 
     // GET DATA JURNAL USER
     const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
-
 
     return (
         <>
@@ -253,7 +252,7 @@ export default function Home() {
 
                                     {/* REPORT JURNAL X CATATAN */}
                                     <div className="flex flex-col gap-[12px] w-full h-full pb-[32px]">
-                                        <div>
+                                        <div className="flex flex-row gap-[12px]">
                                             <ReportJurnal />
                                         </div>
                                         <div>
@@ -350,6 +349,9 @@ export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
 
 //  REPORT JURNAL USER
 const ReportJurnal = () => {
+    // GET DATA JURNAL USER
+    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+
     return (
         <div className="w-full  h-[200px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -357,17 +359,36 @@ const ReportJurnal = () => {
                     <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
                 </div>
                 <div>
-                    {dataDayJournal.length > 0 ? (
+                    {dataDayJournal.length < 0 ? (
                         <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
                     ) : (
-                        <>
-                            {dataDayJournal && dataDayJournal.map((item, index) =>
-                                <div key={index} className="w-[120px] h-[120px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
-                                    <p className="text-[12px] text-white font-[600]">Day {index + 1}</p>
-                                    <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                        <div className="flex flex-col items-center justify-between h-full w-full mt-[16px]">
+                            <div className="flex flex-row items-center justify-between w-full">
+                                {/* DATA JURNAL PERTAMA */}
+                                <div>
+                                    {dataDayJournal && dataDayJournal.slice(0, 1).map((item, index) =>
+                                        <div key={index} className="w-[60px] h-[60px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
+                                            <p className="text-[12px] text-white font-[600]">{item.day}</p>
+                                            <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </>
+                                {/* DATA JURNAL TERAKHIR */}
+                                <div>
+                                    {dataDayJournal && dataDayJournal.slice(-1).map((item, index) =>
+                                        <div key={index} className="w-[60px] h-[60px] bg-[var(--black-bg)] rounded-[12px] shrink-0 p-[16px]" onClick={() => console.log(index)}>
+                                            <p className="text-[12px] text-white font-[600]">{item.day}</p>
+                                            <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* REPORT TOTAL JURNAL */}
+                            <div className="mt-[16px]">
+                                <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{dataDayJournal.length} jurnal</span>  sejauh ini. Pertahankan!</p>
+                            </div>
+                        </div>
                     )}
 
                 </div>
