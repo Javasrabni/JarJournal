@@ -35,10 +35,13 @@ export default function JurnalContextProvider({ children }) {
             }
         }
         GetUserJurnal()
-    }, [token])
+    }, [token, dataDayJournal])
+
+    // Produktifitas user
+    const [valueProduktifitasUser, setValueProduktifitasUser] = useState(40)
 
     return (
-        <JurnalContext.Provider value={{ dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
+        <JurnalContext.Provider value={{valueProduktifitasUser, setValueProduktifitasUser, dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
             {children}
         </JurnalContext.Provider>
     )

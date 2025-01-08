@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom"
 export default function Jurnal() {
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
+
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     const navigate = useNavigate()
 
@@ -32,21 +33,13 @@ export default function Jurnal() {
             if (response.ok) {
                 setDescDayJurnal('')
                 const { message } = await response.json()
-                alert(message)
+                // alert(message)
                 setOnWriteJurnal(false)
                 // setAddNewDayJournal(data)
             }
         } catch (err) {
             console.log(err)
         }
-    }
-
-    // indikator minggu 
-    const dataPerMinggu = []
-    const hariPerminggu = 7
-
-    for (let i = 0; i < (dataDayJournal.length / hariPerminggu); i++) {
-        dataPerMinggu.push(dataDayJournal.slice(i * hariPerminggu, (i + 1) * hariPerminggu))
     }
 
     return (
@@ -60,76 +53,72 @@ export default function Jurnal() {
                 </div>
 
                 {/* Output Jurnal harian */}
-                {/* Output Jurnal harian */}
                 <div className="flex flex-col mt-[32px] gap-[16px]">
-                    {dataPerMinggu.map((week, weekIndex) => (
-                        <div key={weekIndex}>
-                            {/* Indikator Minggu */}
-                            <span className="mb-[12px]">
+                    {/* Indikator Minggu */}
+                    {/* <span className="mb-[12px]">
                                 <p className="text-[12px] text-white">Minggu ke-{weekIndex + 1}</p>
-                            </span>
-                            <div className="flex flex-row gap-[12px] flex-wrap">
-                                {week.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex-col w-[48%]"
-                                        onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}
-                                    >
-                                        {/* Efek Folder */}
-                                        <div
-                                            className="w-[52px] h-[6px]"
-                                            style={{
-                                                borderRadius: "8px 8px 0px 0px",
-                                                backgroundColor: "var(--black-bg)",
-                                            }}
-                                        ></div>
+                            </span> */}
+                    <div className="flex flex-row gap-[12px] flex-wrap">
+                        {dataDayJournal.map((item, index) => (
+                            <div
+                                key={index}
+                                className="flex-col w-[48%]"
+                                onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}
+                            >
+                                {/* Efek Folder */}
+                                <div
+                                    className="w-[52px] h-[6px]"
+                                    style={{
+                                        borderRadius: "8px 8px 0px 0px",
+                                        backgroundColor: "var(--black-bg)",
+                                    }}
+                                ></div>
 
-                                        {/* Konten Jurnal */}
-                                        <div
-                                            className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-row gap-[6px] justify-between items-center"
-                                            style={{
-                                                borderRadius: "0px 8px 8px",
-                                                outline: "1px solid var(--black-bg)",
-                                            }}
-                                        >
-                                            <div>
-                                                <p className="text-[12px] text-white font-semibold">
-                                                    Day {weekIndex * hariPerminggu + index + 1}
-                                                </p>
-                                                <p className="text-[11px] text-[var(--black-subtext)]">
-                                                    {item.descJurnal}
-                                                </p>
-                                            </div>
-                                        </div>
+                                {/* Konten Jurnal */}
+                                <div
+                                    className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-row gap-[6px] justify-between items-center"
+                                    style={{
+                                        borderRadius: "0px 8px 8px",
+                                        outline: "1px solid var(--black-bg)",
+                                    }}
+                                >
+                                    <div>
+                                        <p className="text-[12px] text-white font-semibold">
+                                            Day {item.day}</p>
+                                        <p className="text-[12px] text-[var(--black-subtext)]">
+                                            {item.descJurnal}
+                                        </p>
+                                        <span>
+                                            <p className="text-[11px] text-white mt-[12px]">{item.date}</p>
+                                        </span>
                                     </div>
-                                ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+            </div>
 
-                <div>
-
-                </div>
-
-                {onWriteJurnal && (
-                    <OnPopupSetting
-                        JurnalSect={true}
-                        Heading={`Jurnal Harian`}
-                        onClickFunc={() => setOnWriteJurnal(false)}
-                        Button1={
-                            <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
-                                <span className="w-fit shrink-0">
-                                    <p className="text-[12px] text-white font-[600] pr-[12px]" style={{ borderRight: '1px solid var(--black-subtext)' }}>Day {dataDayJournal.length + 1}</p>
-                                </span>
-                                <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="text" placeholder="Deskripsi" onChange={(e) => setDescDayJurnal(e.target.value)} />
-                            </div>
-                        }
-                        Button2={<p className="text-[12px] font-[600] text-white" onClick={HandleAddJurnal}>Tambah</p>}
-                    />
-                )}
+            <div>
 
             </div>
+
+            {onWriteJurnal && (
+                <OnPopupSetting
+                    JurnalSect={true}
+                    Heading={`Jurnal Harian`}
+                    onClickFunc={() => setOnWriteJurnal(false)}
+                    Button1={
+                        <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
+                            <span className="w-fit shrink-0">
+                                <p className="text-[12px] text-white font-[600] pr-[12px]" style={{ borderRight: '1px solid var(--black-subtext)' }}>Day {dataDayJournal.length + 1}</p>
+                            </span>
+                            <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="text" placeholder="Deskripsi" onChange={(e) => setDescDayJurnal(e.target.value)} />
+                        </div>
+                    }
+                    Button2={<p className="text-[12px] font-[600] text-white" onClick={HandleAddJurnal}>Tambah</p>}
+                />
+            )}
 
         </div>
     )

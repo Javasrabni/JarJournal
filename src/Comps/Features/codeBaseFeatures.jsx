@@ -11,6 +11,13 @@ import KalenderPage from "./kalender/kalenderPage/Kalender"
 import OnEditNote from "./Catatan/onEditNote/onEditNote"
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL"
 
+const componentMap = {
+    '/ftr/Catatan': <Catatan />,
+    '/ftr/Jurnal': <Jurnal />,
+    '/ftr/E-Book': <EbookPage />,
+    '/ftr/EditCatatan': <OnEditNote />
+};
+
 export default function CodeBaseFeatures() {
     const { id } = useParams()
     const pathLocation = useLocation()
@@ -26,23 +33,25 @@ export default function CodeBaseFeatures() {
         }
     }, []); // GET USER TOKEN
 
-    useEffect(()=> {
-        if(!token) {
+    useEffect(() => {
+        if (!token) {
             navigate('/Auth')
         }
     }, [token])
+
+    const [compToRender, setCompToRender] = useState(null)
+    useEffect(() => {
+        setCompToRender(componentMap[pathLocation.pathname] || null);
+    }, [pathLocation.pathname])
 
     return (
         <div className="w-full h-full flex justify-center">
             <div className="w-[360px] h-full flex justify-center">
                 <div className="w-full h-full flex justify-center flex-col">
-                    <Header nameTools={`${id}`}  />
+                    <Header nameTools={`${id}`} />
 
                     <div>
-                        {pathLocation.pathname === "/ftr/Catatan" && (<Catatan />)}
-                        {pathLocation.pathname === "/ftr/Jurnal" && (<Jurnal />)}
-                        {pathLocation.pathname === "/ftr/E-Book" && (<EbookPage />)}
-                        {pathLocation.pathname === "/ftr/EditCatatan" && (<OnEditNote />)}
+                        {compToRender}
                     </div>
                 </div>
             </div>

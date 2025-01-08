@@ -1,27 +1,106 @@
 import { useContext } from "react"
 import { JurnalContext } from "../../Comps/Features/Jurnal/Context/jurnalContext"
 import { useParams } from "react-router-dom"
-
+import './style.css'; // STYLE 
 
 export default function JurnalPage() {
     const { index, desc } = useParams()
     // GET DATA JURNAL USER
-    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+    const { dataDayJournal, setDataDayJournal, valueProduktifitasUser, setValueProduktifitasUser } = useContext(JurnalContext)
+
+    // COLOR INDICATOR (PRODUKTIFITAS)
+    function colorIndicatorProduktifitas(value) {
+        if (value >= 80) {
+            return 'bg-[var(--blue-clr)] text-white'
+        } else if (value >= 40) {
+            return 'bg-[#f7d63a] text-black'
+        } else if (value <= 40) {
+            return 'bg-[tomato] text-white'
+        }
+    }
+
+    const sunIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+    </svg>
 
     return (
-        <div className="w-full max-w-[42rem] m-auto h-full flex flex-col items-center max-w-[42rem]">
-            <div className="text-white">
-                {dataDayJournal && dataDayJournal[index] && (
-                    <div>
-                        <p>Day: {dataDayJournal[index].day}</p>
-                        <p>Description: {dataDayJournal[index].descJurnal}</p>
-                        <p>Date: {dataDayJournal[index].date || "No date available"}</p>
-                        <p>Mood: {dataDayJournal[index].moodToday || "No mood recorded"}</p>
+        <div className="w-full max-w-[42rem] m-auto h-full flex flex-col items-center max-w-[42rem] p-[16px]">
+            {dataDayJournal && dataDayJournal[index] && (
+                <div className="w-full flex flex-col items-center gap-[12px]">
+
+                    {/* TOP SECT*/}
+                    <div className="flex flex-row justify-between w-full text-white gap-[12px]">
+                        <div className="w-full flex flex-col gap-[12px]">
+                            <span>
+                                <p className="text-[12px] font-[600]">Day: {dataDayJournal[index].day}</p>
+                                <p className="text-[12px] text-white">Description: {dataDayJournal[index].descJurnal}</p>
+                            </span>
+                            <img src={dataDayJournal.fotoJurnal} alt="photo" className="w-full h-[120px] rounded-[12px] bg-white" />
+                        </div>
+                        <div className="w-full mt-[calc(66px-18px)]">
+                            <p className="text-[12px] text-[var(--black-subtext)]">{dataDayJournal[index].date || "No date available"}</p>
+                            <div className="mt-[4px]">
+                                <p className="text-[12px] text-white font-semibold">Bagaimana perasaanmu hari ini</p>
+                            </div>
+                            <p className="text-[11px]">{dataDayJournal[index].moodToday || "No mood recorded"}</p>
+                        </div>
                     </div>
-                )}
 
-            </div>
+                    {/* BODY SECT */}
+                    <div className="max-w-scrollbar-hidden flex flex-row gap-[12px] overflow-x-auto w-full mt-[16px] pb-[0px] relative">
+                        {/* THEME MODE TOGGLE (SUN ICON)  */}
+                        <div className="absolute p-[6px] bg-white rounded-[6px] cursor-pointer left-[-12px]"><span className="text-black">{sunIcon}</span></div>
 
+                        {/* LEFT PAGE */}
+                        {/* "EVALUATION" & "WHAT I LEARNED" */}
+                        <div className="w-[80%] flex flex-col gap-[12px] shrink-0">
+
+                            {/* EVALUATION PART */}
+                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                                <p className="text-[12px] font-[600] text-white">Evaluasi</p>
+                                <p className="text-[12px] text-white">{dataDayJournal[index].evaluasi || "Belum ada motivasi"}</p>
+                            </div>
+                            {/* WHAT I LEARNED */}
+                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                                <p className="text-[12px] font-[600] text-white">Apa yang saya pelajari hari ini?</p>
+                                <p className="text-[12px] text-white">{dataDayJournal[index].whatIHaveLearned || "Belum ada pelajaran"}</p>
+                            </div>
+                        </div>
+
+                        {/* RIGHT PAGE */}
+                        {/* "MY GOAL" & "THE MOTIVATION" */}
+                        <div className="w-full flex flex-col gap-[12px] shrink-0 relative">
+                            {/* MY GOAL PART */}
+                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                                <p className="text-[12px] font-[600] text-white">Goal saya</p>
+                                <p className="text-[12px] text-white">{dataDayJournal[index].myGoals || "Belum ada Goal"}</p>
+                            </div>
+                            {/* MOTIVATION */}
+                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                                <p className="text-[12px] font-[600] text-white">Motivasi</p>
+                                <p className="text-[12px] text-white">{dataDayJournal[index].motivation || "Belum ada motivasi"}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* BOTTOM SECT */}
+                    <div className="flex flex-col gap-[12px] overflow-x-auto w-full mt-[16px] pb-[16px] relative">
+                        <p className="text-[12px] font-[600] text-white">Tingkat Produktif</p>
+
+                        <div className="flex flex-row gap-[12px] items-center">
+                            <span className="w-[80%]">
+                                <input type="range" name="" id="" min={0} max={100} value={valueProduktifitasUser} onChange={(e) => setValueProduktifitasUser(e.target.value)} className="slider" />
+                            </span>
+
+                            <span className={`${colorIndicatorProduktifitas(valueProduktifitasUser)} px-[12px] py-[4px] rounded-[6px] w-full`}>
+                                <p className="text-[12px] w-fit"><span className="font-[600]">{valueProduktifitasUser}%</span> <span className="font-[500]">{valueProduktifitasUser >= 80 ? 'Sangat membara!' : valueProduktifitasUser >= 40 ? 'Butuh energi lebih!' : 'Kurang semangat'}</span></p>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
+

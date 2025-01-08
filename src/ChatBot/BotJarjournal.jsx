@@ -390,7 +390,7 @@ export default function Chatbot() {
                             id="user-input"
                             placeholder="Ajak ngobrol ajaa..."
                             ref={promptInputRef}
-                            // autoFocus
+                            autoFocus
                             style={{
                                 width: "100%",
                                 padding: "12px 16px",
