@@ -1,12 +1,23 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { JurnalContext } from "../../Comps/Features/Jurnal/Context/jurnalContext"
 import { useParams } from "react-router-dom"
 import './style.css'; // STYLE 
+import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 
 export default function JurnalPage() {
+    // AUTH SECT
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+    useEffect(() => {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) {
+            setToken(savedToken); // Set token untuk menganggap user sudah login
+        }
+    }, []); // GET USER TOKEN
+
     const { index, desc } = useParams()
     // GET DATA JURNAL USER
-    const { dataDayJournal, setDataDayJournal, valueProduktifitasUser, setValueProduktifitasUser } = useContext(JurnalContext)
+    const { emotOutput, setEmotOutput, dataDayJournal, setDataDayJournal, valueProduktifitasUser, setValueProduktifitasUser } = useContext(JurnalContext)
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
 
     // COLOR INDICATOR (PRODUKTIFITAS)
     function colorIndicatorProduktifitas(value) {
@@ -18,6 +29,27 @@ export default function JurnalPage() {
             return 'bg-[tomato] text-white'
         }
     }
+
+    // GET EMOT LINK 
+    useEffect(() => {
+        const getEmotMood = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/MoodToday-Emot`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setEmotOutput(data)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        };
+        getEmotMood();
+    }, [token]);
 
     const sunIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
@@ -33,16 +65,25 @@ export default function JurnalPage() {
                         <div className="w-full flex flex-col gap-[12px]">
                             <span>
                                 <p className="text-[12px] font-[600]">Day: {dataDayJournal[index].day}</p>
-                                <p className="text-[12px] text-white">Description: {dataDayJournal[index].descJurnal}</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">Description: {dataDayJournal[index].descJurnal}</p>
                             </span>
                             <img src={dataDayJournal.fotoJurnal} alt="photo" className="w-full h-[120px] rounded-[12px] bg-white" />
                         </div>
                         <div className="w-full mt-[calc(66px-18px)]">
                             <p className="text-[12px] text-[var(--black-subtext)]">{dataDayJournal[index].date || "No date available"}</p>
-                            <div className="mt-[4px]">
+                            <div className="mt-[2px] pb-[12px]">
                                 <p className="text-[12px] text-white font-semibold">Bagaimana perasaanmu hari ini</p>
                             </div>
-                            <p className="text-[11px]">{dataDayJournal[index].moodToday || "No mood recorded"}</p>
+                            <div className="flex flex-row gap-[6px] items-center relative z-[-2]">
+                                {emotOutput.map((item, idx) =>
+                                    <div className="w-[35px] h-[35px] overflow-hidden bg-[var(--black-bg)] p-[0px] rounded-[8px]">
+                                        <img src={item.emotUrl} alt={item.type} className="w-full h-full object-cover" style={{ transform: 'scale(300%)' }} />
+                                    </div>
+
+                                )}
+
+                            </div>
+                            <p className="text-[11px] pt-[4px]">{dataDayJournal[index].moodToday || "No mood recorded"}</p>
                         </div>
                     </div>
 
@@ -85,8 +126,9 @@ export default function JurnalPage() {
 
                     {/* BOTTOM SECT */}
                     <div className="flex flex-col gap-[12px] overflow-x-auto w-full mt-[16px] pb-[16px] relative">
-                        <p className="text-[12px] font-[600] text-white">Tingkat Produktif</p>
 
+                        {/* FITUR TINGKAT PRODUKTIFITAS */}
+                        <p className="text-[12px] font-[600] text-white">Tingkat Produktif</p>
                         <div className="flex flex-row gap-[12px] items-center">
                             <span className="w-[80%]">
                                 <input type="range" name="" id="" min={0} max={100} value={valueProduktifitasUser} onChange={(e) => setValueProduktifitasUser(e.target.value)} className="slider" />
@@ -97,10 +139,21 @@ export default function JurnalPage() {
                             </span>
                         </div>
 
+                        {/* GRATEFUL-FOR */}
+                        <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <p className="text-[12px] font-[600] text-white">Grateful for</p>
+                            <p className="text-[12px] text-white">{dataDayJournal[index].gratefulFor || "Belum ada data"}</p>
+                        </div>
+
+                        {/* THING TO IMPROVE */}
+                        <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <p className="text-[12px] font-[600] text-white">Hal yang harus ditingkatkan atau perbaiki</p>
+                            <p className="text-[12px] text-white">{dataDayJournal[index].gratefulFor || "Belum ada data"}</p>
+                        </div>
+
                     </div>
                 </div>
             )}
         </div>
     )
 }
-

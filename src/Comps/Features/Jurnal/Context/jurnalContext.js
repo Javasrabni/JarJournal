@@ -40,8 +40,11 @@ export default function JurnalContextProvider({ children }) {
     // Produktifitas user
     const [valueProduktifitasUser, setValueProduktifitasUser] = useState(40)
 
+    // STATE EMOT API
+    const [emotOutput, setEmotOutput] = useState([])
+
     return (
-        <JurnalContext.Provider value={{valueProduktifitasUser, setValueProduktifitasUser, dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
+        <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
             {children}
         </JurnalContext.Provider>
     )

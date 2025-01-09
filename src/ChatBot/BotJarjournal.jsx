@@ -413,7 +413,7 @@ export default function Chatbot() {
                         </button>
                     </span>
                     <span className="">
-                        <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Setiap penjelasan akan disampaikan dengan bahasa yang mudah dipahami.</p>
+                        <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Mungkin dapat melakukan kesalahan.</p>
                     </span>
                 </div>
                 <NavFooter />
