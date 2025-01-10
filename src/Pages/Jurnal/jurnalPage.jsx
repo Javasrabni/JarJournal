@@ -57,6 +57,7 @@ export default function JurnalPage() {
 
     return (
         <div className="w-full max-w-[42rem] m-auto h-full flex flex-col items-center max-w-[42rem] p-[16px]">
+            
             {dataDayJournal && dataDayJournal[index] && (
                 <div className="w-full flex flex-col items-center gap-[12px]">
 

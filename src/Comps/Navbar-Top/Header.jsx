@@ -42,13 +42,15 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         pathLocation.pathname === "/BrainFocus" && setJudulHeader("Brain Focus")
     }, [])
 
-    const [catatanPage, setCatatanPage] = useState(false)
+    const [backPageHeader, setbackPageHeader] = useState(false)
     useEffect(() => {
         if (pathLocation.pathname === "/ftr/Catatan" || pathLocation.pathname === '/ftr/EditCatatan') {
-            setCatatanPage(true)
+            setbackPageHeader(true)
         }
-    }, [catatanPage])
-
+        if (pathLocation.pathname === '/ftr/Jurnal') {
+            setbackPageHeader(true)
+        }
+    }, [backPageHeader])
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, setValueMemo, valueMemo, afterEditValueMemo, setAfterEditValueMemo, editValueMemoStatus, setEditValueMemoStatus } = useContext(MemoContext)
@@ -140,7 +142,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const [hideSetting, setHideSetting] = useState(false)
     const [filterFuncNote, setFilterFuncNote] = useState(false)
 
-    function HandleBackPage() {
+    // BACKPAGE PATH LOCATION
+    function HandlebackPageHeader() {
         if (pathLocation.pathname === '/ftr/EditCatatan') {
             navigate('/ftr/Catatan')
         } else if (pathLocation.pathname === '/ftr/Catatan') {
@@ -149,6 +152,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             } else (
                 navigate('/dashboard')
             )
+        } else if (pathLocation.pathname === '/ftr/Jurnal') {
+            navigate('/dashboard')
         }
     }
 
@@ -175,8 +180,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             <div className={`${themeActive ? "bg-[var(--bg-12)]" : "bg-white"} w-full h-fit p-[16px] flex flex-row justify-between items-center`}>
 
                 {!hideLogo ? (
-                    <div className="text-white flex items-center gap-[12px]" onClick={HandleBackPage}>
-                        {catatanPage ? (
+                    <div className="text-white flex items-center gap-[12px]" onClick={HandlebackPageHeader}>
+                        {backPageHeader ? (
                             <div className="flex items-center justify-center pr-[12px] cursor-pointer">
                                 {backIcon}
                             </div>
@@ -191,7 +196,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                     </div>
                 ) : (
                     <div className="text-white flex gap-[8px] w-full pr-[32px]">
-                        {backPage}
+                        {backPageHeader}
                     </div>
                 )}
 

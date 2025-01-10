@@ -11,13 +11,6 @@ import KalenderPage from "./kalender/kalenderPage/Kalender"
 import OnEditNote from "./Catatan/onEditNote/onEditNote"
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL"
 
-const componentMap = {
-    '/ftr/Catatan': <Catatan />,
-    '/ftr/Jurnal': <Jurnal />,
-    '/ftr/E-Book': <EbookPage />,
-    '/ftr/EditCatatan': <OnEditNote />
-};
-
 export default function CodeBaseFeatures() {
     const { id } = useParams()
     const pathLocation = useLocation()
@@ -39,19 +32,18 @@ export default function CodeBaseFeatures() {
         }
     }, [token])
 
-    const [compToRender, setCompToRender] = useState(null)
-    useEffect(() => {
-        setCompToRender(componentMap[pathLocation.pathname] || null);
-    }, [pathLocation.pathname])
 
     return (
-        <div className="w-full h-full flex justify-center">
-            <div className="w-[360px] h-full flex justify-center">
+        <div className="w-full max-w-[42rem] h-full flex justify-center m-auto">
+            <div className="w-full h-full flex justify-center">
                 <div className="w-full h-full flex justify-center flex-col">
                     <Header nameTools={`${id}`} />
-
                     <div>
-                        {compToRender}
+                        {id === 'Jurnal' && <Jurnal />}
+                        {id === 'Catatan' && <Catatan />}
+                        {id === 'BrainFocus' && <BrainFocusPage />}
+                        {id === 'Kalender' && <KalenderPage />}
+                        {id === 'Ebook' && <EbookPage />}
                     </div>
                 </div>
             </div>

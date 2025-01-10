@@ -733,7 +733,7 @@ export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalS
 
     return (
         <>
-            <div className="fixed w-full h-full bg-[#00000050] top-0 left-0 z-[19] cursor-auto" onClick={onClickFunc} />
+            <div className="fixed w-full h-full bg-[#00000050] bottom-0 left-0 z-[19] cursor-auto" onClick={onClickFunc} />
             <motion.div
                 className="rounded-[24px_24px_0px_0px] z-[20] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] outline outline-[1px] outline-[var(--black-border)] fixed bottom-0 left-[50%] flex p-[16px] cursor-auto"
                 style={{ transform: 'translateX(-50%)' }}
@@ -752,8 +752,12 @@ export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalS
                         </span>
                     </span>
                     <div className="w-full flex flex-col gap-[8px] cursor-pointer">
-                        <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button1}</span>
-                        <span className={`w-full p-[12px] ${JurnalSect ? 'bg-[var(--blue-clr)]' : 'bg-[var(--black-bg)]'} flex items-center rounded-[12px] flex items-center justify-center`}>{Button2}</span>
+                        {Button1 && (
+                            <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button1}</span>
+                        )}
+                        {Button2 && (
+                            <span className={`w-full p-[12px] ${JurnalSect ? 'bg-[var(--blue-clr)]' : 'bg-[var(--black-bg)]'} flex items-center rounded-[12px] flex items-center justify-center`}>{Button2}</span>
+                        )}
                     </div>
                 </div>
             </motion.div>
