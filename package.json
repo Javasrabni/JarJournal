@@ -2,16 +2,17 @@
   "name": "jarjournal",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5001",
   "dependencies": {
-    "@ant-design/pro-layout": "^7.21.2",
-    "@ant-design/pro-provider": "^2.15.2",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.24.0",
+    "@babel/runtime": "^7.24.0",
     "@google/generative-ai": "^0.21.0",
     "@splinetool/react-spline": "^4.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^5.22.2",
+    "antd": "^5.23.1",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
@@ -32,7 +33,7 @@
     "react-markdown": "^9.0.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.27.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -62,5 +63,9 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "tailwindcss": "^3.4.13"
-  }
+  },
+  "main": "tailwind.config.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

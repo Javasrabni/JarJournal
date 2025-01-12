@@ -126,18 +126,11 @@ export default function Home() {
 
     // GET DATA JURNAL USER
     const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
-
-    useEffect(()=> {
-        setTimeout(()=> {
-            navigate('/dashboard')
-        }, 5000)
-    }, [])
-
     return (
         <>
             <>
                 {/* choose avatar (intro after login) */}
-                {token && introAfterLogin && (
+                {token && introAfterLogin && publicDataUser && username && (
                     <span className="fixed z-[15]">
                         <ChooseAvatar heading={`Baguss ${username}!`} subHeading={'Sekarang, kita pilih avatar dulu yukk'} />
                     </span>
@@ -268,7 +261,7 @@ export default function Home() {
                                         </div>
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
-                                        <div className="flex flex-col gap-[16px] w-full h-full py-[12px]" style={{borderTop: '1px solid var(--black-border)'}}>
+                                        <div className="flex flex-col gap-[16px] w-full h-full py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
                                             <div className="flex flex-col gap-[2px]">
                                                 <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
                                                 <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
@@ -364,12 +357,23 @@ const ReportJurnal = () => {
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
     </svg>
 
+    const chartIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ rotate: '-90deg' }}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
+    </svg>
+
+
+    const getMoodUser = outputDataUserJurnal.map(item => item.moodtype)
+    // function getAvarageMoodUser() {
+
+    // }
+
+    console.log(getMoodUser)
 
     return (
         <div className="w-full h-fit min-h-[120px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
                 <div>
-                    <p className="text-[12px] font-[600] text-white">Laporan jurnal harian</p>
+                    <p className="text-[12px] font-[600] text-white">Ringkasan jurnal harian</p>
                 </div>
                 <div>
                     {outputDataUserJurnal.length < 0 ? (
@@ -400,8 +404,18 @@ const ReportJurnal = () => {
                                 </div>
                             </div>
 
+                            {/* Rata rata mood user */}
+                            <div className="mt-[12px]">
+                                <p className="text-white text-[12px]">
+                                    <span className="flex flex-row gap-[6px] items-center">
+                                        <span>{chartIcon}</span>
+                                        <span>Kamu lebih banyak merasa <i><b>"Bahagia"</b></i></span>
+                                    </span>
+                                </p>
+                            </div>
+
                             {/* REPORT TOTAL JURNAL */}
-                            <div className="mt-[16px]">
+                            <div className="mt-[8px]">
                                 <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{outputDataUserJurnal.length} jurnal harian</span>  sejauh ini.</p>
                             </div>
                         </div>
@@ -426,13 +440,13 @@ const ReportCatatan = () => {
                     {onNewNote.length > 0 ? (
                         <>
                             {onNewNote.slice(0, 2).map(item =>
-                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[2px]">
+                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]">
                                     <div
                                         className="text-white  text-[12px]"
                                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
                                     />
 
-                                    <p className="text-[11px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                    <p className="text-[11px] font-[500] text-[#999999]">Terakhir diedit: {item.timeStamp}</p>
                                 </div>
                             )}
                         </>

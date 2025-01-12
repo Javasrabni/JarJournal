@@ -4,6 +4,7 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { OnPopupSetting } from "../Publikasi/pubPage/publikasi"
 import { JurnalContext } from "./Context/jurnalContext"
 import { useNavigate } from "react-router-dom"
+import { desc, li, pre } from "framer-motion/client"
 
 export default function Jurnal() {
     // AUTH SECT
@@ -28,6 +29,7 @@ export default function Jurnal() {
             descJurnal: null,
             fotoJurnal: null,
             moodToday: null,
+            moodtype: null,
             date: new Date().toLocaleString('id-Id', {
                 day: '2-digit',
                 month: 'long',
@@ -44,6 +46,10 @@ export default function Jurnal() {
             folderColor: null,
         }
     )
+
+    useEffect(()=> {
+        console.log(dataInputFieldJurnal)
+    }, [dataInputFieldJurnal])
 
     // CHOOSE MOOD JURNAL
     const [handleClickEmot, setHandleClickEmot] = useState(null)
@@ -138,6 +144,11 @@ export default function Jurnal() {
 
 
 
+    useEffect(() => {
+        console.log(dataInputFieldJurnal, "Updated Data after Click");
+    }, [dataInputFieldJurnal]);
+
+    
     useEffect(() => {
         console.log(dataInputFieldJurnal, "Updated Data after Click");
     }, [dataInputFieldJurnal]);
@@ -264,7 +275,7 @@ export default function Jurnal() {
                                                 <div className={`w-[35px] h-[35px] overflow-hidden ${handleClickEmot === idx ? 'bg-[var(--blue-clr)]' : "bg-[var(--black-bg)]"} p-[0px] rounded-[8px]`}>
                                                     <img src={item.emotUrl} alt={item.type} className={`w-full h-full object-cover `} style={{ transform: 'scale(300%)' }} onClick={() => {
                                                         setDataInputFieldJurnal((prevState) => ({
-                                                            ...prevState, moodToday: item.emotUrl
+                                                            ...prevState, moodToday: item.emotUrl, moodtype: item.type
                                                         })); setHandleClickEmot(idx);
                                                     }} />
                                                 </div>
@@ -373,7 +384,7 @@ export default function Jurnal() {
                                         <span className="w-full">
                                             <p className="text-[12px] text-white font-[600] text-center">Jurnal harian kamu sudah siap! ✨</p>
                                         </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full cursor-pointer" >
                                             <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[0px]" onClick={HandleAddJurnal}>
                                                 <p className="text-center text-[12px] w-fit text-white bg-[var(--blue-clr)] rounded-[6px] px-[12px] py-[6px]">Simpan & Buka Jurnal</p>
                                             </span>

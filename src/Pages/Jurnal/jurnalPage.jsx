@@ -46,74 +46,111 @@ export default function JurnalPage() {
 
             {outputDataUserJurnal && outputDataUserJurnal[index] && (
                 <div className="w-full flex flex-col items-center gap-[12px]">
-
                     {/* TOP SECT*/}
-                    <div className="flex flex-col w-full text-white gap-[12px]">
-                        <div className="flex flex-row gap-[16px] items-center">
-                            <span className="cursor-pointer" onClick={()=> navigate(-1)}>
+                    <div className="flex flex-col w-full text-white gap-[12px]" >
+
+                        <div className="w-full flex flex-row gap-[16px] items-center pb-[16px]" style={{ borderBottom: '1px solid var(--black-border)' }}>
+                            <span className="cursor-pointer" onClick={() => navigate(-1)}>
                                 {backIcon}
                             </span>
                             <span>
-                                <p className="text-[12px] font-[600]">Buku jurnal hari ke-{outputDataUserJurnal[index].day}</p>
-                                <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].descJurnal}</p>
+                                <p className="text-[12px] text-white">Kembali</p>
                             </span>
+
                         </div>
 
-                        <div className="w-full flex flex-col gap-[12px]">
-                            <img src={outputDataUserJurnal.fotoJurnal} alt="Image" className="text-black w-full h-[120px] rounded-[12px] bg-white" />
-                            <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].date || "No date available"}</p>
-                        </div>
+                        <div className="flex flex-row justify-between w-full h-fit gap-[12px]">
 
-
-                        <div className="w-full mt-[16px]">
-                            <div className="mt-[2px] pb-[12px]">
-                                <p className="text-[12px] text-white font-semibold">Perasaanmu pada hari ke-{outputDataUserJurnal[index].day}</p>
+                            <div className="flex flex-col gap-[12px] w-full">
+                                <img src={outputDataUserJurnal.fotoJurnal} alt="Image" className="text-black w-full h-[120px] rounded-[12px] bg-white" />
                             </div>
-                            <div className="flex flex-row gap-[6px] items-center relative z-[-2]">
-                                {emotOutput.map((item, idx) =>
-                                    <div className={`w-[35px] h-[35px] overflow-hidden shrink-0 ${outputDataUserJurnal[index].moodToday === item.emotUrl ? 'bg-[var(--blue-clr)]' : "bg-[var(--black-bg)]"} p-[0px] rounded-[8px]`}>
-                                        <img src={item.emotUrl} alt={item.type} className={`w-full h-full object-cover shrink-0`} style={{ transform: 'scale(300%)' }} />
-                                    </div>
-                                )}
 
+
+                            <div className="flex flex-row gap-[16px] items-center pb-[12px] w-full" >
+
+                                <span className="flex flex-col gap-[2px]">
+                                    <p className="text-[12px] font-[600]">Buku jurnal hari ke-{outputDataUserJurnal[index].day}</p>
+                                    <p className="text-[12px] text-[var(--black-subtext)]">
+                                        {outputDataUserJurnal[index].descJurnal || "No date available"}
+                                    </p>
+
+                                    <p className="text-[12px] text-[var(--black-subtext)] pt-[12px]">{outputDataUserJurnal[index].date || "No date available"}</p>
+
+
+                                </span>
                             </div>
-                            {/* <p className="text-[11px] pt-[4px]">{outputDataUserJurnal[index].moodToday || "No mood recorded"}</p> */}
+
                         </div>
+
                     </div>
 
+
                     {/* BODY SECT */}
-                    <div className="max-w-scrollbar-hidden flex flex-row gap-[12px] overflow-x-auto w-full mt-[16px] pb-[0px] relative">
+                    <div className="max-w-scrollbar-hidden flex flex-col gap-[12px] overflow-x-auto w-full mt-[16px] pb-[0px] relative">
                         {/* THEME MODE TOGGLE (SUN ICON)  */}
-                        <div className="absolute p-[6px] bg-white rounded-[6px] cursor-pointer left-[-12px]"><span className="text-black">{sunIcon}</span></div>
+                        <div className="absolute p-[6px] bg-white rounded-[6px] cursor-pointer left-0"><span className="text-black">{sunIcon}</span></div>
 
                         {/* LEFT PAGE */}
                         {/* "EVALUATION" & "WHAT I LEARNED" */}
-                        <div className="w-[80%] flex flex-col gap-[12px] shrink-0">
+                        <div className="w-full flex flex-col gap-[12px] shrink-0">
+
+                            <div className="flex flex-col w-full items-center bg-[var(--black-bg)] rounded-[12px] p-[12px]">
+                                <div className="pb-[12px]">
+                                    <p className="text-[12px] text-white font-semibold">Perasaanmu pada hari ke-{outputDataUserJurnal[index].day}</p>
+                                </div>
+
+                                <div className="w-full flex flex-row items-center gap-[6px] relative z-[1] pl-[12px]">
+
+                                    <div className="flex flex-col w-full items-center">
+                                        <div className=" flex flex-row gap w-full items-center justify-center gap-[12px]">
+                                            {emotOutput.map((item, idx) =>
+                                                <div className={`w-[35px] h-[35px] overflow-hidden shrink-0 ${outputDataUserJurnal[index].moodToday === item.emotUrl ? 'bg-[var(--blue-clr)]' : "bg-[var(--black-bg)]"} p-[0px] rounded-[8px]`}>
+                                                    <img src={item.emotUrl} alt={item.type} className={`w-full h-full object-cover shrink-0`} style={{ transform: 'scale(300%)' }} />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className={`pt-[4px]`}>
+                                            <p className="text-[12px] text-[var(--black-subtext)]">- {outputDataUserJurnal[index].moodtype} -</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
 
                             {/* EVALUATION PART */}
-                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit mt-[16px]" style={{ border: '1px solid var(--black-border)' }}>
                                 <p className="text-[12px] font-[600] text-white">Evaluasi</p>
-                                <p className="text-[12px] text-white">{outputDataUserJurnal[index].evaluasi || "Belum ada motivasi"}</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].evaluasi || "Belum ada motivasi"}</p>
                             </div>
                             {/* WHAT I LEARNED */}
-                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
                                 <p className="text-[12px] font-[600] text-white">Apa yang saya pelajari hari ini?</p>
-                                <p className="text-[12px] text-white">{outputDataUserJurnal[index].whatIHaveLearned || "Belum ada pelajaran"}</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].whatIHaveLearned || "Belum ada pelajaran"}</p>
                             </div>
                         </div>
-
                         {/* RIGHT PAGE */}
                         {/* "MY GOAL" & "THE MOTIVATION" */}
                         <div className="w-full flex flex-col gap-[12px] shrink-0 relative">
                             {/* MY GOAL PART */}
-                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
                                 <p className="text-[12px] font-[600] text-white">Goal saya</p>
-                                <p className="text-[12px] text-white">{outputDataUserJurnal[index].myGoals || "Belum ada Goal"}</p>
+                                <ul>
+                                    {outputDataUserJurnal[index].myGoals.length > 0 ? (
+                                        outputDataUserJurnal[index].myGoals.map((item, idx) => (
+                                            <li key={idx} className="text-[12px] text-[var(--black-subtext)]">
+                                                {idx + 1}. {item || "Belum ada Goal"}
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <li className="text-[12px] text-[var(--black-subtext)]">Belum ada Goal</li>
+                                    )}
+                                </ul>
                             </div>
                             {/* MOTIVATION */}
-                            <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
                                 <p className="text-[12px] font-[600] text-white">Motivasi</p>
-                                <p className="text-[12px] text-white">{outputDataUserJurnal[index].motivation || "Belum ada motivasi"}</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].motivation || "Belum ada motivasi"}</p>
                             </div>
                         </div>
                     </div>
@@ -136,18 +173,19 @@ export default function JurnalPage() {
                         {/* GRATEFUL-FOR */}
                         <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
                             <p className="text-[12px] font-[600] text-white">Grateful for</p>
-                            <p className="text-[12px] text-white">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
+                            <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
                         </div>
 
                         {/* THING TO IMPROVE */}
                         <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
                             <p className="text-[12px] font-[600] text-white">Hal yang harus ditingkatkan atau perbaiki</p>
-                            <p className="text-[12px] text-white">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
+                            <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
                         </div>
 
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }

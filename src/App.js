@@ -44,6 +44,7 @@ import EditProfilePage from './Pages/userProfile/userEditProfileForm/editProfile
 import JurnalPage from './Pages/Jurnal/jurnalPage';
 
 function App() {
+  
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
       <API_URL_PROVIDER>

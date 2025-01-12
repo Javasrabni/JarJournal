@@ -20,31 +20,27 @@ export default function OVERALL_CONTEXT_PROVIDER({ children }) {
     // intro after login
     const [introAfterLogin, setIntroAfterLogin] = useState(() => {
         const statusIntroAfterLogin = localStorage.getItem('introAfterLogin')
-        return statusIntroAfterLogin ? JSON.parse(statusIntroAfterLogin) : false
+        return statusIntroAfterLogin ? JSON.parse(statusIntroAfterLogin) : true
     })
 
     // Mengecek apakah user sudah memiliki avatar atau belum
     useEffect(() => {
-        try {
-            const findUser = publicDataUser.find(user => user.username == username)
-            const hasAvatar = findUser?.avatar?.urlAvt
+        const findUser = publicDataUser.find(user => user.username == username)
+        const hasAvatar = findUser?.avatar?.urlAvt
 
-            if (hasAvatar) {
-                setIntroAfterLogin(false)
-            } else {
-                const delayOutput = setTimeout(() => {
-                    setIntroAfterLogin(true)
-                }, 1000)
-                return () => clearTimeout(delayOutput)
-            }
-        } catch (err) {
-            console.error(err)
+        if (hasAvatar) {
+            setIntroAfterLogin(false)
+        } else {
+            const delayOutput = setTimeout(() => {
+                setIntroAfterLogin(true)
+            }, 1000)
+            return () => clearTimeout(delayOutput)
         }
-    }, [publicDataUser, username])
+    }, [publicDataUser, username, publicDataUser, username])
 
     useEffect(() => {
         localStorage.setItem('introAfterLogin', JSON.stringify(introAfterLogin))
-    }, [])
+    }, [introAfterLogin])
 
     return (
         <OVERALL_CONTEXT.Provider value={{ isLoading, setLoading, introAfterLogin, setIntroAfterLogin }}>
