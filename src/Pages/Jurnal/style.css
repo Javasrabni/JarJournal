@@ -1,5 +1,5 @@
 .slider {
-    -webkit-appearance: none;
+    /* -webkit-appearance: none; */
     height: 8px;
     background: var(--black-bg);
     outline: none;
@@ -13,18 +13,18 @@
 }
 
 .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
+    /* -webkit-appearance: none; */
+    /* appearance: none; */
+    width: 15px;
+    height: 15px;
     background: var(--blue-clr);
     cursor: pointer;
     border-radius: 50%;
 }
 
 .slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     background: var(--blue-clr);
     cursor: pointer;
     border-radius: 50%;

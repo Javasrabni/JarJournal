@@ -16,7 +16,7 @@ export default function JurnalContextProvider({ children }) {
     }, []); // GET USER TOKEN
 
     const [onWriteJurnal, setOnWriteJurnal] = useState(false) //OnWrite Jurnal state (Popup)
-    const [dataDayJournal, setDataDayJournal] = useState([])
+    const [outputDataUserJurnal, setOutputDataUserJurnal] = useState([])
 
     const GetUserJurnal = async () => {
         try {
@@ -27,7 +27,7 @@ export default function JurnalContextProvider({ children }) {
             })
             if (response.ok) {
                 const data = await response.json()
-                setDataDayJournal(data.userJournal)
+                setOutputDataUserJurnal(data.userJournal)
             }
         } catch (err) {
             console.error(err)
@@ -37,7 +37,7 @@ export default function JurnalContextProvider({ children }) {
         if (token) {
             GetUserJurnal()
         }
-    }, [token, dataDayJournal])
+    }, [token])
 
     // Produktifitas user
     const [valueProduktifitasUser, setValueProduktifitasUser] = useState(40)
@@ -67,7 +67,7 @@ export default function JurnalContextProvider({ children }) {
     }, [token]);
 
     return (
-        <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
+        <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, outputDataUserJurnal, setOutputDataUserJurnal, onWriteJurnal, setOnWriteJurnal }}>
             {children}
         </JurnalContext.Provider>
     )

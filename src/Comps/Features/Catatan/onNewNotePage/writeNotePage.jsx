@@ -62,15 +62,6 @@ export default function WriteNotePage() {
         }
     }
 
-    const modules = {
-        toolbar: [
-            [{ header: [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ color: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#000000'] }],
-            ['link', 'image'],
-        ],
-    };
-
     // Kalkulasi posisi bottom pada format text quill js
     const [bottomFormaterQuill, setBottomFormaterQuill] = useState(0)
     const currentHeight = window.innerHeight
@@ -86,9 +77,6 @@ export default function WriteNotePage() {
 
         return () => { window.removeEventListener('resize', handleResizeHeight) }
     })
-
-    console.log(bottomFormaterQuill)
-
 
     return (
         <div className={`w-full h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} ${themeActive ? 'text-white' : 'text-black'} flex flex-col gap-[12px]`}>

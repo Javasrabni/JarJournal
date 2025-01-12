@@ -282,14 +282,14 @@ export default function Chatbot() {
                     {/* <span className="flex flex-row gap-[12px] items-center"> */}
                         {/* DROPDOWN SECT */}
                         {/* <div className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} flex flex-row gap-[6px] items-center rounded-[4px] py-[2px] px-[6px]`}>
-                            <select name="role" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} text-[12px] outline-0 border-0 `} tabIndex={0}>
+                            <select name="role" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} text-[12px] outline-0 border-0 `} >
                                 <option value="RoleAgent">Set RoleAgent</option>
                                 <option value="Partner">Interactive AI</option>
                                 <option value="Asking">OnPoint AI</option>
                             </select>
                         </div> */}
                         {/* INFO ICON */}
-                        {/* <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" tabIndex={0}>{askIcon}</span> */}
+                        {/* <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" >{askIcon}</span> */}
                     {/* </span> */}
 
                     {/* <div className="flex flex-row items-center gap-[16px]">
@@ -301,7 +301,7 @@ export default function Chatbot() {
                 <div className="flex flex-row gap-[16px] items-center ml-auto" style={{ color: themeActive ? "white" : "black" }}>
 
                     <div>
-                        <span role="button" tabIndex={0} className={`${themeActive ? 'text-white' : 'text-black'}`}>
+                        <span role="button"  className={`${themeActive ? 'text-white' : 'text-black'}`}>
                             {dotIcon}
                         </span>
                     </div>
@@ -390,7 +390,7 @@ export default function Chatbot() {
                             id="user-input"
                             placeholder="Ajak ngobrol ajaa..."
                             ref={promptInputRef}
-                            autoFocus
+                            // autoFocus
                             style={{
                                 width: "100%",
                                 padding: "12px 16px",

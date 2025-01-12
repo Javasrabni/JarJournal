@@ -44,6 +44,7 @@ export default function CodeBaseFeatures() {
                         {id === 'BrainFocus' && <BrainFocusPage />}
                         {id === 'Kalender' && <KalenderPage />}
                         {id === 'Ebook' && <EbookPage />}
+                        {id === 'EditCatatan' && <OnEditNote />}
                     </div>
                 </div>
             </div>

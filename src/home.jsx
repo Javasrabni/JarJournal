@@ -20,6 +20,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { ChooseAvatar } from "./introWeb/chooseAvatar/chooseAvatar"
 import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 import { motion } from 'framer-motion'
+import { CatatanContext } from "./Comps/Features/Catatan/catatanContex"
+import DOMPurify from 'dompurify';
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
@@ -123,7 +125,13 @@ export default function Home() {
     }, [publicDataUser, token])
 
     // GET DATA JURNAL USER
-    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+    const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
+
+    useEffect(()=> {
+        setTimeout(()=> {
+            navigate('/dashboard')
+        }, 5000)
+    }, [])
 
     return (
         <>
@@ -260,7 +268,7 @@ export default function Home() {
                                         </div>
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
-                                        <div className="flex flex-col gap-[16px] w-full h-full">
+                                        <div className="flex flex-col gap-[16px] w-full h-full py-[12px]" style={{borderTop: '1px solid var(--black-border)'}}>
                                             <div className="flex flex-col gap-[2px]">
                                                 <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
                                                 <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
@@ -350,7 +358,7 @@ export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
 //  REPORT JURNAL USER
 const ReportJurnal = () => {
     // GET DATA JURNAL USER
-    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+    const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
 
     const arrowIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
@@ -358,23 +366,23 @@ const ReportJurnal = () => {
 
 
     return (
-        <div className="w-full  h-[200px]">
+        <div className="w-full h-fit min-h-[120px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
                 <div>
-                    <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
+                    <p className="text-[12px] font-[600] text-white">Laporan jurnal harian</p>
                 </div>
                 <div>
-                    {dataDayJournal.length < 0 ? (
+                    {outputDataUserJurnal.length < 0 ? (
                         <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
                     ) : (
-                        <div className="flex flex-col items-center justify-between h-full w-full mt-[16px]">
-                            <div className="flex flex-row items-center justify-center gap-[32px] w-full">
+                        <div className="flex flex-col justify-between h-full w-full mt-[12px]">
+                            <div className="flex flex-row items-center gap-[16px] w-full">
                                 {/* DATA JURNAL PERTAMA */}
                                 <div>
-                                    {dataDayJournal && dataDayJournal.slice(0, 1).map((item, index) =>
-                                        <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[12px] shrink-0 px-[18px] py-[8px]" onClick={() => console.log(index)}>
-                                            <p className="text-[12px] text-white font-[600]">Hari ke-{item.day}</p>
-                                            <p className="text-[12px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                    {outputDataUserJurnal && outputDataUserJurnal.slice(0, 1).map((item, index) =>
+                                        <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col" onClick={() => console.log(index)}>
+                                            <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{item.day}</p>
+                                            <p className="text-[11px] text-[var(--black-subtext)]">{item.descJurnal}</p>
                                         </div>
                                     )}
                                 </div>
@@ -383,10 +391,10 @@ const ReportJurnal = () => {
 
                                 {/* DATA JURNAL TERAKHIR */}
                                 <div>
-                                    {dataDayJournal && dataDayJournal[dataDayJournal.length - 1] && (
-                                        <div className="w-fit h-fit py-[8px] px-[18px] bg-[var(--blue-clr)] rounded-[12px] shrink-0 p-[16px]">
-                                            <p className="text-[12px] text-white font-[600]">Hari Ke-{dataDayJournal[dataDayJournal.length - 1].day}</p>
-                                            <p className="text-[12px] text-[var(--white-bg-200)]">{dataDayJournal[dataDayJournal.length - 1].descJurnal}</p>
+                                    {outputDataUserJurnal && outputDataUserJurnal[outputDataUserJurnal.length - 1] && (
+                                        <div className="w-fit h-fit bg-[var(--blue-clr)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col">
+                                            <p className="text-[12px] text-white font-[600]">Jurnal hari Ke-{outputDataUserJurnal[outputDataUserJurnal.length - 1].day}</p>
+                                            <p className="text-[11px] text-[var(--white-bg-200)]">{outputDataUserJurnal[outputDataUserJurnal.length - 1].descJurnal}</p>
                                         </div>
                                     )}
                                 </div>
@@ -394,7 +402,7 @@ const ReportJurnal = () => {
 
                             {/* REPORT TOTAL JURNAL */}
                             <div className="mt-[16px]">
-                                <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{dataDayJournal.length} jurnal harian</span>  sejauh ini.</p>
+                                <p className="text-[12px] text-[var(--black-subtext)]">Kamu sudah menulis <span className="text-white font-[600]">{outputDataUserJurnal.length} jurnal harian</span>  sejauh ini.</p>
                             </div>
                         </div>
                     )}
@@ -407,16 +415,35 @@ const ReportJurnal = () => {
 
 // REPORT CATATAN USER
 const ReportCatatan = () => {
+    const { onNewNote, setOnNewNote } = useContext(CatatanContext)
     return (
-        <div className="w-full  h-[200px]">
+        <div className="w-full  h-fit min-h-[120px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
                 <div>
-                    <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harian</p>
+                    <p className="text-[12px] font-[600] text-white">Catatan terakhir kamu</p>
                 </div>
                 <div>
-                    <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                    {onNewNote.length > 0 ? (
+                        <>
+                            {onNewNote.slice(0, 2).map(item =>
+                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[2px]">
+                                    <div
+                                        className="text-white  text-[12px]"
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                    />
+
+                                    <p className="text-[11px] font-[500] text-[#999999]">{item.timeStamp}</p>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu punya catatan</p>
+
+                        </>
+                    )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

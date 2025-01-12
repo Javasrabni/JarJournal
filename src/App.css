@@ -14,8 +14,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-
-
 @font-face {
   font-family: 'newspaper bold';
   src: url(/public/Assets/font/newspaper/EtherealDemo-Bold.otf);
@@ -74,8 +72,4 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: var(--black-bg);
   border-radius: 8px;
-}
-
-p {
-  user-select: none;
 }

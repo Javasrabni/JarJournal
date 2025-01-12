@@ -4,7 +4,6 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { OnPopupSetting } from "../Publikasi/pubPage/publikasi"
 import { JurnalContext } from "./Context/jurnalContext"
 import { useNavigate } from "react-router-dom"
-import { desc, li, pre } from "framer-motion/client"
 
 export default function Jurnal() {
     // AUTH SECT
@@ -19,12 +18,13 @@ export default function Jurnal() {
 
     const { onWriteJurnal, setOnWriteJurnal } = useContext(JurnalContext)
 
-    const { dataDayJournal, setDataDayJournal } = useContext(JurnalContext)
+    const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
+    console.log(outputDataUserJurnal.length)
 
     // DATA TO SEND INTO SERVER
     const [dataInputFieldJurnal, setDataInputFieldJurnal] = useState(
         {
-            day: null,
+            day: outputDataUserJurnal?.length > 0 ? outputDataUserJurnal.length + 1 : 1,
             descJurnal: null,
             fotoJurnal: null,
             moodToday: null,
@@ -38,7 +38,7 @@ export default function Jurnal() {
             myGoals: [],
             whatIHaveLearned: null,
             motivation: null,
-            productivity: null,
+            productivity: 0,
             gratefulFor: null,
             improve: null,
             folderColor: null,
@@ -69,23 +69,32 @@ export default function Jurnal() {
     const [indexOnSetting, setIndexOnSetting] = useState(null)
 
     // ON AUTO FILL INPUT STATE
-    const [inputFieldJurnalState, setInputFieldJurnalState] = useState(true)
+    const [inputFieldJurnalState, setInputFieldJurnalState] = useState(false)
 
     async function HandleAddJurnal() {
+        const payLoad = { ...dataInputFieldJurnal, descJurnal: dataInputFieldJurnal.descJurnal ?? "JurnalHarian" }
         try {
             const response = await fetch(`${API_URL_AUTH}/auth/day-journal`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({})
+                }, body: JSON.stringify({ dataInputFieldJurnal: payLoad })
             })
             if (response.ok) {
                 const { message } = await response.json()
+                // Tambahkan data baru ke state outputDataUserJurnal
+                const newJournal = { ...payLoad }; // Pastikan struktur sesuai
+                setOutputDataUserJurnal(prevJournals => [...prevJournals, newJournal]);
                 // alert(message)
                 setOnWriteJurnal(false)
-                // setInputFieldJurnalState(true)
+                const delay = setTimeout(() => {
+                    navigate(`/Jurnal/${outputDataUserJurnal.length}/${dataInputFieldJurnal.descJurnal ?? "JurnalHarian"}`)
+                }, 2000)
+
+                setInputFieldJurnalState(false)
                 // setAddNewDayJournal(data)
+                return () => clearTimeout(delay)
             }
         } catch (err) {
             console.log(err)
@@ -140,7 +149,7 @@ export default function Jurnal() {
 
                 {/* Add new jurnal */}
                 {!inputFieldJurnalState && (
-                    <div className="max-w-[22rem] fixed bottom-0 left-[50%] translate-x-[-50%] w-full p-[16px]">
+                    <div className="max-w-[22rem] fixed bottom-0 left-[50%] translate-x-[-50%] w-full p-[16px] z-[20]">
                         <div className=" h-[64px] w-full cursor-pointer bg-[var(--blue-clr)] rounded-[12px] flex items-center justify-center" onClick={() => setOnWriteJurnal(true)}>
                             <span className="text-white">{plusIcon}</span>
                         </div>
@@ -149,13 +158,13 @@ export default function Jurnal() {
 
 
                 {/* Output Jurnal harian */}
-                <div className="flex flex-col mt-[32px] gap-[16px]">
+                <div className="flex flex-col mt-[32px] gap-[16px] pb-[80px]">
                     {/* Indikator Minggu */}
                     {/* <span className="mb-[12px]">
                                 <p className="text-[12px] text-white">Minggu ke-{weekIndex + 1}</p>
                             </span> */}
                     <div className="flex flex-row gap-[12px] flex-wrap">
-                        {dataDayJournal.map((item, index) => (
+                        {outputDataUserJurnal.map((item, index) => (
                             <div
                                 key={index}
                                 className="flex-col w-[48%]"
@@ -179,7 +188,7 @@ export default function Jurnal() {
                                 >
                                     {/* JUDUL DAN DESKRIPSI */}
                                     <div className="w-full " onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}>
-                                        <p className="text-[12px] text-white font-semibold">
+                                        <p className="text-[12px] text-white font-[600]">
                                             Day {item.day}</p>
                                         <p className="text-[12px] text-[var(--black-subtext)]">
                                             {item.descJurnal}
@@ -207,9 +216,9 @@ export default function Jurnal() {
                     Button1={
                         <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
                             <span className="w-fit shrink-0">
-                                {dataDayJournal.length < 1 ? <p className="text-[12px] text-white font-[600] pr-[12px]">Day 1</p> : <p className="text-[12px] text-white font-[600] pr-[12px]">Day {dataDayJournal.slice(-1).map(item => item.day + 1)}</p>}
+                                <p className="text-[12px] font-[600] text-white">Day {outputDataUserJurnal.length + 1}</p>
                             </span>
-                            <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="text" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
+                            <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="search" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
                         </div>
                     }
                     Button2={<p className="text-[12px] font-[600] text-white" onClick={() => { setTimeout(() => { setInputFieldJurnalState(true); setOnWriteJurnal(false); }, 1000) }}>Tambah</p>}
@@ -221,7 +230,7 @@ export default function Jurnal() {
                 <OnPopupSetting
                     Heading={`Hapus Jurnal`}
                     onClickFunc={() => setOnSetting(prev => !prev)}
-                    Button2={<button role="button" tabIndex={0} onClick={HandleDeleteJurnal}>
+                    Button2={<button role="button"  onClick={HandleDeleteJurnal}>
                         <span className="flex flex-row items-center gap-[8px]">
                             {deletePost}
                             <span className="text-[12px] text-white">Hapus</span>
@@ -234,9 +243,9 @@ export default function Jurnal() {
             {inputFieldJurnalState && (
                 <PopupModal
                     onClickFunc={() => setInputFieldJurnalState(false)}
-                    Heading={<p className="text-[12px] font-[600]">Day {dataDayJournal.slice(-1).map(item => item.day + 1)}</p>}
+                    Heading={<p className="text-[12px] font-[600] text-center">Day {outputDataUserJurnal.slice(-1).map(item => item.day + 1)}</p>}
 
-                    subHeading={<p className="text-[11px] text-[var(--black-subtext)]">{new Date().toLocaleString('id-Id', {
+                    subHeading={<p className="text-[11px] text-[var(--black-subtext)] text-center pb-[8px]" style={{ borderBottom: '1px solid var(--black-border)' }}>{new Date().toLocaleString('id-Id', {
                         day: '2-digit',
                         month: 'long',
                         year: 'numeric',
@@ -244,11 +253,11 @@ export default function Jurnal() {
                     })}</p>}
                     bodySect={
                         <div className="w-full h-fit">
-                            <div className="flex flex-col gap-[12px] mt-[16px] w-full">
+                            <div className="flex flex-col gap-[12px] w-full">
                                 {statusFieldJurnal === 0 && (
                                     <>
                                         <span className="w-full">
-                                            <p className="text-[12px] text-white font-semibold text-center">Bagaimana perasaan kamu hari ini</p>
+                                            <p className="text-[12px] text-white font-[600] text-center">Bagaimana perasaan kamu hari ini</p>
                                         </span>
                                         <div className="flex flex-row gap-[6px] items-center justify-center relative" >
                                             {emotOutput.map((item, idx) =>
@@ -267,7 +276,7 @@ export default function Jurnal() {
                                 {statusFieldJurnal === 1 && (
                                     <>
                                         <span className="w-full">
-                                            <p className="text-[12px] text-white font-semibold text-center">Evaluasi yang dilakukan</p>
+                                            <p className="text-[12px] text-white font-[600] text-center">Evaluasi yang dilakukan</p>
                                         </span>
                                         <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
                                             <textarea
@@ -284,31 +293,93 @@ export default function Jurnal() {
                                 {statusFieldJurnal === 2 && (
                                     <>
                                         <span className="w-full">
-                                            <p className="text-[12px] text-white font-semibold text-center">Goal kamu hari ini apa aja?</p>
+                                            <p className="text-[12px] text-white font-[600] text-center">Goal kamu hari ini apa aja?</p>
                                         </span>
                                         <div className="flex flex-col gap-[6px] items-center justify-center w-full" >
                                             {/* INPUT GOAL */}
-                                            <div className="w-full">
-                                                <span className="w-full h-[24px] flex items-center justify-center gap-[12px]">
-                                                    <input type="text" className="text-[11px] text-white bg-[var(--black-bg)] rounded-[4px] h-full w-[70%] outline-none border-none px-[8px]" value={myGoalJurnal} onChange={(e) => setMyGoalJurnal(e.target.value)} />
-                                                    
-                                                    <button className="text-white bg-[var(--black-bg)] h-full px-[4px] rounded-[4px]" onClick={() => { setDataInputFieldJurnal((prevState) => ({ ...prevState, myGoals: [...(prevState.myGoals || []), myGoalJurnal] })); setMyGoalJurnal(''); }}>{AddIcon}</button>
+                                            <div className="w-full h-[90px] bg-[var(--black-bg)] rounded-[6px] p-[12px]">
+                                                <span className="w-full flex gap-[8px]">
+                                                    <input type="text" className="text-[11px] text-white bg-[var(--black-bg)] rounded-[4px] w-full outline-none border-none px-[8px]" value={myGoalJurnal} onChange={(e) => setMyGoalJurnal(e.target.value)} placeholder="Tambah goal" />
+
+                                                    <button className="text-white bg-[var(--blue-clr)] px-[2px] py-[2px] rounded-[4px]" onClick={() => { setDataInputFieldJurnal((prevState) => ({ ...prevState, myGoals: [...(prevState.myGoals || []), myGoalJurnal] })); setMyGoalJurnal(''); }}>{AddIcon}</button>
                                                 </span>
+
+                                                {/* OUTPUT GOAL */}
+                                                <div className="w-full pl-[8px] h-full max-h-[calc(90px-54px)] overflow-auto mt-[12px]">
+                                                    <ul>
+                                                        {dataInputFieldJurnal.myGoals && dataInputFieldJurnal.myGoals.map((goal, idx) => (
+                                                            <li key={idx} className="text-[11px] text-white">{idx + 1}. {goal}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
                                             </div>
 
-                                            {/* OUTPUT GOAL */}
-                                            <div className="w-full pl-[32px] h-full max-h-[64px] overflow-auto">
-                                                <ul>
-                                                    {dataInputFieldJurnal.myGoals && dataInputFieldJurnal.myGoals.map((goal, idx) => (
-                                                        <li key={idx} className="text-[11px] text-white">{idx + 1}. {goal}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
+
                                         </div>
                                     </>
                                 )}
 
+                                {statusFieldJurnal === 3 && (
+                                    <>
+                                        <span className="w-full">
+                                            <p className="text-[12px] text-white font-[600] text-center">Pelajaran yang didapat hari ini</p>
+                                        </span>
+                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                            <textarea
+                                                placeholder="Apa yang sudah kamu pelajari dan pelajaran yang didapat hari ini?"
+                                                className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
+                                                rows={4}
+                                                value={dataInputFieldJurnal.whatIHaveLearned}
+                                                onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, whatIHaveLearned: e.target.value })) }}
+                                            />
+                                        </div>
+                                    </>
+                                )}
 
+                                {statusFieldJurnal === 4 && (
+                                    <>
+                                        <span className="w-full">
+                                            <p className="text-[12px] text-white font-[600] text-center">Motivasi kamu hari ini</p>
+                                        </span>
+                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                            <textarea
+                                                placeholder="Apa yang memotivasi kamu dalam menjalani aktifitas hari ini?"
+                                                className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
+                                                rows={4}
+                                                value={dataInputFieldJurnal.motivation}
+                                                onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, motivation: e.target.value })) }}
+                                            />
+                                        </div>
+                                    </>
+                                )}
+
+                                {statusFieldJurnal === 5 && (
+                                    <>
+                                        <span className="w-full">
+                                            <p className="text-[12px] text-white font-[600] text-center">Berapa persen tingkat produktif kamu hari ini</p>
+                                        </span>
+                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                            <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[12px]">
+                                                <input type="range" name="" id="" min={0} max={100} value={dataInputFieldJurnal.productivity} onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, productivity: parseInt(e.target.value) }))} className="slider w-[80%]" />
+
+                                                <p className="text-center text-[12px] w-fit text-white"><span className="font-[500]">{dataInputFieldJurnal.productivity}%, </span><span className="font-[400]">{dataInputFieldJurnal.productivity >= 80 ? 'Sangat membara!' : dataInputFieldJurnal.productivity >= 40 ? 'Butuh energi lebih!' : 'Kurang semangat'}</span></p>
+                                            </span>
+                                        </div>
+                                    </>
+                                )}
+
+                                {statusFieldJurnal === 6 && (
+                                    <>
+                                        <span className="w-full">
+                                            <p className="text-[12px] text-white font-[600] text-center">Jurnal harian kamu sudah siap! ✨</p>
+                                        </span>
+                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                            <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[0px]" onClick={HandleAddJurnal}>
+                                                <p className="text-center text-[12px] w-fit text-white bg-[var(--blue-clr)] rounded-[6px] px-[12px] py-[6px]">Simpan & Buka Jurnal</p>
+                                            </span>
+                                        </div>
+                                    </>
+                                )}
 
 
                             </div>
@@ -321,22 +392,30 @@ export default function Jurnal() {
                                 <div>
                                     <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev > 0 ? prev - 1 : prev); setProgressBarJurnalField((prev) => prev > 0 ? prev - 1 : prev) }}>Kembali</p>
                                 </div>
-                                <div>
-                                    <p className="text-[12px] text-[var(--blue-clr)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Berikutnya</p>
-                                </div>
-                                <div>
-                                    <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer font-[400]" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Lewatkan</p>
-                                </div>
+                                {statusFieldJurnal <= 5 && (
+                                    <>
+                                        <div>
+                                            <p className="text-[12px] text-[var(--blue-clr)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Berikutnya</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer font-[400]" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Lewatkan</p>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
+
                             {/* PROGRESS FIELD */}
-                            <div className="w-full">
-                                <progress
-                                    className="bg-transparent w-full h-[4px] appearance-none [&::-webkit-progress-bar]:bg-[var(--black-bg)] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[var(--blue-clr)] [&::-webkit-progress-value]:rounded-full"
-                                    value={progressBarJurnalField}
-                                    max={7}
-                                />
-                            </div>
+                            {statusFieldJurnal <= 5 && (
+                                <div className="w-full">
+                                    <progress
+                                        className="bg-transparent w-full h-[4px] appearance-none [&::-webkit-progress-bar]:bg-[var(--black-bg)] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[var(--blue-clr)] [&::-webkit-progress-value]:rounded-full"
+                                        value={progressBarJurnalField}
+                                        max={6}
+                                    />
+                                </div>
+                            )}
+
                         </div>
                     }
 
@@ -349,14 +428,17 @@ export default function Jurnal() {
 
 export const PopupModal = ({ Heading, subHeading, bodySect, bottomSect, onClickFunc }) => {
     return (
-        <div className="fixed top-0 left-[50%] w-full h-full translate-x-[-50%] z-[70] flex items-center justify-center">
+        <div className="fixed top-0 left-[50%] w-full h-full translate-x-[-50%] z-[25] flex items-center justify-center">
             {/* BLACK BACKGROUND */}
-            <div className="fixed w-full h-full bg-[#00000050] bottom-0 left-0 z-[19] cursor-auto" onClick={onClickFunc} />
+            <div className="fixed w-full h-full bg-[#00000080] bottom-0 left-0 z-[19] cursor-auto" />
 
             {/* CARD DIV (BOX) */}
-            <div className="z-[20] w-[80%] max-w-[600px] h-[42%] max-h-[460px] bg-[var(--bg-12)] outline outline-1 outline-[var(--black-border)] flex flex-col rounded-[12px] p-[16px]">
+
+            {/* h-[42%] */}
+            <div className="z-[20] w-[80%] max-w-[600px] h-fit max-h-[460px] bg-[var(--bg-12)] outline outline-1 outline-[var(--black-border)] flex flex-col rounded-[12px] p-[16px] gap-[32px]">
+
                 {/* TOP SECT (JUDUL DAN SUBJUDUL) */}
-                <div className="flex flex-col gap-[4px] flex text-white w-full">
+                <div className="flex flex-col flex text-white w-full">
                     {Heading && (
                         <span>
                             {Heading}
@@ -368,12 +450,16 @@ export const PopupModal = ({ Heading, subHeading, bodySect, bottomSect, onClickF
                         </span>
                     )}
                 </div>
+
                 {/* BODY */}
-                {bodySect && (
-                    <span className="w-full">
-                        {bodySect}
-                    </span>
-                )}
+                <div className="w-full">
+                    {bodySect && (
+                        <span className="w-full">
+                            {bodySect}
+                        </span>
+                    )}
+                </div>
+
                 {/* BOTTOM SECT */}
                 <div className="flex h-full items-end w-full justify-center">
                     {bottomSect && (

@@ -14,7 +14,6 @@ import { UseEditNoteContext } from "./onEditNote/onEditNContext"
 import DOMPurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 import './style.css'
-import { span } from "framer-motion/client"
 
 export default function Catatan() {
     const navigate = useNavigate()
@@ -26,12 +25,8 @@ export default function Catatan() {
     }, [])
 
     const { id } = useParams()
-    const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
-
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    const { username, setUsername } = useContext(API_URL_CONTEXT)
-    const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
-    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+    const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
 
 
     useEffect(() => {
@@ -40,31 +35,7 @@ export default function Catatan() {
         }
     }, [token])
 
-    // FETCHING GET USER INFO
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                const data = await response.json()
 
-                if (response.ok) {
-                    setUsername(data.username)
-                    setUserEmail(data.email)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        if (token) {
-            fetchUserInfo()
-        }
-    }, [])
 
     // Music box context
     const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
@@ -75,6 +46,7 @@ export default function Catatan() {
     // Note array
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
 
+
     const { valueOnNewNote, setValueOnNewNote } = useContext(CatatanContext)
 
     // STATE TO START WRITEING NOTE
@@ -83,29 +55,7 @@ export default function Catatan() {
         setWriteingNote(false)
     }, [setWriteingNote])
 
-    // FETCHING GET USER NOTE
-    const FetchDataNote = async () => {
-        try {
-            const response = await fetch(`${API_URL_NOTE}/auth/get-note`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            if (response.ok) {
-                const data = await response.json()
-                setOnNewNote(data.note || [])
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
 
-    useEffect(() => {
-        if (token) {
-            FetchDataNote()
-        }
-    }, [token, writeingNote])
 
     // NEW NOTE
     function HandleNewNote() {
