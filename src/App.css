@@ -75,3 +75,7 @@ body {
   background-color: var(--black-bg);
   border-radius: 8px;
 }
+
+p {
+  user-select: none;
+}

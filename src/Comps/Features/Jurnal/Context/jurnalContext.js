@@ -45,6 +45,27 @@ export default function JurnalContextProvider({ children }) {
     // STATE EMOT API
     const [emotOutput, setEmotOutput] = useState([])
 
+    // GET EMOT LINK 
+    useEffect(() => {
+        const getEmotMood = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/MoodToday-Emot`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setEmotOutput(data)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        };
+        getEmotMood();
+    }, [token]);
+
     return (
         <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, dataDayJournal, setDataDayJournal, onWriteJurnal, setOnWriteJurnal }}>
             {children}
