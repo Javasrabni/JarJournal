@@ -18,26 +18,25 @@ export default function JurnalContextProvider({ children }) {
     const [onWriteJurnal, setOnWriteJurnal] = useState(false) //OnWrite Jurnal state (Popup)
     const [outputDataUserJurnal, setOutputDataUserJurnal] = useState([])
 
-    const GetUserJurnal = async () => {
-        try {
-            const response = await fetch(`${API_URL_AUTH}/auth/get-journal`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            if (response.ok) {
-                const data = await response.json()
-                setOutputDataUserJurnal(data.userJournal)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
     useEffect(() => {
-        if (token) {
-            GetUserJurnal()
+        const GetUserJurnal = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/auth/get-journal`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setOutputDataUserJurnal(data.userJournal)
+                }
+            } catch (err) {
+                console.error(err)
+            }
         }
+        GetUserJurnal()
     }, [token])
+
 
     // Produktifitas user
     const [valueProduktifitasUser, setValueProduktifitasUser] = useState(40)

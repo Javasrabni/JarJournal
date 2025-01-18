@@ -23,7 +23,19 @@ import { CatatanContext } from "./Comps/Features/Catatan/catatanContex"
 import DOMPurify from 'dompurify';
 import Skeleton from "react-loading-skeleton"
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useRef } from "react"
 
+// Cartjs
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Tooltip,
+    Legend,
+} from 'chart.js'
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
@@ -128,6 +140,9 @@ export default function Home() {
 
     // GET DATA JURNAL USER
     const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
+
+
+
     return (
         <>
             <>
@@ -365,36 +380,167 @@ export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
 
 //  REPORT JURNAL USER
 const ReportJurnal = () => {
+    ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
     // GET DATA JURNAL USER
     const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
-
     const arrowIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
     </svg>
-
     const chartIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ rotate: '-90deg' }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
     </svg>
 
 
-    const getMoodUser = outputDataUserJurnal.map(item => item.moodtype)
-    // function getAvarageMoodUser() {
 
-    // }
+    // ANALYZE MOOD USER
+    const [avarageData, setAvarageData] = useState(null)
+    const [avarageDataFreq, setAverageDataFreq] = useState({
+        Sedih: 0, Datar: 0, Senang: 0, Bersemangat: 0
+    })
 
-    console.log(getMoodUser)
+
+
+    useEffect(() => {
+        const getMoodUser = outputDataUserJurnal.map(item => item.moodtype)
+
+        if (JSON.stringify(getMoodUser.current) !== JSON.stringify(getMoodUser)) {
+            const dataAnalisis = {};
+            let freq = 0;
+            let freqValue = null;
+
+            getMoodUser.forEach(item => {
+                dataAnalisis[item] = (dataAnalisis[item] || 0) + 1;
+                if (dataAnalisis[item] > freq) {
+                    freq = dataAnalisis[item];
+                    freqValue = item;
+                }
+            });
+
+            setAvarageData(freqValue);
+            setAverageDataFreq((prevData) => ({
+                ...prevData,
+                ...dataAnalisis, // Update dengan hasil dataAnalisis
+            }));
+        }
+    }, [outputDataUserJurnal]);
+
+    const moodData = {
+        labels: ["Sedih", "Datar", "Senang", "Bersemangat"],
+        datasets: [
+            {
+                label: "Jumlah",
+                data: [avarageDataFreq.Sedih, avarageDataFreq.Datar, avarageDataFreq.Senang, avarageDataFreq.Bersemangat],
+                borderColor: "#1585FF",
+                backgroundColor: "#1585FF",
+                borderWidth: 2,
+                pointBackgroundColor: "#1585FF",
+                pointBorderColor: "#fff",
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointStyle: "circle", // Bentuk titik
+                tension: 0, // Kelengkungan garis
+                fill: true, // Isi area bawah garis
+            },
+        ],
+    };
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+                labels: {
+                    color: "white", // Warna teks legenda
+                    font: {
+                        size: 12,
+                        weight: 600,
+                        family: 'Poppins'
+                    },
+                },
+            },
+            tooltip: {
+                enabled: true,
+                backgroundColor: "#fff",
+                titleFont: {
+                    size: 12,
+                    family: "Poppins",
+                    weight: 600
+                },
+                bodyFont: {
+                    size: 11,
+                    family: "Poppins",
+                },
+                titleColor: "#000",
+                bodyColor: "#262626",
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    color: "#262626",
+                    lineWidth: 1,
+                    drawOnChartArea: true,
+                },
+                title: {
+                    display: true,
+                    text: "Perasaan / mood",
+                    color: "white",
+                    font: {
+                        size: 12,
+                        family: 'Poppins',
+                    },
+                },
+                ticks: {
+                    color: "#999999",
+                    font: {
+                        size: 12,
+                    },
+                },
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: "#262626",
+                },
+                title: {
+                    display: true,
+                    text: "Jumlah",
+                    color: "white",
+                    font: {
+                        size: 12,
+                        family: 'Poppins'
+                    },
+                },
+                ticks: {
+                    color: "#999999",
+                    font: {
+                        size: 12,
+                    },
+                    stepSize: 1,
+                },
+            },
+        },
+    };
+
 
     return (
         <div className="w-full h-fit min-h-[120px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
-                <div>
+                <div className="flex flex-col gap-[4px]">
                     <p className="text-[12px] font-[600] text-white">Ringkasan jurnal harian</p>
+                    <span><p className="text-[11px] text-[var(--black-subtext)]">*Dalam proses analisis akan lebih ideal jika setidaknya terdapat 3 data.</p></span>
+
                 </div>
                 <div>
                     {outputDataUserJurnal.length < 1 ? (
                         <div className="flex flex-col w-full h-full items-center justify-center">
-                            <div className="w-full h-full items-center flex justify-center">
-                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737165565/Line_rdvvcq.svg" alt="report chart jurnal" className="w-[35%] h-[35%] object-cover" />
+                            {/* <div className="w-full h-full items-center flex justify-center">
+                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg" alt="report chart jurnal" className="w-[35%] h-[35%] object-cover" />
+                            </div> */}
+                            {/* Rata rata mood user */}
+                            <div style={{ height: '100%', width: '100%' }} className="pt-[32px] pb-[32px]">
+                                <p className="text-[12px] text-white mb-[4px]">Data dalam grafik diagram garis</p>
+                                <Line data={moodData} options={chartOptions} height={220} />
                             </div>
                             <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya Jurnal. </p>
 
@@ -426,11 +572,21 @@ const ReportJurnal = () => {
                             </div>
 
                             {/* Rata rata mood user */}
+                            <div style={{ height: '100%', width: '100%' }} className="pt-[32px] pb-[32px]">
+                                <p className="text-[12px] text-white mb-[4px]">Data dalam grafik diagram garis</p>
+                                <Line data={moodData} options={chartOptions} height={220} />
+                            </div>
+
                             <div className="mt-[12px]">
                                 <p className="text-white text-[12px]">
                                     <span className="flex flex-row gap-[6px] items-center">
                                         <span>{chartIcon}</span>
-                                        <span>Kamu lebih banyak merasa <i><b>"Bahagia"</b></i></span>
+                                        {outputDataUserJurnal.length <= 3 ?
+                                            (
+                                                <p>Perasaan kamu cenderung <span className="font-[600]">"-"</span></p>
+                                            ) : (
+                                                <p>Perasaan kamu cenderung <span className="font-[600]">"{avarageData}"</span></p>
+                                            )}
                                     </span>
                                 </p>
                             </div>
@@ -444,7 +600,7 @@ const ReportJurnal = () => {
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
@@ -474,7 +630,7 @@ const ReportCatatan = () => {
                     ) : (
                         <div className="flex flex-col w-full h-full items-center justify-center">
                             <div className="w-full h-full items-center flex justify-center opacity-[70%]">
-                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737165730/Bar_1_m9mxap.svg" alt="report chart catatan" className="w-[35%] h-[35%] object-cover" />
+                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171008/Table_1_urpvlk.svg" alt="report chart catatan" className="w-[35%] h-[35%] object-cover" />
                             </div>
                             <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya Catatan.</p>
 

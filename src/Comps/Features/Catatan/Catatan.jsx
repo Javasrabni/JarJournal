@@ -263,18 +263,27 @@ export default function Catatan() {
                                     )}
                                 </div>
                             ) : (
-                                <div className="w-full h-[90vh] flex items-center justify-center">
-                                    <p className={`${themeActive ? "text-[var(--black-subtext)]" : "text-[--black-subtext]"} text-[10px]`}>Tidak ada catatan</p>
+                                <div className="w-full min-h-[50svh] h-full flex flex-col items-center justify-center text-white">
+                                    <span>
+                                        <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171008/Table_1_urpvlk.svg" alt="jurnal report icon" className="w-full h-full " />
+                                    </span>
+                                    <p className="text-[12px]">Ayo kita buat catatan pertamamu</p>
                                 </div>
                             )}
                         </>
                     )}
 
-                    <div onClick={HandleNewNote}>
+                    <div onClick={HandleNewNote} >
                         {!writeingNote && (
-                            <PlusBtn
-                                temaCatatan={true}
-                            />
+                            <>
+                                <span className={`fixed bottom-[32px] left-[50%] w-[calc(100%-32px)] p-[12px] bg-[var(--blue-clr)] flex items-center rounded-[12px] flex items-center justify-center translate-x-[-50%]`}>
+                                    <p className="text-[12px] font-[600] text-white">Tambah</p>
+                                </span>
+
+                            </>
+                            // <PlusBtn
+                            //     temaCatatan={true}
+                            // />
                         )}
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { OnPopupSetting } from "../Publikasi/pubPage/publikasi"
 import { JurnalContext } from "./Context/jurnalContext"
 import { useNavigate } from "react-router-dom"
-import { desc, li, pre } from "framer-motion/client"
+import { desc, div, li, pre } from "framer-motion/client"
 
 export default function Jurnal() {
     // AUTH SECT
@@ -20,7 +20,6 @@ export default function Jurnal() {
     const { onWriteJurnal, setOnWriteJurnal } = useContext(JurnalContext)
 
     const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
-    console.log(outputDataUserJurnal.length)
 
     // DATA TO SEND INTO SERVER
     const [dataInputFieldJurnal, setDataInputFieldJurnal] = useState(
@@ -47,7 +46,7 @@ export default function Jurnal() {
         }
     )
 
-    useEffect(()=> {
+    useEffect(() => {
         console.log(dataInputFieldJurnal)
     }, [dataInputFieldJurnal])
 
@@ -121,6 +120,7 @@ export default function Jurnal() {
                 const data = await response.json()
                 alert(data.message)
                 setOnSetting(false)
+                navigate(0)
             }
         } catch (err) {
             console.error(err)
@@ -142,17 +142,6 @@ export default function Jurnal() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
 
-
-
-    useEffect(() => {
-        console.log(dataInputFieldJurnal, "Updated Data after Click");
-    }, [dataInputFieldJurnal]);
-
-    
-    useEffect(() => {
-        console.log(dataInputFieldJurnal, "Updated Data after Click");
-    }, [dataInputFieldJurnal]);
-
     return (
         <div>
             {/* <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harianmu</p> */}
@@ -160,8 +149,8 @@ export default function Jurnal() {
 
                 {/* Add new jurnal */}
                 {!inputFieldJurnalState && (
-                    <div className="max-w-[22rem] fixed bottom-0 left-[50%] translate-x-[-50%] w-full p-[16px] z-[20]">
-                        <div className=" h-[64px] w-full cursor-pointer bg-[var(--blue-clr)] rounded-[12px] flex items-center justify-center" onClick={() => setOnWriteJurnal(true)}>
+                    <div className="max-w-[22rem] fixed bottom-[12px] left-[50%] translate-x-[-50%] w-full p-[16px] z-[20]">
+                        <div className=" h-[42px] w-full cursor-pointer bg-[var(--blue-clr)] rounded-[12px] flex items-center justify-center" onClick={() => setOnWriteJurnal(true)}>
                             <span className="text-white">{plusIcon}</span>
                         </div>
                     </div>
@@ -169,51 +158,62 @@ export default function Jurnal() {
 
 
                 {/* Output Jurnal harian */}
-                <div className="flex flex-col mt-[32px] gap-[16px] pb-[80px]">
+                <div className="flex flex-col mt-[32px] gap-[16px] pb-[80px] ">
                     {/* Indikator Minggu */}
                     {/* <span className="mb-[12px]">
                                 <p className="text-[12px] text-white">Minggu ke-{weekIndex + 1}</p>
                             </span> */}
-                    <div className="flex flex-row gap-[12px] flex-wrap">
-                        {outputDataUserJurnal.map((item, index) => (
-                            <div
-                                key={index}
-                                className="flex-col w-[48%]"
+                    <div className="flex flex-row gap-[12px] flex-wrap ">
+                        {outputDataUserJurnal.length > 0 ? (
+                            <>
+                                {outputDataUserJurnal.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex-col w-[48%]"
 
-                            >
-                                {/* Efek Folder */}
-                                <div
-                                    className="w-[52px] h-[6px]"
-                                    style={{
-                                        borderRadius: "8px 8px 0px 0px",
-                                        backgroundColor: "var(--black-bg)",
-                                    }}
-                                ></div>
+                                    >
+                                        {/* Efek Folder */}
+                                        <div
+                                            className="w-[52px] h-[6px]"
+                                            style={{
+                                                borderRadius: "8px 8px 0px 0px",
+                                                backgroundColor: "var(--black-bg)",
+                                            }}
+                                        ></div>
 
-                                {/* Konten Jurnal */}
-                                <div className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-col gap-[6px] justify-between"
-                                    style={{
-                                        borderRadius: "0px 8px 8px",
-                                        outline: "1px solid var(--black-bg)",
-                                    }}
-                                >
-                                    {/* JUDUL DAN DESKRIPSI */}
-                                    <div className="w-full " onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}>
-                                        <p className="text-[12px] text-white font-[600]">
-                                            Day {item.day}</p>
-                                        <p className="text-[12px] text-[var(--black-subtext)]">
-                                            {item.descJurnal}
-                                        </p>
+                                        {/* Konten Jurnal */}
+                                        <div className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-col gap-[6px] justify-between"
+                                            style={{
+                                                borderRadius: "0px 8px 8px",
+                                                outline: "1px solid var(--black-bg)",
+                                            }}
+                                        >
+                                            {/* JUDUL DAN DESKRIPSI */}
+                                            <div className="w-full " onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}>
+                                                <p className="text-[12px] text-white font-[600]">
+                                                    Day {item.day}</p>
+                                                <p className="text-[12px] text-[var(--black-subtext)]">
+                                                    {item.descJurnal}
+                                                </p>
+                                            </div>
+
+                                            {/* DATE N SETTINGS */}
+                                            <div className="flex flex-row items-center justify-between" >
+                                                <p className="text-[11px] text-white">{item.date}</p>
+                                                <span className="cursor-pointer" onClick={() => { setOnSetting(prev => !prev); setIndexOnSetting(index) }}>{settingPostIcon}</span>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    {/* DATE N SETTINGS */}
-                                    <div className="flex flex-row items-center justify-between" >
-                                        <p className="text-[11px] text-white">{item.date}</p>
-                                        <span className="cursor-pointer" onClick={() => { setOnSetting(prev => !prev); setIndexOnSetting(index) }}>{settingPostIcon}</span>
-                                    </div>
-                                </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div className="w-full min-h-[50svh] h-full flex flex-col items-center justify-center text-white">
+                                <span>
+                                    <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg" alt="jurnal report icon" className="w-full h-full " />
+                                </span>
+                                <p className="text-[12px]">Ayo kita buat jurnal pertamamu</p>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </div>
@@ -241,7 +241,7 @@ export default function Jurnal() {
                 <OnPopupSetting
                     Heading={`Hapus Jurnal`}
                     onClickFunc={() => setOnSetting(prev => !prev)}
-                    Button2={<button role="button"  onClick={HandleDeleteJurnal}>
+                    Button2={<button role="button" onClick={HandleDeleteJurnal}>
                         <span className="flex flex-row items-center gap-[8px]">
                             {deletePost}
                             <span className="text-[12px] text-white">Hapus</span>

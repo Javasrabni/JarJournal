@@ -112,7 +112,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
 
     const handleLogout = () => {
-        navigate('/')
+        navigate(0)
         localStorage.removeItem('token'); // Hapus token
         setIntroAfterLogin(true)
         setToken(null); // Set token menjadi null untuk memaksa user login ulang
@@ -187,7 +187,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                             </div>
                         ) : (
                             // style={{ filter: "drop-shadow(0px 0px 12px gold)" }}
-                            < img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1734756936/LogoJJR_TrsprnLogo_n9ojre.webp" alt="JarJournal Icon" style={{ width: '28px', height: '28px' }} loading="lazy" />
+                            < img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1734756936/LogoJJR_TrsprnLogo_n9ojre.webp" alt="JarJournal Icon" style={{ width: '28px', height: '28px', filter: 'brightness(150%)' }} loading="lazy" />
                         )}
                         <div>
                             <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>

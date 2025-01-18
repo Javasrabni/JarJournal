@@ -117,13 +117,13 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
                     </div>
                     <p className="text-[12px] text-[var(--black-subtext)]">{subHeading}</p>
                     <div className="flex flex-col justify-center items-center gap-[8px]">
-                        <span>
+                        {/* <span>
                             <input type="file"
                                 className="text-[12px] mt-[8px]"
                                 onChange={(evnt) => HandleFileUpload(evnt)}
                             />
 
-                        </span>
+                        </span> */}
                         <button
                             onClick={HandleSubmitAvatar}
                             className="text-[12px] mt-4 px-[12px] py-[4px] bg-[#1585FF] text-white rounded"

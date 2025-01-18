@@ -169,6 +169,7 @@ export default function EditProfilePage() {
                             <span className="flex flex-col gap-[4px]">
                                 <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Link</label>
                                 <input type="text"
+                                    disabled
                                     value={linkUserValue}
                                     placeholder="Perluas koneksi"
                                     className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
