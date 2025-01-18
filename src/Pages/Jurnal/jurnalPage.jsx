@@ -124,7 +124,7 @@ export default function JurnalPage() {
                                 <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].evaluasi || "Belum ada motivasi"}</p>
                             </div>
                             {/* WHAT I LEARNED */}
-                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}>
                                 <p className="text-[12px] font-[600] text-white">Apa yang saya pelajari hari ini?</p>
                                 <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].whatIHaveLearned || "Belum ada pelajaran"}</p>
                             </div>
@@ -133,7 +133,7 @@ export default function JurnalPage() {
                         {/* "MY GOAL" & "THE MOTIVATION" */}
                         <div className="w-full flex flex-col gap-[12px] shrink-0 relative">
                             {/* MY GOAL PART */}
-                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}>
                                 <p className="text-[12px] font-[600] text-white">Goal saya</p>
                                 <ul>
                                     {outputDataUserJurnal[index].myGoals.length > 0 ? (
@@ -148,7 +148,7 @@ export default function JurnalPage() {
                                 </ul>
                             </div>
                             {/* MOTIVATION */}
-                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}> 
+                            <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}>
                                 <p className="text-[12px] font-[600] text-white">Motivasi</p>
                                 <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].motivation || "Belum ada motivasi"}</p>
                             </div>
@@ -171,13 +171,13 @@ export default function JurnalPage() {
                         </div>
 
                         {/* GRATEFUL-FOR */}
-                        <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                        <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}>
                             <p className="text-[12px] font-[600] text-white">Grateful for</p>
                             <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
                         </div>
 
                         {/* THING TO IMPROVE */}
-                        <div className="p-[12px] bg-[var(--black-bg)] rounded-[12px]">
+                        <div className="p-[12px] bg-[var(--bg-12)] rounded-[12px] h-fit" style={{ border: '1px solid var(--black-border)' }}>
                             <p className="text-[12px] font-[600] text-white">Hal yang harus ditingkatkan atau perbaiki</p>
                             <p className="text-[12px] text-[var(--black-subtext)]">{outputDataUserJurnal[index].gratefulFor || "Belum ada data"}</p>
                         </div>

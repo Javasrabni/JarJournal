@@ -254,11 +254,11 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                                                 <>
                                                     <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
                                                         <label className="text-[10px] text-[var(--black-subtext)] " >Username:</label>
-                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${username}`}</p>
+                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100%', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${username}`}</p>
                                                     </div>
                                                     <div style={{ borderBottom: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', paddingBottom: "12px" }}>
                                                         <label className="text-[10px] text-[var(--black-subtext)] " >Email:</label>
-                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${userEmail}`}</p>
+                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'}`} style={{ width: '100%', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{`${userEmail}`}</p>
                                                     </div>
                                                     <div onClick={handleLogout}>
                                                         {token && (

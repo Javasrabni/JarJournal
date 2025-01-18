@@ -324,9 +324,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
             <div className="flex flex-col-reverse " >
                 {isLoading ? (
                     <div className="flex flex-col gap-[8px]">
-                        <Skeleton count={1} width={'100%'} height={'140px'} className="skeleton-delayed animate-pulse" style={{ borderRadius: '8px', animationDelay: '0.3s' }} />
-                        <Skeleton count={1} width={'100%'} height={'140px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                        <Skeleton count={1} width={'100%'} height={'140px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                        <Skeleton count={1} width={'100%'} height={'224px'} className="skeleton-delayed animate-pulse" style={{ borderRadius: '8px', animationDelay: '0.3s' }} />
+                        <Skeleton count={1} width={'100%'} height={'224px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                        <Skeleton count={1} width={'100%'} height={'224px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
                     </div>
                 ) : (
                     <>
@@ -336,8 +336,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                     <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                         <div className={`font-[inter] flex flex-col `}>
-
-                                            <span role="button"  onClick={() => HandleSelectedPub(pub.id)}>
+                                            <span onClick={() => HandleSelectedPub(pub.id)}>
 
                                                 {/* JUDUL PUB */}
                                                 <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
@@ -359,20 +358,24 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     onLoad={HandleRenderImg}
                                                                 />
                                                             </div>
-                                                            {/* ) : (
-                                      <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                                  )} */}
-
                                                         </>
                                                     )}
                                                 </div>
                                             </span>
 
                                             {/* AUTHOR PUB */}
-                                            <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`}>
+                                            <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                 <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                     {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
-                                                        <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                        <>
+                                                            {
+                                                                user.avatar.urlAvt ? (
+                                                                    <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                ) : (
+                                                                    <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                )
+                                                            }
+                                                        </>
                                                     )}
 
                                                     <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -382,19 +385,21 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
                                                         </span>
                                                     </p>
+
+
                                                 </div>
 
                                                 {/* CTA PUB */}
-                                                <div className="flex flex-row gap-[6px] cursor-pointer items-center">
+                                                <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                                     <div className="flex flex-row items-center gap-[16px] text-white justify-between">
 
-                                                        <div role="button"  onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                        <div role="button" onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
                                                             {shareIcon}
                                                         </div>
                                                         <div>
                                                             {saveIcon}
                                                         </div>
-                                                        <div role="button"  onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                        <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
                                                             <span className="flex flex-row gap-[2px] items-center">
                                                                 {loveIcon}
                                                                 <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
@@ -402,7 +407,28 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         </div>
                                                         <div>
                                                             {username === pub.userName && (
-                                                                <button role="button"  onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)] pt-[4px]`}>{deletePost}</button>
+                                                                <>
+                                                                    <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
+
+                                                                    {onSettingPost && (
+                                                                        <OnPopupSetting
+                                                                            Heading={'Pengaturan Clips'}
+                                                                            onClickFunc={() => setOnSettingPost(prev => !prev)}
+                                                                            Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                <span className="flex flex-row items-center gap-[8px]">
+                                                                                    <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
+                                                                                    <span className="text-[12px] text-white">Edit</span>
+                                                                                </span>
+                                                                            </button>}
+                                                                            Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                <span className="flex flex-row items-center gap-[8px]">
+                                                                                    {deletePost}
+                                                                                    <span className="text-[12px] text-white">Hapus </span>
+                                                                                </span>
+                                                                            </button>}
+                                                                        />
+                                                                    )}
+                                                                </>
                                                             )}
                                                         </div>
                                                     </div>
@@ -433,12 +459,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                     </div>
                                                     <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                        {pub.komentar.length > 1 && (
+                                                            <>
+                                                                <span className="text-[var(--black-subtext)]">{komenArrow}</span>
 
-                                                        {pub.komentar.slice(0, 2).map((item, index) =>
-                                                            <p key={index} className="text-[11px] text-white pt-[4px]">
-                                                                <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
-                                                            </p>
+                                                                {pub.komentar.slice(0, 2).map((item, index) =>
+                                                                    <p key={index} className="text-[11px] text-white pt-[4px]">
+                                                                        <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
+                                                                    </p>
+                                                                )}
+                                                            </>
                                                         )}
                                                     </div>
                                                 </div>
@@ -455,8 +485,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
-
-                                                    <span role="button"  onClick={() => HandleSelectedPub(pub.id)}>
+                                                    <span onClick={() => HandleSelectedPub(pub.id)}>
 
                                                         {/* JUDUL PUB */}
                                                         <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
@@ -491,7 +520,15 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                             {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
-                                                                <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                <>
+                                                                    {
+                                                                        user.avatar.urlAvt ? (
+                                                                            <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        ) : (
+                                                                            <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        )
+                                                                    }
+                                                                </>
                                                             )}
 
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -509,13 +546,13 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                                             <div className="flex flex-row items-center gap-[16px] text-white justify-between">
 
-                                                                <div role="button"  onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                                <div role="button" onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
                                                                     {shareIcon}
                                                                 </div>
                                                                 <div>
                                                                     {saveIcon}
                                                                 </div>
-                                                                <div role="button"  onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
                                                                     <span className="flex flex-row gap-[2px] items-center">
                                                                         {loveIcon}
                                                                         <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
@@ -523,7 +560,28 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 </div>
                                                                 <div>
                                                                     {username === pub.userName && (
-                                                                        <button role="button"  onClick={() => DelPublikasi(pub.id)} className={`text-[var(--black-subtext)] pt-[4px]`}>{deletePost}</button>
+                                                                        <>
+                                                                            <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
+
+                                                                            {onSettingPost && (
+                                                                                <OnPopupSetting
+                                                                                    Heading={'Pengaturan Clips'}
+                                                                                    onClickFunc={() => setOnSettingPost(prev => !prev)}
+                                                                                    Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                        <span className="flex flex-row items-center gap-[8px]">
+                                                                                            <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
+                                                                                            <span className="text-[12px] text-white">Edit</span>
+                                                                                        </span>
+                                                                                    </button>}
+                                                                                    Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                        <span className="flex flex-row items-center gap-[8px]">
+                                                                                            {deletePost}
+                                                                                            <span className="text-[12px] text-white">Hapus </span>
+                                                                                        </span>
+                                                                                    </button>}
+                                                                                />
+                                                                            )}
+                                                                        </>
                                                                     )}
                                                                 </div>
                                                             </div>
@@ -554,12 +612,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
                                                             <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                                <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                                {pub.komentar.length > 1 && (
+                                                                    <>
+                                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
 
-                                                                {pub.komentar.slice(0, 2).map((item, index) =>
-                                                                    <p key={index} className="text-[11px] text-white pt-[4px]">
-                                                                        <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
-                                                                    </p>
+                                                                        {pub.komentar.slice(0, 2).map((item, index) =>
+                                                                            <p key={index} className="text-[11px] text-white pt-[4px]">
+                                                                                <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
+                                                                            </p>
+                                                                        )}
+                                                                    </>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -576,7 +638,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
-                                                    <span  onClick={() => HandleSelectedPub(pub.id)}>
+                                                    <span onClick={() => HandleSelectedPub(pub.id)}>
 
                                                         {/* JUDUL PUB */}
                                                         <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
@@ -611,9 +673,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                             {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
-                                                                <img key={index} src={user.avatar?.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                <>
+                                                                    {
+                                                                        user.avatar.urlAvt ? (
+                                                                            <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        ) : (
+                                                                            <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        )
+                                                                    }
+                                                                </>
                                                             )}
-
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                                                 <span className="flex flex-col gap-[1.5px] justify-center">
                                                                     {/* {userIcon} */}
@@ -629,13 +698,13 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
                                                             <div className="flex flex-row items-center gap-[16px] text-white justify-between">
 
-                                                                <div role="button"  onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                                <div role="button" onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
                                                                     {shareIcon}
                                                                 </div>
                                                                 <div>
                                                                     {saveIcon}
                                                                 </div>
-                                                                <div role="button"  onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
                                                                     <span className="flex flex-row gap-[2px] items-center">
                                                                         {loveIcon}
                                                                         <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
@@ -650,13 +719,13 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                                 <OnPopupSetting
                                                                                     Heading={'Pengaturan Clips'}
                                                                                     onClickFunc={() => setOnSettingPost(prev => !prev)}
-                                                                                    Button1={<button role="button"  onClick={() => DelPublikasi(pub.id)}>
+                                                                                    Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
                                                                                             <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
                                                                                             <span className="text-[12px] text-white">Edit</span>
                                                                                         </span>
                                                                                     </button>}
-                                                                                    Button2={<button role="button"  onClick={() => DelPublikasi(pub.id)}>
+                                                                                    Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
                                                                                             {deletePost}
                                                                                             <span className="text-[12px] text-white">Hapus </span>

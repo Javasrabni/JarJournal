@@ -267,7 +267,7 @@ export default function Chatbot() {
 
 
     return (
-        <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100vh]`}>
+        <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100svh]`}>
             <div className={`h-[45px] w-full flex flex-row gap-[16px] items-center justify-between px-[16px] fixed ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'}`} role="heading">
 
                 <div>
@@ -383,7 +383,7 @@ export default function Chatbot() {
                         </div>
                     )}
                 </div>
-                <div className="flex flex-col items-center w-full gap-[8px] pb-[64px]">
+                <div className="flex flex-col w-full gap-[8px] pb-[64px]">
                     <span className="flex flex-row w-full h-[45px]">
                         <textarea
                             type="text"
@@ -412,8 +412,8 @@ export default function Chatbot() {
                             {sendIcon}
                         </button>
                     </span>
-                    <span className="">
-                        <p className="text-[10px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar. Mungkin dapat melakukan kesalahan.</p>
+                    <span className="pl-[6px]">
+                        <p className="text-[11px] " style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar.</p>
                     </span>
                 </div>
                 <NavFooter />

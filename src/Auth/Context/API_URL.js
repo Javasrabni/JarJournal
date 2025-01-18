@@ -47,6 +47,8 @@ export default function API_URL_PROVIDER({ children }) {
 
     // FETCHING GET DATA PUBLIC USER
     const [publicDataUser, setPublicDataUser] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
     useEffect(() => {
         const getPublicDataUser = async () => {
             try {
@@ -62,11 +64,13 @@ export default function API_URL_PROVIDER({ children }) {
                     //     });
                     //     return acc;
                     // }, []);
-
                     setPublicDataUser(publicMap);
+                    setIsLoading(false)
+
                 }
             } catch (err) {
                 console.error(err)
+                setIsLoading(true)
             }
         }
         getPublicDataUser()
@@ -79,7 +83,7 @@ export default function API_URL_PROVIDER({ children }) {
 
 
     return (
-        <API_URL_CONTEXT.Provider value={{ statusSuccess, setStatusSuccess, success, setSuccess, MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
+        <API_URL_CONTEXT.Provider value={{ isLoading, setIsLoading, statusSuccess, setStatusSuccess, success, setSuccess, MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister }}>
             {children}
         </API_URL_CONTEXT.Provider>
     )

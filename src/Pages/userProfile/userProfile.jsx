@@ -75,7 +75,7 @@ export default function UserProfile() {
         const CopyText = `${MainDomain}/user/${usernameId}`;
         try {
             await navigator.clipboard.writeText(CopyText);
-            alert('berhasil di copy bray');
+            alert('Berhasil dicopy!');
         } catch (err) {
             console.error('Gagal mendapatkan user link', err);
             alert('Gagal mendapatkan user link');
@@ -120,7 +120,7 @@ export default function UserProfile() {
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
                                 {getRawDataUsername && usernameId == getRawDataUsername.username && (
                                     <>
-                                        <img src={getRawDataUsername.avatar.urlAvt} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
+                                        <img src={getRawDataUsername.avatar.urlAvt ? getRawDataUsername.avatar.urlAvt : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
                                     </>
                                 )}
                             </div>
@@ -202,7 +202,7 @@ export default function UserProfile() {
                                 </div>
 
                                 {/* BADGE */}
-                                <div className=" max-w-[42rem] h-fit flex flex-col gap-[4px] pb-[12px]" >
+                                {/* <div className=" max-w-[42rem] h-fit flex flex-col gap-[4px] pb-[12px]" >
                                     <p className="text-[12px]">Achievements</p>
                                     <div className="max-w-scrollbar-hidden flex flex-row h-full h-fit gap-[16px]" style={{ overflowX: 'scroll' }}>
                                         {getRawDataUsername && getRawDataUsername.username === usernameId && (
@@ -220,13 +220,13 @@ export default function UserProfile() {
                                             </>
                                         )}
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
 
                     {/* POST USER */}
-                    <div className="flex flex-col w-full bg-[transparent] pt-[16px] pb-[94px] gap-[12px]" style={{ height: lengthUserPost < 1 ? `${sisaHeightGoldenRatio}px` : 'fit-content', borderTop: '1px solid var(--black-bg)' }}>
+                    <div className="flex flex-col w-full bg-[transparent] pt-[16px] pb-[94px] gap-[12px] mt-[16px]" style={{ height: lengthUserPost < 1 ? `${sisaHeightGoldenRatio}px` : 'fit-content', borderTop: '1px solid var(--black-bg)' }}>
 
                         {/* ICON CTA  */}
                         <div className="w-full flex flex-row justify-between items-center cursor-pointer">

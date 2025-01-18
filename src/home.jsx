@@ -16,12 +16,14 @@ import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadP
 import { OVERALL_CONTEXT } from "./Context/OVERALL_CONTEXT"
 import 'react-quill/dist/quill.snow.css';
 import { useLocation } from "react-router-dom"
-import 'react-loading-skeleton/dist/skeleton.css';
 import { ChooseAvatar } from "./introWeb/chooseAvatar/chooseAvatar"
 import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 import { motion } from 'framer-motion'
 import { CatatanContext } from "./Comps/Features/Catatan/catatanContex"
 import DOMPurify from 'dompurify';
+import Skeleton from "react-loading-skeleton"
+import 'react-loading-skeleton/dist/skeleton.css';
+
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
@@ -31,7 +33,7 @@ import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
 import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
 
 export default function Home() {
-    const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
+    const { publicDataUser, setPublicDataUser, isLoading, setIsLoading } = useContext(API_URL_CONTEXT) // Get public data user
     const { username, setUsername } = useContext(API_URL_CONTEXT)
 
     // Smooth render page
@@ -130,11 +132,11 @@ export default function Home() {
         <>
             <>
                 {/* choose avatar (intro after login) */}
-                {token && introAfterLogin && publicDataUser && username && (
+                {/* {token && introAfterLogin && publicDataUser && username && (
                     <span className="fixed z-[15]">
                         <ChooseAvatar heading={`Baguss ${username}!`} subHeading={'Sekarang, kita pilih avatar dulu yukk'} />
                     </span>
-                )}
+                )} */}
 
 
                 {/* Popup from Reset in MusicBox */}
@@ -261,24 +263,37 @@ export default function Home() {
                                         </div>
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
-                                        <div className="flex flex-col gap-[16px] w-full h-full py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
+                                        <div className="flex flex-col  w-full h-full py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
                                             <div className="flex flex-col gap-[2px]">
                                                 <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
                                                 <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
                                             </div>
-                                            <div className="flex flex-row gap-[32px] w-full h-fit overflow-x-auto pb-[16px]">
-                                                {publicDataUser.slice(0, 10).map((user, index) =>
-                                                    <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
-                                                        <span>
-                                                            <img src={user.avatar.urlAvt} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
-                                                        </span>
-                                                        <div className="flex flex-col gap-[2px] justify-center">
-                                                            <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
-                                                            <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">{user.joinedDate}</p>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
+                                            {!isLoading ? (
+                                                <div className="flex flex-row gap-[32px] mt-[32px] w-full h-fit overflow-x-auto pb-[16px]">
+                                                    <>
+                                                        {publicDataUser.slice(0, 10).map((user, index) =>
+                                                            <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
+                                                                <span>
+                                                                    {user.avatar.urlAvt ? (
+                                                                        <img src={user.avatar.urlAvt} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
+                                                                    ) : (
+                                                                        <img src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
+                                                                    )}
+                                                                </span>
+                                                                <div className="flex flex-col gap-[2px] justify-center">
+                                                                    <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
+                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">{user.joinedDate}</p>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </>
+
+                                                </div>
+                                            ) : (
+                                                <div className="flex flex-col gap-[8px] w-full mt-[12px]">
+                                                    <Skeleton count={1} width={'100%'} height={'56px'} className="skeleton-delayed animate-pulse" style={{ borderRadius: '8px', animationDelay: '0.3s' }} />
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -376,8 +391,14 @@ const ReportJurnal = () => {
                     <p className="text-[12px] font-[600] text-white">Ringkasan jurnal harian</p>
                 </div>
                 <div>
-                    {outputDataUserJurnal.length < 0 ? (
-                        <p className="text-[11px] text-[var(--black-subtext)]">Laporan jurnal akan tertera disini.</p>
+                    {outputDataUserJurnal.length < 1 ? (
+                        <div className="flex flex-col w-full h-full items-center justify-center">
+                            <div className="w-full h-full items-center flex justify-center">
+                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737165565/Line_rdvvcq.svg" alt="report chart jurnal" className="w-[35%] h-[35%] object-cover" />
+                            </div>
+                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya Jurnal. </p>
+
+                        </ div>
                     ) : (
                         <div className="flex flex-col justify-between h-full w-full mt-[12px]">
                             <div className="flex flex-row items-center gap-[16px] w-full">
@@ -397,7 +418,7 @@ const ReportJurnal = () => {
                                 <div>
                                     {outputDataUserJurnal && outputDataUserJurnal[outputDataUserJurnal.length - 1] && (
                                         <div className="w-fit h-fit bg-[var(--blue-clr)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col">
-                                            <p className="text-[12px] text-white font-[600]">Jurnal hari Ke-{outputDataUserJurnal[outputDataUserJurnal.length - 1].day}</p>
+                                            <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{outputDataUserJurnal[outputDataUserJurnal.length - 1].day}</p>
                                             <p className="text-[11px] text-[var(--white-bg-200)]">{outputDataUserJurnal[outputDataUserJurnal.length - 1].descJurnal}</p>
                                         </div>
                                     )}
@@ -451,10 +472,13 @@ const ReportCatatan = () => {
                             )}
                         </>
                     ) : (
-                        <>
-                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu punya catatan</p>
+                        <div className="flex flex-col w-full h-full items-center justify-center">
+                            <div className="w-full h-full items-center flex justify-center opacity-[70%]">
+                                <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737165730/Bar_1_m9mxap.svg" alt="report chart catatan" className="w-[35%] h-[35%] object-cover" />
+                            </div>
+                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya Catatan.</p>
 
-                        </>
+                        </ div>
                     )}
                 </div>
             </div>

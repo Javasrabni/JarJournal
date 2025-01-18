@@ -36,7 +36,7 @@ import ArtikelForm from './Comps/Features/Publikasi/pubPage/artikelForm';
 import Publikasi from './Comps/Features/Publikasi/pubPage/publikasi';
 import SelectedPub from './Comps/Features/Publikasi/pubPage/selectedPub';
 import { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
+import 'react-loading-skeleton/dist/skeleton.css';
 import Chatbot from './ChatBot/BotJarjournal';
 import Explore from './Pages/explore/explore';
 import UserProfile from './Pages/userProfile/userProfile';
