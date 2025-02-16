@@ -22,19 +22,20 @@ export default function ArtikelProvider({ children }) {
         const fetchPub = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pub`, {
+                const response = await fetch(`${API_URL_PUB}/get/all_user_publikasi`, {
                     method: "GET"
                 })
+                const data = await response.json()
                 if (response.ok) {
-                    const data = await response.json()
                     setPublikasi(data)
-                    setLoading(false)
                 } else {
-                    setLoading(true)
+                    alert(data.Msg)
                 }
                 // console.log(data)
             } catch (err) {
                 console.error(`gagal mendapatkan pub ${err}`)
+            } finally {
+                setLoading(false)
             }
         };
 

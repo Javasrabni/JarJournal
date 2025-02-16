@@ -12,6 +12,13 @@ const LoginPage = () => {
     // STATUS AUTH FORM
     const { isRegister, setIsRegister } = useContext(API_URL_CONTEXT);
 
+
+    const { username, setUsername } = useContext(API_URL_CONTEXT)
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+    const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
+
+
+
     const navigate = useNavigate()
 
     const [password, setPassword] = useState('');
@@ -22,20 +29,23 @@ const LoginPage = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch(`${API_URL_AUTH}/auth/login`, {
+            const response = await fetch(`${API_URL_AUTH}/userLogin`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usernameORemail, password })
+                body: JSON.stringify({ username: usernameORemail, password })
             });
 
+            const data = await response.json()
+
             if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.token)
+                localStorage.setItem('token', JSON.stringify(data.token))
+                setUsername(data.username)
+                setUserId(data.id)
+                setUserEmail(data.email)
                 setToken(data.token); // Simpan token ke dalam state aplikasi
-                navigate('/dashboard')
+                // navigate('/dashboard')
             } else {
-                const errorData = await response.json();
-                setError(errorData.message);
+                setError(data.ErrMsg);
             }
         } catch (err) {
             console.error(err);
@@ -70,7 +80,7 @@ const LoginPage = () => {
                             name='username'
                             className='p-[14px] text-[12px] w-full rounded-[8px] outline-none bg-[var(--white-bg-100)]'
                             type="email"
-                            placeholder="Username or Email"
+                            placeholder="Username"
                             value={usernameORemail}
                             onChange={(e) => setUsernameORemail(e.target.value)}
                         />

@@ -98,12 +98,7 @@ export default function Home() {
 
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []); // GET USER TOKEN
+
 
     // useEffect(() => {
     //     const savedToken = localStorage.getItem('token');
@@ -289,7 +284,7 @@ export default function Home() {
                                                         {publicDataUser.slice(0, 10).map((user, index) =>
                                                             <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
                                                                 <span>
-                                                                    {user.avatar.urlAvt ? (
+                                                                    {user.avatar ? (
                                                                         <img src={user.avatar.urlAvt} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
                                                                     ) : (
                                                                         <img src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
@@ -297,7 +292,7 @@ export default function Home() {
                                                                 </span>
                                                                 <div className="flex flex-col gap-[2px] justify-center">
                                                                     <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
-                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">{user.joinedDate}</p>
+                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">Bergabung pada {user.joinedDate.slice(0, 10)}</p>
                                                                 </div>
                                                             </div>
                                                         )}

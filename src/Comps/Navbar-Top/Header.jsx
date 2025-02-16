@@ -19,12 +19,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     // GET TOKEN    
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const getToken = localStorage.getItem('token')
-        if (getToken) {
-            setToken(getToken)
-        }
-    }, [token])
+    
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
@@ -113,7 +108,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
     const handleLogout = () => {
         navigate(0)
-        localStorage.removeItem('token'); // Hapus token
+        localStorage.clear()
         setIntroAfterLogin(true)
         setToken(null); // Set token menjadi null untuk memaksa user login ulang
     };

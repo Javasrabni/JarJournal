@@ -120,7 +120,7 @@ export default function UserProfile() {
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
                                 {getRawDataUsername && usernameId == getRawDataUsername.username && (
                                     <>
-                                        <img src={getRawDataUsername.avatar.urlAvt ? getRawDataUsername.avatar.urlAvt : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
+                                        <img src={getRawDataUsername.avatar ? getRawDataUsername.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
                                     </>
                                 )}
                             </div>
@@ -133,7 +133,7 @@ export default function UserProfile() {
                                         <p className={`${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--white-bg-100)]'} mt-[-3px] `} style={{ fontSize: '11px' }}>
                                             <span className="flex flex-row gap-[6px] items-center">
                                                 {/* <span className="shrink-0">{kalenderIcon}</span> */}
-                                                <span className="mt-[2px]">Bergabung {getRawDataUsername.joinedDate}</span>
+                                                <span className="mt-[2px]">Bergabung pada {getRawDataUsername.joinedDate.slice(0, 10)}</span>
                                             </span>
                                         </p>
 

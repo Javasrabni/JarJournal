@@ -7,39 +7,26 @@ import { ChooseAvatarContext } from "../../../introWeb/chooseAvatar/Context/chos
 import { OVERALL_CONTEXT } from "../../../Context/OVERALL_CONTEXT"
 
 export default function NavFooter() {
-    // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []); // GET USER TOKEN
 
     const { introAfterLogin, setIntroAfterLogin } = useContext(OVERALL_CONTEXT)
+
 
 
 
     const navigate = useNavigate()
     const location = useLocation()
     const { username, setUsername } = useContext(API_URL_CONTEXT) // user data Verified With TOken
-    const { usernameProfileData, setUsernameProfileData } = useContext(UserProfileContext) // GET RAW DATA USERNAME
+    const { userEmail, setUserEmail } = useContext(API_URL_CONTEXT)
+
+    // const { usernameProfileData, setUsernameProfileData } = useContext(UserProfileContext) // GET RAW DATA USERNAME
 
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data
-
-
-    // Matching data username logic
-    const [outputUsernameData, setOutputUsernameData] = useState()
-    useEffect(() => {
-        const matchingUsernameData = usernameProfileData.filter(user =>
-            user === username
-        )
-        setOutputUsernameData(matchingUsernameData)
-    }, [username, usernameProfileData])
 
     // Get avatar navbar
     const [avatarUserInNavbar, setAvatarUserInNavbar] = useState([])
     const findUser = publicDataUser.find(usn => usn.username === username)
+    console.log(findUser)
 
     const searchIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -70,10 +57,10 @@ export default function NavFooter() {
                 <i class="fa-solid fa-robot"></i>
                 {/* <span>{cubeIcon}</span> */}
             </div>
-            {findUser && username == findUser.username && token && (
-                <div onClick={() => navigate(`/user/${outputUsernameData}`)} className="cursor-pointer w-[25px] h-[25px]">
+            {username && token && (
+                <div onClick={() => navigate(`/user/${findUser?.username}`)} className="cursor-pointer w-[25px] h-[25px]">
                     <span>
-                        <img src={findUser.avatar.urlAvt} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" />
+                        <img src={findUser?.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" />
                     </span>
                 </div>
             )}

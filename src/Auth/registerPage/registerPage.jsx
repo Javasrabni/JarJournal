@@ -24,46 +24,44 @@ const RegisterPage = () => {
     const [error, setError] = useState('');
     const { success, setSuccess, statusSuccess, setStatusSuccess } = useContext(API_URL_CONTEXT)
 
+    const [validateUsername, setvalidateUsername] = useState(null)
+    const [validatePassword, setvalidatePassword] = useState(null)
+    const [validateEmail, setvalidateEmail] = useState(null)
+
     const handleRegister = async () => {
-
-        if (!email.includes('@gmail.com')) {
-            alert('masukkan email yang valid')
-            return
-        }
-
-        if (!username || !email || !password) {
-            alert("Masukkan nama / email / pass terlebih dahulu")
-            return
-        }
-        if (password.length < 8) {
-            alert("Password harus memiliki setidaknya 8 karakter");
-            return;
-        }
-
         try {
-            const response = await fetch(`${API_URL_AUTH}/auth/register`, {
+            const response = await fetch(`${API_URL_AUTH}/userRegister`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, username })
+                body: JSON.stringify({ username, password, email })
             });
 
+            const data = await response.json()
+
             if (response.ok) {
-                setSuccess('Pendaftaran berhasil!, Silahkan LogIn');
+                setSuccess(data.msg);
                 setError('');
                 setEmail('');
                 setPassword('');
                 setUsername('')
                 setStatusSuccess(true)
 
+                setvalidateUsername(null)
+                setvalidatePassword(null)
+                setvalidateEmail(null)
+
                 // AUTO DIRECT INTO LOGIN
                 setIsRegister(false)
             } else {
-                const errorData = await response.json();
-                setError(errorData.message);
+                console.log(data)
+                setvalidateUsername(data.usernameERR)
+                setvalidatePassword(data.passwordERR)
+                setvalidateEmail(data.emailERR)
+                setError(data.ErrMsg);
                 setSuccess('');
             }
         } catch (err) {
-            setError('An error occurred during registration.');
+            setError("Terjadi kesalahan");
             setSuccess('');
         }
     };
@@ -91,8 +89,9 @@ const RegisterPage = () => {
                             placeholder="Nama pengguna"
                             value={username}
                             maxLength={20}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => {setUsername(e.target.value); setvalidateUsername(null)}}
                         />
+                        <p style={{ color: 'tomato', fontSize: '12px', fontWeight: "500" }}>{validateUsername}</p>
                     </div>
                     <div className='flex flex-col'>
                         <input
@@ -100,8 +99,9 @@ const RegisterPage = () => {
                             type="email"
                             placeholder="Alamat email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {setEmail(e.target.value); setvalidateEmail(null)}}
                         />
+                        <p style={{ color: 'tomato', fontSize: '12px', fontWeight: "500" }}>{validateEmail}</p>
                     </div>
                     <div className='flex flex-col'>
                         <input
@@ -109,8 +109,9 @@ const RegisterPage = () => {
                             type="password"
                             placeholder="Password JarJournal"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {setPassword(e.target.value); setvalidatePassword(null)}}
                         />
+                        <p style={{ color: 'tomato', fontSize: '12px', fontWeight: "500" }}>{validatePassword}</p>
                     </div>
                     <div className='flex flex-col gap-[12px] mt-[12px]'>
                         <p className='text-[11px] text-[var(--black-subtext)]'>JarJournal menciptakan ruang yang aman dan nyaman, serta menjaga sepenuhnya privasi para pengguna.</p>

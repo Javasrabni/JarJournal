@@ -6,12 +6,12 @@ import { ArtikelContext } from "../Context/artikelContext"
 export default function ArtikelForm() {
     // NAVIGATE
     const navigate = useNavigate()
-    
+
     // STATE
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
-    const { newPublikasi, setNewPublikasi } = useContext(ArtikelContext)
-    const { judulPublikasi, setJudulPublikasi } = useContext(ArtikelContext)
-    const { selectedImage, setSelectedImage } = useContext(ArtikelContext)
+    const [judulPublikasi, setJudulPublikasi] = useState(null)
+    const [newPublikasi, setNewPublikasi] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null)
 
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
@@ -32,8 +32,6 @@ export default function ArtikelForm() {
     // GET USERNAME CONTEXT
     const { username, setUsername } = useContext(API_URL_CONTEXT)
 
-
-
     // TOTAL LIKE PUB
     const { likePub, setLikePub } = useContext(ArtikelContext)
 
@@ -45,16 +43,25 @@ export default function ArtikelForm() {
         }
 
         const articleData = new FormData()
-        articleData.append('judulContent', judulPublikasi)
-        articleData.append('content', newPublikasi)
-        articleData.append('userName', username)
-        articleData.append('totalLikePub', likePub)
+        if (judulPublikasi) {
+            articleData.append('judulContent', judulPublikasi)
+        }
+        if (newPublikasi) {
+            articleData.append('content', newPublikasi)
+        }
+        if (username) {
+            articleData.append('userName', username)
+        }
+        if (likePub) {
+            articleData.append('totalLikePub', likePub)
+
+        }
         if (selectedImage) {
-            articleData.append('image', selectedImage)
+            articleData.append('file', selectedImage)
         }
 
         try {
-            const response = await fetch(`${API_URL_PUB}/pub/add-pub`, {
+            const response = await fetch(`${API_URL_PUB}/post/userPublikasi`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`

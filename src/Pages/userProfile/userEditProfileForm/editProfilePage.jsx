@@ -9,14 +9,7 @@ import { ChooseAvatar } from "../../../introWeb/chooseAvatar/chooseAvatar";
 import { OnEditUserProfileContext } from "../Context/onEditUserProfileCTX";
 
 export default function EditProfilePage() {
-    // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []); // GET USER TOKEN
 
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
 
@@ -24,6 +17,9 @@ export default function EditProfilePage() {
     const { user } = useParams()
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     const { username, setUsername } = useContext(API_URL_CONTEXT) // username from token
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     const { showAllAvatar, setShowAllAvatar } = useContext(OnEditUserProfileContext)
 
@@ -31,42 +27,22 @@ export default function EditProfilePage() {
     useEffect(() => {
         if (!token || user !== username) {
             navigate(-1)
-        } 
+        }
     }, [token, username, user])
 
     const { bioUser, setBioUser, linkUser, setLinkUser } = useOnEditUserProfileContext()
-    const [bioUserValue, setBioUserValue] = useState('')
-    const [linkUserValue, setLinkUserValue] = useState('')
 
-    // GET VALUE BIO N LINK
-    useEffect(() => {
-        const getBionLinkUser = async () => {
-            try {
-                const response = await fetch(`${API_URL_AUTH}/auth/profile`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                if (response.ok) {
-                    const data = await response.json()
-                    console.log(data)
-                    console.log('ASDASDASd')
-                    setBioUser(data.getBioUser)
-                    setLinkUser(data.getLinkUser)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        getBionLinkUser()
-    }, [])
+    const [bioUserValue, setBioUserValue] = useState(null)
+    const [linkUserValue, setLinkUserValue] = useState(null)
+    const [usernameValue, setUsernameValue] = useState(null)
 
     // VALUE SEMENTARA
     useEffect(() => {
-        setBioUserValue(bioUser)
-        setLinkUserValue(linkUser)
-    }, [bioUser, linkUser])
+        const findUser = publicDataUser.find(usn => usn.username === username)
+        setBioUserValue(findUser.userBio)
+        setLinkUserValue(findUser.userLink)
+        setUsernameValue(findUser.username)
+    }, [publicDataUser])
 
     const OnEditProfileBE = async () => {
         // Validasi form Link
@@ -77,24 +53,23 @@ export default function EditProfilePage() {
         // }
 
         try {
-            const response = await fetch(`${API_URL_AUTH}/auth/profile-edit`, {
-                method: 'PUT',
+            const response = await fetch(`${API_URL_AUTH}/user_patch`, {
+                method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
-                }, body: JSON.stringify({ bioUserEdit: bioUserValue, linkUserEdit: linkUserValue })
+                }, body: JSON.stringify({ username: usernameValue, userBio: bioUserValue, userLink: linkUserValue, id: userId })
             })
+            const data = await response.json()
+
             if (response.ok) {
-                const data = await response.json()
-                console.log(data)
-
                 setBioUser(data.userBio)
+                setUsername(data.username)
                 setLinkUser(data.userLink)
-
-                navigate(0)
-                navigate(`/user/${username}`, { replace: true })
+                setRefreshData(prev => !prev)
+                navigate(`/user/${data.username}`, { replace: true })
             } else {
-                alert('belum berhasil')
+                alert(data.ErrMsg)
             }
         } catch (err) {
             console.error(err)
@@ -148,7 +123,7 @@ export default function EditProfilePage() {
                                                 <div className="w-fit m-auto h-fit flex items-center justify-center cursor-pointer z-[12]" onClick={HandleEditAvatar}>
                                                     <div className="absolute w-[100px] h-[100px] bg-[#00000090] rounded-[50px]" />
                                                     <span className="absolute">{cameraIcon}</span>
-                                                    <img src={item.avatar.urlAvt} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px]' draggable='false' />
+                                                    <img src={item.avatar ? item.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px]' draggable='false' />
                                                 </div>
                                                 <p className="text-[14px] text-[var(--black-subtext)] select-none">Foto profil</p>
                                             </div >
@@ -158,6 +133,14 @@ export default function EditProfilePage() {
                             </div>
 
                             {/* BIO N LINK */}
+                            <span className="flex flex-col gap-[4px]">
+                                <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Username</label>
+                                <input type="text"
+                                    className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
+                                    value={usernameValue}
+                                    placeholder="Nama pengguna"
+                                    onChange={(e) => setUsernameValue(e.target.value)} />
+                            </span>
                             <span className="flex flex-col gap-[4px]">
                                 <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Bio</label>
                                 <input type="text"
