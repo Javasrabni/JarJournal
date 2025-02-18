@@ -12,6 +12,8 @@ export default function ArtikelForm() {
     const [judulPublikasi, setJudulPublikasi] = useState(null)
     const [newPublikasi, setNewPublikasi] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
 
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
@@ -31,6 +33,7 @@ export default function ArtikelForm() {
 
     // GET USERNAME CONTEXT
     const { username, setUsername } = useContext(API_URL_CONTEXT)
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
 
     // TOTAL LIKE PUB
     const { likePub, setLikePub } = useContext(ArtikelContext)
@@ -43,6 +46,7 @@ export default function ArtikelForm() {
         }
 
         const articleData = new FormData()
+        articleData.append('Id', userId)
         if (judulPublikasi) {
             articleData.append('judulContent', judulPublikasi)
         }
@@ -69,16 +73,14 @@ export default function ArtikelForm() {
                 body: articleData
             });
 
+            const data = await response.json()
             if (response.ok) {
-                const { publications: newPub } = await response.json();
-                setJudulPublikasi((prev) => [newPub, ...prev])
-                setPublikasi((prev) => [newPub, ...prev]); // Tambahkan publikasi baru ke state
                 setSelectedImage(null)
                 setNewPublikasi(''); // Reset input
                 navigate('/Explore') // after publish, return path
-                window.location.reload()
+                setRefreshData(prev => !prev)
             } else {
-                alert('Gagal menambahkan publikasi');
+                alert(data.ErrMsg);
             }
         } catch (err) {
             console.error(`Error adding publication: ${err}`);

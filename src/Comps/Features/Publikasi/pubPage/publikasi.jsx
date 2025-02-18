@@ -23,6 +23,10 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     // LOADING
     const { isLoading, setLoading } = useContext(OVERALL_CONTEXT)
 
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+
+
 
     // API ENDPOINT
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
@@ -45,7 +49,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     //     const fetchPub = async () => {
     //         setLoading(true)
     //         try {
-    //             const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
+    //             const response = await fetch(`get-pub`)
     //             if (response.ok) {
     //                 const data = await response.json()
     //                 setPublikasi(data)
@@ -73,7 +77,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         if (!confirm) return
 
         try {
-            const response = await fetch(`${API_URL_PUB}/pub/del-pub/${id}`, {
+            const response = await fetch(`del-pub/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,22 +130,18 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     async function HandleLikePub(pubId) {
         try {
-            const response = await fetch(`${API_URL_PUB}/pub/like-pub`, {
-                method: "POST",
+            const response = await fetch(`${API_URL_PUB}/patch/userPublikasi`, {
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ LikePubId: pubId, userName: username })
+                body: JSON.stringify({ pubId, plusLike: true })
             });
 
+            const data = await response.json()
             if (response.ok) {
-                const { publication } = await response.json();
-                setPublikasi((prevPublikasi) =>
-                    prevPublikasi.map((pub) =>
-                        pub.id === pubId ? { ...pub, totalLikePub: publication.totalLikePub } : pub
-                    )
-                );
+                setRefreshData(prev => !prev)
             } else {
                 const { message } = await response.json();
                 alert(message); // Menampilkan pesan error jika user sudah memberikan "like"
@@ -156,8 +156,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     useEffect(() => {
         const newRandoms = {};
         publikasi.forEach((pub) => {
-            if (pub.likes.length > 0 && !newRandoms[pub.id]) {
-                newRandoms[pub.id] = Math.floor(Math.random() * pub.likes.length);
+            if (pub.totalLikePub.length > 0 && !newRandoms[pub.id]) {
+                newRandoms[pub.id] = Math.floor(Math.random() * pub.totalLikePub.length);
             }
         });
         setRandomUserLikes(newRandoms);
@@ -224,7 +224,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     const AddComentPub = async (pubId) => {
         try {
-            const response = await fetch(`${API_URL_PUB}/pub/add-comment`, {
+            const response = await fetch(`add-comment`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -351,7 +351,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             {/* {onRenderImg ? ( */}
                                                             <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
                                                                 <img
-                                                                    src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                                    src={`${pub.imageUrl}`}
                                                                     alt="pub-image"
                                                                     className="w-full h-auto max-h-full object-cover rounded-[8px]"
                                                                     loading="lazy"
@@ -369,8 +369,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
                                                         <>
                                                             {
-                                                                user.avatar.urlAvt ? (
-                                                                    <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                user.imageUrl ? (
+                                                                    <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                                 ) : (
                                                                     <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
                                                                 )
@@ -382,7 +382,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <span className="flex flex-col gap-[1.5px] justify-center">
                                                             {/* {userIcon} */}
                                                             <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
+                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0 ,10)}</p>
                                                         </span>
                                                     </p>
 
@@ -481,7 +481,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                             <>
                                 {profilePageUserLikes ? (
                                     <>
-                                        {profilePageUserLikes && publikasiData.filter(user => user.likes.includes(profilePageUserLikes)).map((pub) =>
+                                        {profilePageUserLikes && publikasiData.filter(user => user.totalLikePub.includes(profilePageUserLikes)).map((pub) =>
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
@@ -500,7 +500,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     {/* {onRenderImg ? ( */}
                                                                     <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
                                                                         <img
-                                                                            src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                                            src={`${pub.imageUrl}`}
                                                                             alt="pub-image"
                                                                             className="w-full h-auto max-h-full object-cover rounded-[8px]"
                                                                             loading="lazy"
@@ -522,8 +522,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
                                                                 <>
                                                                     {
-                                                                        user.avatar.urlAvt ? (
-                                                                            <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        user.imageUrl ? (
+                                                                            <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                                         ) : (
                                                                             <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
                                                                         )
@@ -653,7 +653,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     {/* {onRenderImg ? ( */}
                                                                     <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
                                                                         <img
-                                                                            src={`${API_URL_PUB}/pub/${pub.imageUrl}`}
+                                                                            src={`${pub.imageUrl}`}
                                                                             alt="pub-image"
                                                                             className="w-full h-auto max-h-full object-cover rounded-[8px]"
                                                                             loading="lazy"
@@ -672,11 +672,11 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
+                                                            {publikasi && publikasi.filter(user => user.userName == pub.userName).map((user, index) =>
                                                                 <>
                                                                     {
-                                                                        user.avatar.urlAvt ? (
-                                                                            <img key={index} src={user.avatar.urlAvt} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
+                                                                        user.avatar ? (
+                                                                            <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
                                                                         ) : (
                                                                             <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
                                                                         )
@@ -687,7 +687,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 <span className="flex flex-col gap-[1.5px] justify-center">
                                                                     {/* {userIcon} */}
                                                                     <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
+                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0 , 10)}</p>
                                                                 </span>
                                                             </p>
 
@@ -711,8 +711,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     </span>
                                                                 </div>
                                                                 <div>
-                                                                    {username === pub.userName && (
+                                                                    {userId == pub.userId && (
                                                                         <>
+
                                                                             <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
 
                                                                             {onSettingPost && (
@@ -763,7 +764,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
-                                                            <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
+                                                            {/* <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
                                                                 {pub.komentar.length > 1 && (
                                                                     <>
                                                                         <span className="text-[var(--black-subtext)]">{komenArrow}</span>
@@ -775,7 +776,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                         )}
                                                                     </>
                                                                 )}
-                                                            </div>
+                                                            </div> */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -802,7 +803,7 @@ export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalS
 
     return (
         <>
-            <div className="fixed w-full h-full bg-[#00000080] bottom-0 left-0 z-[19]" onClick={onClickFunc} />
+            <div className="fixed w-full h-full bg-[#00000050] bottom-0 left-0 z-[19]" onClick={onClickFunc} />
             <motion.div
                 className="rounded-[24px_24px_0px_0px] z-[20] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] outline outline-[1px] outline-[var(--black-border)] fixed bottom-0 left-[50%] flex p-[16px]"
                 style={{ transform: 'translateX(-50%)' }}

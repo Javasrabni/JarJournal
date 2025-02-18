@@ -16,7 +16,7 @@ export default function ArtikelProvider({ children }) {
     const { isLoading, setLoading } = useContext(OVERALL_CONTEXT)
     const { API_URL_PUB } = useContext(API_URL_CONTEXT)
 
-
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
     useEffect(() => {
         const fetchPub = async () => {
@@ -40,7 +40,7 @@ export default function ArtikelProvider({ children }) {
         };
 
         fetchPub()
-    }, [])
+    }, [refreshData])
 
     // LIKE PUB
     const [likePub, setLikePub] = useState(false)
