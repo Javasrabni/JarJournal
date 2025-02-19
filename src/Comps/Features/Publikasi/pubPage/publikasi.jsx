@@ -40,6 +40,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     // STATE
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
+
+    const { komentarPublikasi, setKomentarPublikasi } = useContext(ArtikelContext)
+    console.log(komentarPublikasi)
     const { newPublikasi, setNewPublikasi } = useContext(ArtikelContext)
     // const [user, setUser] = useState('')
 
@@ -130,8 +133,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     async function HandleLikePub(pubId) {
         try {
-            const response = await fetch(`${API_URL_PUB}/patch/userPublikasi`, {
-                method: "PATCH",
+            const response = await fetch(`${API_URL_PUB}/post/komentar_publikasi`, {
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -156,7 +159,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     useEffect(() => {
         const newRandoms = {};
         publikasi.forEach((pub) => {
-            if (pub.totalLikePub.length > 0 && !newRandoms[pub.id]) {
+            if (pub.totalLikePub?.length > 0 && !newRandoms[pub.id]) {
                 newRandoms[pub.id] = Math.floor(Math.random() * pub.totalLikePub.length);
             }
         });
@@ -224,26 +227,19 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     const AddComentPub = async (pubId) => {
         try {
-            const response = await fetch(`add-comment`, {
+            const response = await fetch(`${API_URL_PUB}/post/komentar_publikasi`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
-                }, body: JSON.stringify({ username: username, pubIndex: pubId, valueComment: valueINPUTComment })
+                }, body: JSON.stringify({ pubId: pubId, komentar: `${valueINPUTComment}`, userId: userId })
             })
 
+            const data = await response.json()
             if (response.ok) {
-                const { publication, message } = await response.json()
-                // setValueComment(publication.komentar)
-
-                // Update komentar hanya pada publikasi tertentu
-                setPublikasi((prevPublikasi) =>
-                    prevPublikasi.map((pub) =>
-                        pub.id === pubId
-                            ? { ...pub, komentar: publication.komentar }
-                            : pub
-                    )
-                );
+                setRefreshData(prev => !prev)
+                alert(data.Msg)
+                console.log(data)
 
                 if (commentPub.current) {
                     commentPub.current.value = ''
@@ -382,7 +378,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <span className="flex flex-col gap-[1.5px] justify-center">
                                                             {/* {userIcon} */}
                                                             <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0 ,10)}</p>
+                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
                                                         </span>
                                                     </p>
 
@@ -672,22 +668,21 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                            {publikasi && publikasi.filter(user => user.userName == pub.userName).map((user, index) =>
-                                                                <>
-                                                                    {
-                                                                        user.avatar ? (
-                                                                            <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                        ) : (
-                                                                            <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            )}
+                                                            {publikasi && (() => {
+                                                                const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                                return user ? (
+                                                                    <img
+                                                                        src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                        alt="profile"
+                                                                        className="w-[32px] h-[32px] rounded-[50px]"
+                                                                    />
+                                                                ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
+                                                            })()}
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                                                 <span className="flex flex-col gap-[1.5px] justify-center">
                                                                     {/* {userIcon} */}
                                                                     <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0 , 10)}</p>
+                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
                                                                 </span>
                                                             </p>
 
@@ -764,19 +759,15 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
-                                                            {/* <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                                {pub.komentar.length > 1 && (
+                                                            <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
+                                                                {komentarPublikasi && komentarPublikasi.filter(user => user.pubId === pub.id).map(item =>
                                                                     <>
-                                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                                        <h1 className="text-[red]">{item.username}</h1>
+                                                                        <p className="text-white">{item.komentar}</p>
 
-                                                                        {pub.komentar.slice(0, 2).map((item, index) =>
-                                                                            <p key={index} className="text-[11px] text-white pt-[4px]">
-                                                                                <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
-                                                                            </p>
-                                                                        )}
                                                                     </>
                                                                 )}
-                                                            </div> */}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
