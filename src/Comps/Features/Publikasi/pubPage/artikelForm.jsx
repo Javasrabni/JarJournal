@@ -46,7 +46,7 @@ export default function ArtikelForm() {
         }
 
         const articleData = new FormData()
-        articleData.append('Id', userId)
+        articleData.append('userId', userId)
         if (judulPublikasi) {
             articleData.append('judulContent', judulPublikasi)
         }

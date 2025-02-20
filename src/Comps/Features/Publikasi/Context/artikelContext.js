@@ -61,6 +61,25 @@ export default function ArtikelProvider({ children }) {
         GetAllKomentarPub()
     }, [refreshData])
 
+    const [getSavedPublikasi, setGetSavedPublikasi] = useState([])
+    useEffect(() => {
+        const GetAllSavedPublikasi = async () => {
+            try {
+                const response = await fetch(`${API_URL_PUB}/get/save_publikasi`, {
+                    method: "GET"
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setGetSavedPublikasi(data)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+        GetAllSavedPublikasi()
+    }, [refreshData])
+    console.log(getSavedPublikasi)
+
     // LIKE PUB
     const [likePub, setLikePub] = useState(false)
 
@@ -72,7 +91,7 @@ export default function ArtikelProvider({ children }) {
 
 
     return (
-        <ArtikelContext.Provider value={{ komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
+        <ArtikelContext.Provider value={{ getSavedPublikasi, setGetSavedPublikasi, komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
             {children}
         </ArtikelContext.Provider>
     )

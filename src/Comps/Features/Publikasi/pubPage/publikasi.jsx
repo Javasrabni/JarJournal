@@ -42,7 +42,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
 
     const { komentarPublikasi, setKomentarPublikasi } = useContext(ArtikelContext)
-    console.log(komentarPublikasi)
     const { newPublikasi, setNewPublikasi } = useContext(ArtikelContext)
     // const [user, setUser] = useState('')
 
@@ -133,8 +132,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     async function HandleLikePub(pubId) {
         try {
-            const response = await fetch(`${API_URL_PUB}/post/komentar_publikasi`, {
-                method: "POST",
+            const response = await fetch(`${API_URL_PUB}/patch/userPublikasi`, {
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -142,7 +141,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                 body: JSON.stringify({ pubId, plusLike: true })
             });
 
-            const data = await response.json()
+            // const data = await response.json()
             if (response.ok) {
                 setRefreshData(prev => !prev)
             } else {
@@ -153,6 +152,61 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
             console.error(err);
         }
     }
+
+    // Handle Save publikasi
+    const [statusSave, setStatusSave] = useState(() => {
+        const saveStatus = localStorage.getItem('Saveing')
+        return saveStatus ? JSON.parse(saveStatus) : false
+    })
+    useEffect(() => {
+        localStorage.setItem('Saveing', JSON.stringify(statusSave))
+    }, [statusSave])
+
+    const { getSavedPublikasi, setGetSavedPublikasi } = useContext(ArtikelContext)
+
+    async function HandleSavePub(pubId) {
+        if (statusSave) {
+            try {
+                const response = await fetch(`${API_URL_PUB}/save_publikasi`, {
+                    method: "POST",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify({ userId: userId, pubId, username: username })
+                })
+
+                const data = await response.json()
+                if (response.ok) {
+                    setStatusSave(true)
+                    setRefreshData(data => !data)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        } else {
+            try {
+                const response = await fetch(`${API_URL_PUB}/del/save_publikasi`, {
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify({ userId: userId, pubId, username: username })
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setRefreshData(prev => !prev)
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    }
+
+    const savedPubUserId = getSavedPublikasi.map(item => item.userId)
+    const savedPubPubId = getSavedPublikasi.map(item => item.pubId)
+    const savedPubUsername = getSavedPublikasi.map(item => item.username)
+    const publicDataUserUsername = publicDataUser.map(item => item.username)
+
 
     // RAND INDEX LIKE
     const [randomUserLikes, setRandomUserLikes] = useState({}); // Menyimpan random per pub.id
@@ -239,7 +293,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
             if (response.ok) {
                 setRefreshData(prev => !prev)
                 alert(data.Msg)
-                console.log(data)
 
                 if (commentPub.current) {
                     commentPub.current.value = ''
@@ -274,6 +327,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     </svg>
 
     const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg-12)" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+    </svg>
+    const saveIconSolid = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
     </svg>
 
@@ -354,6 +410,10 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     onLoad={HandleRenderImg}
                                                                 />
                                                             </div>
+                                                            {/* ) : (
+                                       <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                                   )} */}
+
                                                         </>
                                                     )}
                                                 </div>
@@ -362,18 +422,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             {/* AUTHOR PUB */}
                                             <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                 <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                    {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
-                                                        <>
-                                                            {
-                                                                user.imageUrl ? (
-                                                                    <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                ) : (
-                                                                    <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                )
-                                                            }
-                                                        </>
-                                                    )}
-
+                                                    {publikasi && (() => {
+                                                        const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                        return user ? (
+                                                            <img
+                                                                src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                alt="profile"
+                                                                className="w-[32px] h-[32px] rounded-[50px]"
+                                                            />
+                                                        ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
+                                                    })()}
                                                     <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                                         <span className="flex flex-col gap-[1.5px] justify-center">
                                                             {/* {userIcon} */}
@@ -402,8 +460,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             </span>
                                                         </div>
                                                         <div>
-                                                            {username === pub.userName && (
+                                                            {userId == pub.userId && (
                                                                 <>
+
                                                                     <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
 
                                                                     {onSettingPost && (
@@ -434,17 +493,17 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             {/* LIKE PUB */}
                                             <div className="pt-[2px] flex flex-col gap-[4px]">
                                                 {/* <div className="flex flex-row text-white pt-[4px]">
-                                                {pub.likes.length >= 1 && (
-                                                    <div className="leading-[1]" >
-                                                        <span className="text-[11px] pr-[4px]">Disukai oleh</span>
-                                                        {pub.likes.length >= 2 ? (
-                                                            <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
-                                                        ) : (
-                                                            <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div> */}
+                                                 {pub.likes.length >= 1 && (
+                                                     <div className="leading-[1]" >
+                                                         <span className="text-[11px] pr-[4px]">Disukai oleh</span>
+                                                         {pub.likes.length >= 2 ? (
+                                                             <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
+                                                         ) : (
+                                                             <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                         )}
+                                                     </div>
+                                                 )}
+                                             </div> */}
 
                                                 {/* COMMENT SECTION */}
                                                 <div className="pt-[6px]">
@@ -455,18 +514,28 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                     </div>
                                                     <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                        {pub.komentar.length > 1 && (
-                                                            <>
-                                                                <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                        {komentarPublikasi && (() => {
+                                                            const getKomentar = komentarPublikasi.filter(user => user.pubId === pub.id)
+                                                            return (
+                                                                <>
+                                                                    <div className="flex flex-col gap-[4px]">
+                                                                        {getKomentar.slice(0, 2).map(item =>
+                                                                            <div className="flex flex-row gap-[8px]">
+                                                                                <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                                                <p key={item.id} className="text-[11px] text-white pt-[4px]">
+                                                                                    <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                </p>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                </>
+                                                            )
 
-                                                                {pub.komentar.slice(0, 2).map((item, index) =>
-                                                                    <p key={index} className="text-[11px] text-white pt-[4px]">
-                                                                        <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
-                                                                    </p>
-                                                                )}
-                                                            </>
-                                                        )}
+
+                                                        })()}
+
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -477,7 +546,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                             <>
                                 {profilePageUserLikes ? (
                                     <>
-                                        {profilePageUserLikes && publikasiData.filter(user => user.totalLikePub.includes(profilePageUserLikes)).map((pub) =>
+                                        {profilePageUserLikes && savedPubUsername.includes(publicDataUserUsername) && publikasiData.filter(pub => savedPubPubId.includes(pub.id)).map((pub) =>
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
@@ -506,159 +575,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     {/* ) : (
                                               <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
                                           )} */}
-
-                                                                </>
-                                                            )}
-                                                        </div>
-                                                    </span>
-
-                                                    {/* AUTHOR PUB */}
-                                                    <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
-                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
-                                                            {publicDataUser && publicDataUser.filter(user => user.username == pub.userName).map((user, index) =>
-                                                                <>
-                                                                    {
-                                                                        user.imageUrl ? (
-                                                                            <img key={index} src={user.imageUrl} alt="profile " className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                        ) : (
-                                                                            <img key={index} src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt="profile" className="w-[32px] h-[32px] rounded-[50px]" />
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            )}
-
-                                                            <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
-                                                                <span className="flex flex-col gap-[1.5px] justify-center">
-                                                                    {/* {userIcon} */}
-                                                                    <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.timeStamp}</p>
-                                                                </span>
-                                                            </p>
-
-
-                                                        </div>
-
-                                                        {/* CTA PUB */}
-                                                        <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
-                                                            <div className="flex flex-row items-center gap-[16px] text-white justify-between">
-
-                                                                <div role="button" onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
-                                                                    {shareIcon}
-                                                                </div>
-                                                                <div>
-                                                                    {saveIcon}
-                                                                </div>
-                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
-                                                                    <span className="flex flex-row gap-[2px] items-center">
-                                                                        {loveIcon}
-                                                                        <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
-                                                                    </span>
-                                                                </div>
-                                                                <div>
-                                                                    {username === pub.userName && (
-                                                                        <>
-                                                                            <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
-
-                                                                            {onSettingPost && (
-                                                                                <OnPopupSetting
-                                                                                    Heading={'Pengaturan Clips'}
-                                                                                    onClickFunc={() => setOnSettingPost(prev => !prev)}
-                                                                                    Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
-                                                                                        <span className="flex flex-row items-center gap-[8px]">
-                                                                                            <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
-                                                                                            <span className="text-[12px] text-white">Edit</span>
-                                                                                        </span>
-                                                                                    </button>}
-                                                                                    Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
-                                                                                        <span className="flex flex-row items-center gap-[8px]">
-                                                                                            {deletePost}
-                                                                                            <span className="text-[12px] text-white">Hapus </span>
-                                                                                        </span>
-                                                                                    </button>}
-                                                                                />
-                                                                            )}
-                                                                        </>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* LIKE PUB */}
-                                                    <div className="pt-[2px] flex flex-col gap-[4px]">
-                                                        {/* <div className="flex flex-row text-white pt-[4px]">
-                                                        {pub.likes.length >= 1 && (
-                                                            <div className="leading-[1]" >
-                                                                <span className="text-[11px] pr-[4px]">Disukai oleh</span>
-                                                                {pub.likes.length >= 2 ? (
-                                                                    <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
-                                                                ) : (
-                                                                    <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </div> */}
-
-                                                        {/* COMMENT SECTION */}
-                                                        <div className="pt-[6px]">
-                                                            <div className="flex flex-row justify-between items-center ">
-
-                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
-
-                                                                <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
-                                                            </div>
-                                                            <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                                {pub.komentar.length > 1 && (
-                                                                    <>
-                                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
-
-                                                                        {pub.komentar.slice(0, 2).map((item, index) =>
-                                                                            <p key={index} className="text-[11px] text-white pt-[4px]">
-                                                                                <span className="font-[600] ">{item.username}</span> {item.valueKomentar}
-                                                                            </p>
-                                                                        )}
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        {/* EXPLORE VIEW */}
-                                        {publikasiData.map((pub) => (
-                                            <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
-
-                                                <div className={`font-[inter] flex flex-col `}>
-                                                    <span onClick={() => HandleSelectedPub(pub.id)}>
-
-                                                        {/* JUDUL PUB */}
-                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
-
-                                                        {/* KONTEN PUB */}
-                                                        <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
-
-                                                        {/* IMAGE PUB*/}
-                                                        <div>
-                                                            {pub.imageUrl && (
-                                                                <>
-                                                                    {/* {onRenderImg ? ( */}
-                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
-                                                                        <img
-                                                                            src={`${pub.imageUrl}`}
-                                                                            alt="pub-image"
-                                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
-                                                                            loading="lazy"
-                                                                            onLoad={HandleRenderImg}
-                                                                        />
-                                                                    </div>
-                                                                    {/* ) : (
-                                                  <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                                              )} */}
 
                                                                 </>
                                                             )}
@@ -739,6 +655,176 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* LIKE PUB */}
                                                     <div className="pt-[2px] flex flex-col gap-[4px]">
                                                         {/* <div className="flex flex-row text-white pt-[4px]">
+                                                        {pub.likes.length >= 1 && (
+                                                            <div className="leading-[1]" >
+                                                                <span className="text-[11px] pr-[4px]">Disukai oleh</span>
+                                                                {pub.likes.length >= 2 ? (
+                                                                    <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
+                                                                ) : (
+                                                                    <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div> */}
+
+                                                        {/* COMMENT SECTION */}
+                                                        <div className="pt-[6px]">
+                                                            <div className="flex flex-row justify-between items-center ">
+
+                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+
+                                                                <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
+                                                            </div>
+                                                            <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
+                                                                {komentarPublikasi && (() => {
+                                                                    const getKomentar = komentarPublikasi.filter(user => user.pubId === pub.id)
+                                                                    return (
+                                                                        <>
+                                                                            <div className="flex flex-col gap-[4px]">
+                                                                                {getKomentar.slice(0, 2).map(item =>
+                                                                                    <div className="flex flex-row gap-[8px]">
+                                                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                                                        <p key={item.id} className="text-[11px] text-white pt-[4px]">
+                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        </>
+                                                                    )
+
+
+                                                                })()}
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* EXPLORE VIEW */}
+                                        {publikasiData.map((pub) => (
+                                            <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
+
+                                                <div className={`font-[inter] flex flex-col `}>
+                                                    <span onClick={() => HandleSelectedPub(pub.id)}>
+
+                                                        {/* JUDUL PUB */}
+                                                        <p className={`text-[12px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+
+                                                        {/* KONTEN PUB */}
+                                                        <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id)}>{pub.content}</p>
+
+                                                        {/* IMAGE PUB*/}
+                                                        <div>
+                                                            {pub.imageUrl && (
+                                                                <>
+                                                                    {/* {onRenderImg ? ( */}
+                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+                                                                        <img
+                                                                            src={`${pub.imageUrl}`}
+                                                                            alt="pub-image"
+                                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
+                                                                            loading="lazy"
+                                                                            onLoad={HandleRenderImg}
+                                                                        />
+                                                                    </div>
+                                                                    {/* ) : (
+                                                  <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
+                                              )} */}
+
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </span>
+
+                                                    {/* AUTHOR PUB */}
+                                                    <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
+                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
+                                                            {publikasi && (() => {
+                                                                const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                                return user ? (
+                                                                    <img
+                                                                        src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                        alt="profile"
+                                                                        className="w-[32px] h-[32px] rounded-[50px]"
+                                                                    />
+                                                                ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
+                                                            })()}
+                                                            <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
+                                                                <span className="flex flex-col gap-[1.5px] justify-center">
+                                                                    {/* {userIcon} */}
+                                                                    <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
+                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
+                                                                </span>
+                                                            </p>
+
+
+                                                        </div>
+
+                                                        {/* CTA PUB */}
+                                                        <div className="flex flex-row  gap-[6px] cursor-pointer items-center">
+                                                            <div className="flex flex-row items-center gap-[16px] text-white justify-between">
+
+                                                                <div role="button" onClick={() => { HandleSharePub(pub.id); DownloadPub(pub.id) }}>
+                                                                    {shareIcon}
+                                                                </div>
+                                                                <div onClick={() => { HandleSavePub(pub.id); setStatusSave(prev => !prev) }}>
+                                                                    {statusSave ? (
+                                                                        <>
+                                                                            {saveIconSolid}
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            {saveIcon}
+                                                                        </>
+                                                                    )}
+                                                                </div>
+                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+                                                                    <span className="flex flex-row gap-[2px] items-center">
+                                                                        {loveIcon}
+                                                                        <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
+                                                                    </span>
+                                                                </div>
+                                                                <div>
+                                                                    {userId == pub.userId && (
+                                                                        <>
+
+                                                                            <span onClick={() => setOnSettingPost(prev => !prev)}>{settingPostIcon}</span>
+
+                                                                            {onSettingPost && (
+                                                                                <OnPopupSetting
+                                                                                    Heading={'Pengaturan Clips'}
+                                                                                    onClickFunc={() => setOnSettingPost(prev => !prev)}
+                                                                                    Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                        <span className="flex flex-row items-center gap-[8px]">
+                                                                                            <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
+                                                                                            <span className="text-[12px] text-white">Edit</span>
+                                                                                        </span>
+                                                                                    </button>}
+                                                                                    Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                        <span className="flex flex-row items-center gap-[8px]">
+                                                                                            {deletePost}
+                                                                                            <span className="text-[12px] text-white">Hapus </span>
+                                                                                        </span>
+                                                                                    </button>}
+                                                                                />
+                                                                            )}
+                                                                        </>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* LIKE PUB */}
+                                                    <div className="pt-[2px] flex flex-col gap-[4px]">
+                                                        {/* <div className="flex flex-row text-white pt-[4px]">
                                                             {pub.likes.length >= 1 && (
                                                                 <div className="leading-[1]" >
                                                                     <span className="text-[11px] pr-[4px]">Disukai oleh</span>
@@ -760,14 +846,28 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
                                                             <div className="gap-[4px] flex flex-row gap-[2px] pt-[2px] items-center">
-                                                                {komentarPublikasi && komentarPublikasi.filter(user => user.pubId === pub.id).map(item =>
-                                                                    <>
-                                                                        <h1 className="text-[red]">{item.username}</h1>
-                                                                        <p className="text-white">{item.komentar}</p>
+                                                                {komentarPublikasi && (() => {
+                                                                    const getKomentar = komentarPublikasi.filter(user => user.pubId === pub.id)
+                                                                    return (
+                                                                        <>
+                                                                            <div className="flex flex-col gap-[4px]">
+                                                                                {getKomentar.slice(0, 2).map(item =>
+                                                                                    <div className="flex flex-row gap-[8px]">
+                                                                                        <span className="text-[var(--black-subtext)]">{komenArrow}</span>
+                                                                                        <p key={item.id} className="text-[11px] text-white pt-[4px]">
+                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        </>
+                                                                    )
 
-                                                                    </>
-                                                                )}
+
+                                                                })()}
+
                                                             </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
