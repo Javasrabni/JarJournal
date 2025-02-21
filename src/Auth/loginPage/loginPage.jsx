@@ -38,11 +38,11 @@ const LoginPage = () => {
             const data = await response.json()
 
             if (response.ok) {
-                localStorage.setItem('token', JSON.stringify(data.token))
                 setUsername(data.username)
                 setUserId(data.id)
                 setUserEmail(data.email)
                 setToken(data.token); // Simpan token ke dalam state aplikasi
+                localStorage.setItem('token', data.token)
                 // navigate('/dashboard')
             } else {
                 setError(data.ErrMsg);

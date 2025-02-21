@@ -65,28 +65,30 @@ export default function CatatanProvider({ children }) {
     }, [])
 
     // FETCHING GET USER NOTE
-    const FetchDataNote = async () => {
-        try {
-            const response = await fetch(`${API_URL_NOTE}/auth/get-note`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            if (response.ok) {
-                const data = await response.json()
-                setOnNewNote(data.note || [])
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
     useEffect(() => {
+        const FetchDataNote = async () => {
+            try {
+                const response = await fetch(`${API_URL_NOTE}/get/catatan_user`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    setOnNewNote(data || [])
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
         if (token) {
             FetchDataNote()
         }
-    }, [token, writeingNote])
+    }, [refreshData,token ])
     return (
         <CatatanContext.Provider value={{ removeDraft, setRemoveDraft, note, setNote, onEditNoteIndex, setOnEditNoteIndex, onEditNote, setOnEditNote, valueOnNewNote, setValueOnNewNote, onNewNote, setOnNewNote, writeingNote, setWriteingNote, lastEdit, setLastEdit }}>
             {children}

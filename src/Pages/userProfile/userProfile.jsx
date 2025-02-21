@@ -86,7 +86,7 @@ export default function UserProfile() {
     const postIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: statusPostRrSave ? 'white' : 'var(--black-subtext)' }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
     </svg>
-    const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4">
+    const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill={!statusPostRrSave ? 'white' : 'var(--black-subtext)'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4" style={{ color: !statusPostRrSave ? 'white' : 'var(--black-subtext)' }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
     </svg>
     const loveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill={!statusPostRrSave ? 'white' : 'var(--black-subtext)'} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: !statusPostRrSave ? 'white' : 'var(--black-subtext)' }}>
@@ -234,7 +234,7 @@ export default function UserProfile() {
                                 <span>{postIcon}</span>
                             </span>
                             <span className={`w-full h-full flex items-center justify-center py-[8px] rounded-[6px] ${statusPostRrSave ? 'none' : 'bg-[var(--black-bg)]'}`} onClick={() => { setStatusPostRrSave(false) }}>
-                                <span>{loveIcon}</span>
+                                <span>{saveIcon}</span>
                             </span>
                         </div>
 

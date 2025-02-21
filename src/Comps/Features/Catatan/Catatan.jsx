@@ -16,6 +16,9 @@ import 'react-quill/dist/quill.snow.css';
 import './style.css'
 
 export default function Catatan() {
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
     const navigate = useNavigate()
     const locations = useLocation()
     // THEME
@@ -68,31 +71,32 @@ export default function Catatan() {
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
     function HandleClickNote(item, index) {
-        console.log("Editing note:", item); // Debugging line
-        setOnEditNote(item.content); // Set the note content to be edited
+        setOnEditNote(item); // Set the note content to be edited
         setOnEditNoteIndex(index); // Assuming item.id is the unique identifier for the note
-        console.log("Note ID set to:", index); // Debugging line
         navigate('/ftr/EditCatatan');
     }
 
     const [filteredNote, setFilteredNote] = useState([])
-    const [valueInputNote, setValueInputNote] = useState('')
+    const [valueInputNote, setValueInputNote] = useState(null)
     const [visibleFilteredValue, setVisibleFilteredValue] = useState(false)
 
 
 
-    function HandleChangeNote(value, id) {
+    function HandleChangeNote(value) {
         const userInputSearch = value.target.value.toLowerCase();
         setValueInputNote(userInputSearch) // ValueInput sementara
 
-        if (userInputSearch === '') {
+        if (userInputSearch.length < 0) {
             setFilteredNote(onNewNote)
             setVisibleFilteredValue(false)
+            setValueInputNote(null)
         } else {
             const delayOutput = setTimeout(() => {
                 const filterNote = onNewNote.filter(item =>
-                    item.content.includes(userInputSearch)
-                )
+                    item.userId.includes(userId) &&
+                    item.catatan?.includes(userInputSearch) // Gunakan optional chaining hanya saat membaca properti
+                );
+
                 if (filterNote.length < 1) {
                     setVisibleFilteredValue(true)
                 } else {
@@ -120,7 +124,7 @@ export default function Catatan() {
 
     async function HandleDelteCheckedNote() {
         try {
-            const response = await fetch(`${API_URL_NOTE}/auth/delete-note`, {
+            const response = await fetch(`${API_URL_NOTE}/del/catatan_user`, {
                 method: "DELETE",
                 headers: {
                     'Content-type': 'application/json',
@@ -129,10 +133,10 @@ export default function Catatan() {
             })
 
             if (response.ok) {
-                const data = await response.json()
-                setOnNewNote(data.note)
+                // const data = await response.json()
                 setCheckedNote([])
                 setOnDelNote(false)
+                setRefreshData(prev => !prev)
             }
         } catch (err) {
             console.error(err)
@@ -149,8 +153,6 @@ export default function Catatan() {
     </svg>
 
 
-
-
     return (
         <>
             <div className={`min-w-[360px] h-full ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'} flex jusitfy-center relative`}>
@@ -165,7 +167,7 @@ export default function Catatan() {
 
                                     <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px]">
                                         {/* SEARCH NOTE */}
-                                        <input type="text" placeholder="Cari catatan" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full rounded-[8px]  p-[12px] outline-0 border-0 text-[12px]`} onChange={(e) => HandleChangeNote(e)} />
+                                        <input type="text" placeholder="Cari catatan" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} w-full rounded-[8px]  p-[12px] outline-0 border-0 text-[12px]`} value={valueInputNote} onChange={(e) => HandleChangeNote(e)} />
                                         {visibleFilteredValue && (
                                             <div>
                                                 <p className="text-[12px] text-[#999999]">"{valueInputNote}" Tidak ada :/</p>
@@ -175,7 +177,7 @@ export default function Catatan() {
 
                                     {/* TOTAL NOTE USER */}
                                     <div className="flex flex-row items-center justify-between">
-                                        <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.length} Catatan</p>
+                                        <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.filter(user => user.userId.includes(userId))?.length || 0} Catatan</p>
                                         {onDelNote ? (
                                             // DEL NOTE
                                             <div className="flex flex-row gap-[12px] items-center cursor-pointer">
@@ -188,74 +190,119 @@ export default function Catatan() {
                                     </div>
 
                                     {/* TAMPILKAN NOTE USER JIKA FILTER = TRUE */}
-                                    {filteredNote.length >= 1 ? (
+                                    {filteredNote.length > 0 ? (
                                         <>
                                             {filteredNote.map((item, index) => (
-                                                <div
-                                                    key={index} // Use a unique identifier for the key
-                                                    className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
-                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
-                                                >
-                                                    <div className="flex flex-col gap-[0px]">
-                                                        <div
-                                                            id="outputCatatan"
-                                                            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
-                                                    </div>
-                                                </div>
+                                                <>
+                                                    {item.userId.includes(userId) && (
+                                                        <>
+
+                                                            {
+                                                                onDelNote ? (
+                                                                    <div
+                                                                        key={item.id} // Use a unique identifier for the key
+                                                                        className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-row p-[12px] rounded-[6px] gap-[12px] cursor-pointer`}
+
+                                                                    >
+                                                                        <div className="flex items-center justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="rounded w-[14px] h-[14px] p-[6px]"
+                                                                                // checked={checkedNote.includes(item.id)}
+                                                                                onChange={() => HandleCheckedNote(item.id)}
+                                                                            />
+                                                                        </div>
+                                                                        <div>
+
+                                                                            <div className="flex flex-col gap-[0px]">
+                                                                                <div
+                                                                                    id="outputCatatan"
+                                                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
+                                                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                                                />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-[10px] font-[500] text-[#999999]">Terakhir {item.updatedAt.slice(0, 10)}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div >
+                                                                ) : (
+                                                                    <div
+                                                                        key={index} // Use a unique identifier for the key
+                                                                        className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                                                        onClick={() => HandleClickNote(item.catatan, item.id)} // Pass the item directly
+                                                                    >
+                                                                        <div className="flex flex-col gap-[0px]">
+                                                                            <div
+                                                                                id="outputCatatan"
+                                                                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
+                                                                            />
+                                                                        </div>
+                                                                        <div>
+                                                                            <p className="text-[10px] font-[500] text-[#999999]">Terakhir {item.updatedAt.slice(0, 10)}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                        </>
+                                                    )}
+                                                </>
                                             ))}
                                         </>
                                     ) : (
                                         <>
+
                                             {onNewNote.map((item, index) => (
                                                 <>
-                                                    {onDelNote ? (
-                                                        <div
-                                                            key={index} // Use a unique identifier for the key
-                                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-row p-[12px] rounded-[6px] gap-[12px] cursor-pointer`}
+                                                    {item.userId.includes(userId) && (
 
-                                                        >
-                                                            <div className="flex items-center justify-center">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    className="rounded w-[14px] h-[14px] p-[6px]"
-                                                                    // checked={checkedNote.includes(item.id)}
-                                                                    onChange={() => HandleCheckedNote(index)}
-                                                                />
-                                                            </div>
-                                                            <div>
-
-                                                                <div className="flex flex-col gap-[0px]">
+                                                        <>
+                                                            {
+                                                                onDelNote ? (
                                                                     <div
-                                                                        id="outputCatatan"
-                                                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
-                                                                        onClick={() => HandleClickNote(item, index)} // Pass the item directly
-                                                                    />
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ) : (
-                                                        <div
-                                                            key={index} // Use a unique identifier for the key
-                                                            className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
-                                                            onClick={() => HandleClickNote(item, index)} // Pass the item directly
-                                                        >
-                                                            <div className="flex flex-col gap-[0px]">
-                                                                <div
-                                                                    id="outputCatatan"
-                                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
-                                                                />
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-[10px] font-[500] text-[#999999]">{item.timeStamp}</p>
-                                                            </div>
-                                                        </div>
+                                                                        key={item.id} // Use a unique identifier for the key
+                                                                        className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-row p-[12px] rounded-[6px] gap-[12px] cursor-pointer`}
+
+                                                                    >
+                                                                        <div className="flex items-center justify-center">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                className="rounded w-[14px] h-[14px] p-[6px]"
+                                                                                // checked={checkedNote.includes(item.id)}
+                                                                                onChange={() => HandleCheckedNote(item.id)}
+                                                                            />
+                                                                        </div>
+                                                                        <div>
+
+                                                                            <div className="flex flex-col gap-[0px]">
+                                                                                <div
+                                                                                    id="outputCatatan"
+                                                                                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
+                                                                                    onClick={() => HandleClickNote(item, item.id)} // Pass the item directly
+                                                                                />
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-[10px] font-[500] text-[#999999]">Terakhir {item.updatedAt.slice(0, 10)}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div
+                                                                        key={index} // Use a unique identifier for the key
+                                                                        className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
+                                                                        onClick={() => HandleClickNote(item.catatan, index)} // Pass the item directly
+                                                                    >
+                                                                        <div className="flex flex-col gap-[0px]">
+                                                                            <div
+                                                                                id="outputCatatan"
+                                                                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
+                                                                            />
+                                                                        </div>
+                                                                        <div>
+                                                                            <p className="text-[10px] font-[500] text-[#999999]">Terakhir {item.updatedAt.slice(0, 10)}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                        </>
                                                     )}
                                                 </>
                                             ))}
@@ -286,7 +333,7 @@ export default function Catatan() {
                             // />
                         )}
                     </div>
-                </div>
+                </div >
             </div >
         </>
     )

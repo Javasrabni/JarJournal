@@ -615,10 +615,10 @@ const ReportCatatan = () => {
                                 <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]">
                                     <div
                                         className="text-white  text-[12px]"
-                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} // Assuming item.content holds the note text
+                                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
                                     />
 
-                                    <p className="text-[11px] font-[500] text-[#999999]">Terakhir diedit: {item.timeStamp}</p>
+                                    <p className="text-[11px] font-[500] text-[#999999]">Terakhir diedit: {item.updatedAt.slice(0, 10)}</p>
                                 </div>
                             )}
                         </>

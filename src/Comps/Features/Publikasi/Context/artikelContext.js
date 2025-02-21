@@ -78,7 +78,6 @@ export default function ArtikelProvider({ children }) {
         }
         GetAllSavedPublikasi()
     }, [refreshData])
-    console.log(getSavedPublikasi)
 
     // LIKE PUB
     const [likePub, setLikePub] = useState(false)

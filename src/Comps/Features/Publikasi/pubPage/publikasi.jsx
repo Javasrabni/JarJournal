@@ -153,18 +153,18 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         }
     }
 
-    // Handle Save publikasi
-    const [statusSave, setStatusSave] = useState(() => {
-        const saveStatus = localStorage.getItem('Saveing')
-        return saveStatus ? JSON.parse(saveStatus) : false
-    })
-    useEffect(() => {
-        localStorage.setItem('Saveing', JSON.stringify(statusSave))
-    }, [statusSave])
-
     const { getSavedPublikasi, setGetSavedPublikasi } = useContext(ArtikelContext)
-
+    const [savedPub, setSavedPub] = useState(getSavedPublikasi)
+    console.log(savedPub)
+    const [statusSave, setStatusSave] = useState(false)
     async function HandleSavePub(pubId) {
+        setSavedPub((prev) => {
+            if (prev.includes(pubId)) {
+                return prev.filter(id => id !== pubId)
+            } else {
+                return [...prev, pubId]
+            }
+        })
         if (statusSave) {
             try {
                 const response = await fetch(`${API_URL_PUB}/save_publikasi`, {
@@ -206,7 +206,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const savedPubPubId = getSavedPublikasi.map(item => item.pubId)
     const savedPubUsername = getSavedPublikasi.map(item => item.username)
     const publicDataUserUsername = publicDataUser.map(item => item.username)
-
+    console.log(savedPubUsername)
+    console.log(publicDataUserUsername)
 
     // RAND INDEX LIKE
     const [randomUserLikes, setRandomUserLikes] = useState({}); // Menyimpan random per pub.id
@@ -546,7 +547,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                             <>
                                 {profilePageUserLikes ? (
                                     <>
-                                        {profilePageUserLikes && savedPubUsername.includes(publicDataUserUsername) && publikasiData.filter(pub => savedPubPubId.includes(pub.id)).map((pub) =>
+                                        {profilePageUserLikes && publikasiData.filter(pub => savedPubPubId.includes(pub.id) && savedPubUsername.filter(user => user.includes(publicDataUserUsername))).map((pub) =>
+
+
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
@@ -702,8 +705,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        )}
+                                        )
+                                        }
                                     </>
                                 ) : (
                                     <>
@@ -775,7 +778,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     {shareIcon}
                                                                 </div>
                                                                 <div onClick={() => { HandleSavePub(pub.id); setStatusSave(prev => !prev) }}>
-                                                                    {statusSave ? (
+                                                                    {publikasiData.find(pub => savedPubPubId.includes(pub.id) && savedPubUsername == publicDataUserUsername) ? (
                                                                         <>
                                                                             {saveIconSolid}
                                                                         </>

@@ -11,10 +11,7 @@ export default function API_URL_PROVIDER({ children }) {
     const [API_URL_CHATBOT] = useState('http://localhost:8000')
 
     // USER TOKEN
-    const [token, setToken] = useState(() => {
-        const saveData = localStorage.getItem('token')
-        return saveData ? JSON.parse(saveData) : null
-    })
+    const [token, setToken] = useState(() => localStorage.getItem('token'))
 
     // FETCH USER INFO
     const [username, setUsername] = useState(() => {

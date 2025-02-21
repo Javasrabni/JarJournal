@@ -10,6 +10,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 export default function WriteNotePage() {
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
+
     const { API_URL_NOTE } = useContext(API_URL_CONTEXT)
     const { token, setToken } = useContext(API_URL_CONTEXT)
     useEffect(() => {
@@ -38,24 +42,27 @@ export default function WriteNotePage() {
 
     const { removeDraft, setRemoveDraft } = useContext(CatatanContext)
 
-    const POST_NOTE_USER = async () => {
+    async function POST_NOTE_USER() {
         try {
-            const response = await fetch(`${API_URL_NOTE}/auth/save-note`, {
+            const response = await fetch(`${API_URL_NOTE}/post/catatan_user`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ catatan: note })
+                }, body: JSON.stringify({ userId: userId, catatan: note })
             })
             const data = await response.json()
             if (response.ok) {
                 // alert('berhasil tambah')
-                setOnNewNote((prev) => [{ content: data.content, timeStamp: data.timeStamp }, ...prev])
+                setRefreshData(prev => !prev)
                 setWriteingNote((prev) => !prev)
                 setNote('')
 
                 // REMOVE DRAFT NOTE
                 setRemoveDraft((prev) => !prev)
+            } else {
+                alert(data.Msg)
+                console.log(data)
             }
         } catch (err) {
             console.error(err + "Error add note")
