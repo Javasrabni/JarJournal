@@ -1,9 +1,5 @@
 import { useLocation, useParams } from "react-router-dom"
-import MusicBox from "../../Footer/musicBox/musicBox"
-import UserQuote from "../../Footer/userQuote/userQuote"
 import { useContext, useEffect, useState } from "react"
-import { MusicBoxContext } from "../../Footer/musicBox/musicBoxContext"
-import { UserQuoteContext } from "../../Footer/userQuote/userQuoteContext"
 import { ThemeAppContext } from "../Theme/toggleTheme.jsx/ThemeAppContext"
 import PlusBtn from "../../Button/plus btn/plusBtn"
 import { CatatanContext } from "./catatanContex"
@@ -40,15 +36,8 @@ export default function Catatan() {
 
 
 
-    // Music box context
-    const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
-
-    // User Quote Context
-    const { setUserClickQuote } = useContext(UserQuoteContext)
-
     // Note array
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
-
 
     const { valueOnNewNote, setValueOnNewNote } = useContext(CatatanContext)
 
@@ -83,7 +72,7 @@ export default function Catatan() {
 
 
     function HandleChangeNote(value) {
-        const userInputSearch = value.target.value.toLowerCase();
+        const userInputSearch = value.target.value;
         setValueInputNote(userInputSearch) // ValueInput sementara
 
         if (userInputSearch.length < 0) {
@@ -132,11 +121,12 @@ export default function Catatan() {
                 }, body: JSON.stringify({ noteIndex: checkedNote })
             })
 
+            const data = await response.json()
             if (response.ok) {
-                // const data = await response.json()
+
+                setRefreshData(prev => !prev)
                 setCheckedNote([])
                 setOnDelNote(false)
-                setRefreshData(prev => !prev)
             }
         } catch (err) {
             console.error(err)
@@ -162,7 +152,7 @@ export default function Catatan() {
                         <WriteNotePage />
                     ) : (
                         <>
-                            {onNewNote.length > 0 ? (
+                            {onNewNote && onNewNote.filter(user => user.userId.includes(userId)).length > 0 ? (
                                 <div className="flex flex-col gap-[12px] pb-[40px]">
 
                                     <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px]">
@@ -176,21 +166,24 @@ export default function Catatan() {
                                     </div>
 
                                     {/* TOTAL NOTE USER */}
-                                    <div className="flex flex-row items-center justify-between">
-                                        <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.filter(user => user.userId.includes(userId))?.length || 0} Catatan</p>
-                                        {onDelNote ? (
-                                            // DEL NOTE
-                                            <div className="flex flex-row gap-[12px] items-center cursor-pointer">
-                                                <p className="text-white text-[12px]" onClick={() => setOnDelNote(false)}>Cancle</p>
-                                                <span onClick={() => HandleDelteCheckedNote(checkedNote)}>{delIcon}</span>
-                                            </div>
-                                        ) : (
-                                            <span className="cursor-pointer" onClick={() => setOnDelNote(prev => !prev)}> {delIcon}</span>
-                                        )}
-                                    </div>
+                                    {!visibleFilteredValue && (
+                                        <div className="flex flex-row items-center justify-between">
+                                            <p className="text-[12px] text-[#999999] font-[600]">{onNewNote.filter(user => user.userId.includes(userId))?.length || 0} Catatan</p>
+                                            {onDelNote ? (
+                                                // DEL NOTE
+                                                <div className="flex flex-row gap-[12px] items-center cursor-pointer">
+                                                    <p className="text-white text-[12px]" onClick={() => setOnDelNote(false)}>Cancle</p>
+                                                    <span onClick={() => HandleDelteCheckedNote(checkedNote)}>{delIcon}</span>
+                                                </div>
+                                            ) : (
+                                                <span className="cursor-pointer" onClick={() => setOnDelNote(prev => !prev)}> {delIcon}</span>
+                                            )}
+                                        </div>
+                                    )}
+
 
                                     {/* TAMPILKAN NOTE USER JIKA FILTER = TRUE */}
-                                    {filteredNote.length > 0 ? (
+                                    {valueInputNote?.length > 0 ? (
                                         <>
                                             {filteredNote.map((item, index) => (
                                                 <>
@@ -218,7 +211,7 @@ export default function Catatan() {
                                                                                 <div
                                                                                     id="outputCatatan"
                                                                                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
-                                                                                    onClick={() => HandleClickNote(item, index)} // Pass the item directly
+                                                                                    onClick={() => HandleClickNote(item, item.id)} // Pass the item directly
                                                                                 />
                                                                             </div>
                                                                             <div>
@@ -228,7 +221,7 @@ export default function Catatan() {
                                                                     </div >
                                                                 ) : (
                                                                     <div
-                                                                        key={index} // Use a unique identifier for the key
+                                                                        key={item.id} // Use a unique identifier for the key
                                                                         className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
                                                                         onClick={() => HandleClickNote(item.catatan, item.id)} // Pass the item directly
                                                                     >
@@ -287,9 +280,9 @@ export default function Catatan() {
                                                                     </div>
                                                                 ) : (
                                                                     <div
-                                                                        key={index} // Use a unique identifier for the key
+                                                                        key={item.id} // Use a unique identifier for the key
                                                                         className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
-                                                                        onClick={() => HandleClickNote(item.catatan, index)} // Pass the item directly
+                                                                        onClick={() => HandleClickNote(item.catatan, item.id)} // Pass the item directly
                                                                     >
                                                                         <div className="flex flex-col gap-[0px]">
                                                                             <div

@@ -219,7 +219,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                         )}
                     </div>
 
-                    {filterFuncNote && !writeingNote && (
+                    {/* {filterFuncNote && !writeingNote && (
                         <div className="cursor-pointer">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5" style={{ color: themeActive ? 'white' : 'black' }}>
@@ -229,7 +229,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                             </span>
                         </div>
 
-                    )}
+                    )} */}
 
                     {/* SETTING  */}
                     <div className="w-[28px] h-[28px] flex flex-col items-center justify-center bg-[var(--white-bg-100)] rounded-[8px] cursor-pointer" onClick={HandleSetting} style={{ display: hideSetting && 'none' }}>

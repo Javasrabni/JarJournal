@@ -35,19 +35,23 @@ export default function OnEditNote({ dataNote, indexNote }) {
     const { onEditNote, setOnEditNote } = UseEditNoteContext()
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
 
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
+
     async function handleSaveEdit() {
         try {
-            const response = await fetch(`${API_URL_NOTE}/auth/update-note:id`, {
-                method: "PUT",
+            const response = await fetch(`${API_URL_NOTE}/patch/catatan_user`, {
+                method: "PATCH",
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }, body: JSON.stringify({ noteIndex: onEditNoteIndex, editedNote: onEditNote })
             })
-            const { updatedNote, updatedTimestamp } = await response.json()
-            console.log(updatedNote, updatedTimestamp + "INI RETURN JSON EDIT PUT")
+            const data = await response.json()
+            console.log(data + "INI RETURN JSON EDIT PUT")
             if (response.ok) {
-                setOnNewNote((prevNote) => prevNote.map((note, index) => index === onEditNoteIndex ? { content: updatedNote, timeStamp: updatedTimestamp } : note))
+                setRefreshData(prev => !prev)
+                // setOnNewNote((prevNote) => prevNote.map((note, index) => index === onEditNoteIndex ? { content: updatedNote, timeStamp: updatedTimestamp } : note))
                 navigate('/ftr/Catatan')
             }
         } catch (err) {
@@ -95,7 +99,7 @@ export default function OnEditNote({ dataNote, indexNote }) {
                     ]}
                 />
             </div>
-            
+
             {/* ON ADD */}
             {onEditNote.length > 1 && (
                 <div className="w-fit fixed top-[16px] right-[32px] m-auto flex flex-row-reverse items-center justify-center gap-[12px] z-[10] pb-[16px]" style={{ transform: 'translateX(50%)' }}>

@@ -14,51 +14,11 @@ export default function API_URL_PROVIDER({ children }) {
     const [token, setToken] = useState(() => localStorage.getItem('token'))
 
     // FETCH USER INFO
-    const [username, setUsername] = useState(() => {
-        const saveData = localStorage.getItem('userUsername')
-        return saveData ? JSON.parse(saveData) : null
-    })
-    const [userId, setUserId] = useState(() => {
-        const saveData = localStorage.getItem('userId')
-        return saveData ? JSON.parse(saveData) : null
-    })
-    const [userEmail, setUserEmail] = useState(() => {
-        const saveData = localStorage.getItem('userEmail')
-        return saveData ? JSON.parse(saveData) : null
-    })
+    const [username, setUsername] = useState(null)
+    const [userId, setUserId] = useState(null)
+    const [userEmail, setUserEmail] = useState(null)
 
     const [refreshData, setRefreshData] = useState(false)
-
-    useEffect(() => {
-        localStorage.setItem('userUsername', JSON.stringify(username))
-        localStorage.setItem('userId', JSON.stringify(userId))
-        localStorage.setItem('userEmail', JSON.stringify(userEmail))
-    }, [username, userId, userEmail])
-
-    // FETCHING GET USER INFO
-    // useEffect(() => {
-    //     const fetchUserInfo = async () => {
-    //         try {
-    //             const response = await fetch(`${API_URL_AUTH}/user_info`, {
-    //                 method: "GET",
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             })
-    //             const data = await response.json()
-    //             if (response.ok) {
-    //                 setUsername(data.username)
-    //                 setUserEmail(data.email)
-    //             }
-    //         } catch (err) {
-    //             console.error(err)
-    //         }
-    //     }
-
-    //     if (token) {
-    //         fetchUserInfo()
-    //     }
-    // }, [token])
 
     // STATUS AUTH FORM
     const [isRegister, setIsRegister] = useState(false);
@@ -68,14 +28,42 @@ export default function API_URL_PROVIDER({ children }) {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        const getPublicDataUser = async () => {
+        const getDataUser = async () => {
             try {
-                const response = await fetch(`${API_URL_AUTH}/user_info`)
+                const response = await fetch(`${API_URL_AUTH}/user_info`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                const data = await response.json()
                 if (response.ok) {
-                    const data = await response.json()
-                    setPublicDataUser(data);
+                    setUsername(data[0].username)
+                    setUserId(data[0].id)
+                    setUserEmail(data[0].email)
                     setIsLoading(false)
 
+                }
+            } catch (err) {
+                console.error(err)
+                setIsLoading(true)
+            }
+        }
+        getDataUser()
+    }, [refreshData])
+
+
+    useEffect(() => {
+        const getPublicDataUser = async () => {
+            try {
+                const response = await fetch(`${API_URL_AUTH}/get/public_userData`, {
+                    method: "GET",
+                })
+                const data = await response.json()
+
+                if (response.ok) {
+                    setPublicDataUser(data);
                 }
             } catch (err) {
                 console.error(err)

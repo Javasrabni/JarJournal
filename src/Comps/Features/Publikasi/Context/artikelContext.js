@@ -28,6 +28,7 @@ export default function ArtikelProvider({ children }) {
                 const data = await response.json()
                 if (response.ok) {
                     setPublikasi(data)
+
                 } else {
                     alert(data.Msg)
                 }
@@ -46,6 +47,8 @@ export default function ArtikelProvider({ children }) {
 
     useEffect(() => {
         const GetAllKomentarPub = async () => {
+            setLoading(true)
+
             try {
                 const response = await fetch(`${API_URL_PUB}/get/komentar_publikasi`, {
                     method: "GET"
@@ -53,9 +56,13 @@ export default function ArtikelProvider({ children }) {
                 const data = await response.json()
                 if (response.ok) {
                     setKomentarPublikasi(data)
+
                 }
             } catch (err) {
                 console.error(err)
+            } finally {
+                setLoading(false)
+
             }
         }
         GetAllKomentarPub()
@@ -64,6 +71,8 @@ export default function ArtikelProvider({ children }) {
     const [getSavedPublikasi, setGetSavedPublikasi] = useState([])
     useEffect(() => {
         const GetAllSavedPublikasi = async () => {
+            setLoading(true)
+
             try {
                 const response = await fetch(`${API_URL_PUB}/get/save_publikasi`, {
                     method: "GET"
@@ -71,9 +80,13 @@ export default function ArtikelProvider({ children }) {
                 const data = await response.json()
                 if (response.ok) {
                     setGetSavedPublikasi(data)
+
                 }
             } catch (err) {
                 console.error(err)
+            } finally {
+                setLoading(false)
+
             }
         }
         GetAllSavedPublikasi()

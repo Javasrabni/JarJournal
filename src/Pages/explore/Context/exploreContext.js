@@ -13,26 +13,26 @@ export default function ExploreProvider({ children }) {
     const { setPublikasi } = useContext(ArtikelContext)
     const [statusSearchExplore, setStatusSearchExplore] = useState(false)
 
-    useEffect(() => {
-        const fetchPub = async () => {
-            setLoading(true)
-            try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
-                if (response.ok) {
-                    const data = await response.json()
-                    setDataPubToFilter(data)
+    // useEffect(() => {
+    //     const fetchPub = async () => {
+    //         setLoading(true)
+    //         try {
+    //             const response = await fetch(`${API_URL_PUB}/pub/get-pub`)
+    //             if (response.ok) {
+    //                 const data = await response.json()
+    //                 setDataPubToFilter(data)
                     setLoading(false)
-                } else {
-                    setLoading(true)
-                }
-                // console.log(data)
-            } catch (err) {
-                console.error(`gagal mendapatkan pub ${err}`)
-            }
-        };
+    //             } else {
+    //                 setLoading(true)
+    //             }
+    //             // console.log(data)
+    //         } catch (err) {
+    //             console.error(`gagal mendapatkan pub ${err}`)
+    //         }
+    //     };
 
-        fetchPub()
-    }, [])
+    //     fetchPub()
+    // }, [])
     return (
         <ExploreContext.Provider value={{statusSearchExplore, setStatusSearchExplore, filteredPub, setFilteredPub, setDataPubToFilter, dataPubToFilter }}>
             {children}

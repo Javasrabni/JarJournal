@@ -2,28 +2,23 @@ import Header from "./Comps/Navbar-Top/Header"
 import { useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from "react"
 import CardFeatures from "./Comps/Features/ButtonCardFtr/CardFeatures"
-import UserQuote from "./Comps/Footer/userQuote/userQuote"
 import DateTimePlan from "./Comps/Features/Datetime quote/DatetmPlan/dateTimePlan"
 import MoodToday from "./Comps/Features/Datetime quote/moodToday/moodToday"
 import SisaHariToNewYear from "./Comps/Features/Datetime quote/sisaHari/sisaHari--Tahun/sisaHariToTahun"
 import Memo from "./Comps/Features/Memo/Memo"
-import MusicBox from "./Comps/Footer/musicBox/musicBox"
 import EbookPage from "./Comps/Features/eBookSection/ebookPage/ebook"
-import { UserQuoteContext } from "./Comps/Footer/userQuote/userQuoteContext"
-import { MusicBoxContext } from "./Comps/Footer/musicBox/musicBoxContext"
-import PopupLegend from "./Comps/Popup/Popup-typ1/PopupLegend"
 import { AnimateLoadPageContext } from "./Comps/animate onload page/animateLoadPage"
 import { OVERALL_CONTEXT } from "./Context/OVERALL_CONTEXT"
 import 'react-quill/dist/quill.snow.css';
 import { useLocation } from "react-router-dom"
 import { ChooseAvatar } from "./introWeb/chooseAvatar/chooseAvatar"
-import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 import { motion } from 'framer-motion'
 import { CatatanContext } from "./Comps/Features/Catatan/catatanContex"
 import DOMPurify from 'dompurify';
 import Skeleton from "react-loading-skeleton"
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRef } from "react"
+import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 
 // Cartjs
 import { Line } from 'react-chartjs-2';
@@ -39,9 +34,7 @@ import {
 
 // Theme App
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
-import AuthPage from "./Auth/authPage"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
-import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
 import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
 
 export default function Home() {
@@ -69,13 +62,6 @@ export default function Home() {
     const MobileView = matchMedia(' (max-width: 600px) ')
     const navigate = useNavigate()
 
-    // User Quote Context
-    const { setUserClickQuote } = useContext(UserQuoteContext)
-
-    // Music box context
-    const { statusMusicAxisY, setStatusMusicAxisY } = useContext(MusicBoxContext)
-
-
     const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
     </svg>
@@ -91,10 +77,6 @@ export default function Home() {
 
     // Theme App
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
-
-    // MusicBox
-    const { statePopupInfo, setStatePopupInfo } = useContext(MusicBoxContext)
-    const { popupReset, setPopupReset } = useContext(MusicBoxContext)
 
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
@@ -134,9 +116,6 @@ export default function Home() {
     }, [publicDataUser, token])
 
     // GET DATA JURNAL USER
-    const { outputDataUserJurnal, setOutputDataUserJurnal } = useContext(JurnalContext)
-
-
 
     return (
         <>
@@ -147,53 +126,6 @@ export default function Home() {
                         <ChooseAvatar heading={`Baguss ${username}!`} subHeading={'Sekarang, kita pilih avatar dulu yukk'} />
                     </span>
                 )} */}
-
-
-                {/* Popup from Reset in MusicBox */}
-                {popupReset && (
-                    <div className="flex items-center justify-center w-full h-full fixed z-[15]">
-                        <motion.div
-                            className="popup"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 50 }}
-                            transition={{ duration: 0.3 }}
-                            style={{
-                                zIndex: "2",
-                            }}
-                        >
-                            <PopupLegend
-                                resetInMusicBox={true}
-                                Judul={'Reset timer?'}
-                                Deskripsi={"Timer akan mulai dari 0 kembali."}
-                            />
-                        </motion.div>
-                        <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setPopupReset((prev) => !prev)} />
-                    </div>
-                )}
-
-                {/* Popup from INFO in MusicBox */}
-                {statePopupInfo && (
-                    <div className="flex items-center justify-center w-full h-full fixed z-[15]">
-                        <motion.div
-                            className="popup"
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 50 }}
-                            transition={{ duration: 0.3 }}
-                            style={{
-                                zIndex: "2",
-                            }}
-                        >
-                            <PopupLegend
-                                InfoMusicBox={true}
-                                Judul={'Brain Focus'}
-                                Deskripsi={'Memungkinkan anda untuk fokus pada pekerjaan anda, dengan timer dan musik yang tersedia.'}
-                            />
-                        </motion.div>
-                        <div className="z-[1] w-full h-full bg-[#00000080] fixed" onClick={() => setStatePopupInfo((prev) => !prev)} />
-                    </div>
-                )}
 
 
                 {/* {MobileView.matches ? ( */}
@@ -292,7 +224,7 @@ export default function Home() {
                                                                 </span>
                                                                 <div className="flex flex-col gap-[2px] justify-center">
                                                                     <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
-                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">Bergabung pada {user.joinedDate.slice(0, 10)}</p>
+                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">Bergabung pada {user.createdAt.slice(0, 10)}</p>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -342,14 +274,6 @@ export default function Home() {
 
                         {/* style={{opacity: animatePageMain ? '1' : '0'}}> */}
                         <div>
-                            <footer style={{ position: "fixed", bottom: "54px", left: "0px", maxWidth: "42rem", height: 'fit-content', margin: 'auto', padding: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "transparent", zIndex: "14", transform: statusMusicAxisY ? "translateY(0px)" : "translateY(163.5px)", transition: "transform 0.3s ease" }}>
-                                <div className="w-full">
-                                    <MusicBox />
-                                </div>
-                                <div className={`w-full h-[44px] p-[16px] ${themeActive ? "bg-[var(--bg-12)]" : "bg-stone-100"} `} style={{ borderTop: `1px solid ${themeActive ? 'var(--black-bg)' : 'var(--white-bg-200)'} ` }} onClick={() => setUserClickQuote((prev) => !prev)}>
-                                    <UserQuote />
-                                </div>
-                            </footer>
                             <NavFooter />
                         </div>
                     </div>

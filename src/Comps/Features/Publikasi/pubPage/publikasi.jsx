@@ -155,7 +155,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     const { getSavedPublikasi, setGetSavedPublikasi } = useContext(ArtikelContext)
     const [savedPub, setSavedPub] = useState(getSavedPublikasi)
-    console.log(savedPub)
     const [statusSave, setStatusSave] = useState(false)
     async function HandleSavePub(pubId) {
         setSavedPub((prev) => {
@@ -206,8 +205,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const savedPubPubId = getSavedPublikasi.map(item => item.pubId)
     const savedPubUsername = getSavedPublikasi.map(item => item.username)
     const publicDataUserUsername = publicDataUser.map(item => item.username)
-    console.log(savedPubUsername)
-    console.log(publicDataUserUsername)
 
     // RAND INDEX LIKE
     const [randomUserLikes, setRandomUserLikes] = useState({}); // Menyimpan random per pub.id
@@ -293,7 +290,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
             const data = await response.json()
             if (response.ok) {
                 setRefreshData(prev => !prev)
-                alert(data.Msg)
+                // alert(data.Msg)
 
                 if (commentPub.current) {
                     commentPub.current.value = ''
@@ -729,12 +726,13 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 <>
                                                                     {/* {onRenderImg ? ( */}
                                                                     <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+
                                                                         <img
-                                                                            src={`${pub.imageUrl}`}
+                                                                            src={pub.imageUrl
+                                                                            }
                                                                             alt="pub-image"
                                                                             className="w-full h-auto max-h-full object-cover rounded-[8px]"
                                                                             loading="lazy"
-                                                                            onLoad={HandleRenderImg}
                                                                         />
                                                                     </div>
                                                                     {/* ) : (

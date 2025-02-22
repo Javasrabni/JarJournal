@@ -13,28 +13,28 @@ export default function ChosseAvatarProvider({ children }) {
         }
     }, []); // GET USER TOKEN
 
-    useEffect(() => {
-        const GetAllAvatarAPI = async () => {
-            try {
-                const response = await fetch(`${API_URL_AUTH}/auth/avatar`, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                if (response.ok) {
-                    const { allAvatar } = await response.json()
-                    const mappingDataAvt = allAvatar.map(data => ({
-                        Id: data.id, urlAvt: data.url
-                    }))
-                    setGetAllAvatar(mappingDataAvt)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        GetAllAvatarAPI()
-    }, [])
+    // useEffect(() => {
+    //     const GetAllAvatarAPI = async () => {
+    //         try {
+    //             const response = await fetch(`${API_URL_AUTH}/auth/avatar`, {
+    //                 method: "GET",
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 }
+    //             })
+    //             if (response.ok) {
+    //                 const { allAvatar } = await response.json()
+    //                 const mappingDataAvt = allAvatar.map(data => ({
+    //                     Id: data.id, urlAvt: data.url
+    //                 }))
+    //                 setGetAllAvatar(mappingDataAvt)
+    //             }
+    //         } catch (err) {
+    //             console.error(err)
+    //         }
+    //     }
+    //     GetAllAvatarAPI()
+    // }, [])
 
     return (
         <ChooseAvatarContext.Provider value={{ getAllAvatar, setGetAllAvatar }}>

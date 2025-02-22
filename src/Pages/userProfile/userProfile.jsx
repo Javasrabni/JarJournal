@@ -26,7 +26,7 @@ export default function UserProfile() {
     const { MainDomain } = useContext(API_URL_CONTEXT)
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
-    const { getBadge, setGetBadge } = useContext(UserProfileContext)
+    // const { getBadge, setGetBadge } = useContext(UserProfileContext)
 
     const [statusPostRrSave, setStatusPostRrSave] = useState(true)
     const getRawDataUsername = publicDataUser.find(item => item.username === usernameId) //Filtering user porfile
@@ -75,7 +75,7 @@ export default function UserProfile() {
         const CopyText = `${MainDomain}/user/${usernameId}`;
         try {
             await navigator.clipboard.writeText(CopyText);
-            alert('Berhasil dicopy!');
+            alert('Tautan pengguna berhasil disalin');
         } catch (err) {
             console.error('Gagal mendapatkan user link', err);
             alert('Gagal mendapatkan user link');
@@ -133,7 +133,7 @@ export default function UserProfile() {
                                         <p className={`${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--white-bg-100)]'} mt-[-3px] `} style={{ fontSize: '11px' }}>
                                             <span className="flex flex-row gap-[6px] items-center">
                                                 {/* <span className="shrink-0">{kalenderIcon}</span> */}
-                                                <span className="mt-[2px]">Bergabung pada {getRawDataUsername.joinedDate.slice(0, 10)}</span>
+                                                <span className="mt-[2px]">Bergabung pada {getRawDataUsername.createdAt.slice(0, 10)}</span>
                                             </span>
                                         </p>
 

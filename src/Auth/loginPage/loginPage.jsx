@@ -26,6 +26,9 @@ const LoginPage = () => {
     const [error, setError] = useState('');
     const { success, setSuccess, statusSuccess } = useContext(API_URL_CONTEXT)
 
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
+
 
     const handleLogin = async () => {
         try {
@@ -38,6 +41,7 @@ const LoginPage = () => {
             const data = await response.json()
 
             if (response.ok) {
+                setRefreshData(prev => !prev)
                 setUsername(data.username)
                 setUserId(data.id)
                 setUserEmail(data.email)

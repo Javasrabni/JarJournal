@@ -38,10 +38,10 @@ export default function EditProfilePage() {
 
     // VALUE SEMENTARA
     useEffect(() => {
-        const findUser = publicDataUser.find(usn => usn.username === username)
-        setBioUserValue(findUser.userBio)
-        setLinkUserValue(findUser.userLink)
-        setUsernameValue(findUser.username)
+        const findUser = publicDataUser?.find(usn => usn.username === username)
+        setBioUserValue(findUser?.userBio)
+        setLinkUserValue(findUser?.userLink)
+        setUsernameValue(findUser?.username)
     }, [publicDataUser])
 
     const OnEditProfileBE = async () => {

@@ -38,32 +38,6 @@ export default function CatatanProvider({ children }) {
 
     const [lastEdit, setLastEdit] = useState('')
 
-    // FETCHING GET USER INFO
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const response = await fetch(`${API_URL_AUTH}/auth/user-info`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                const data = await response.json()
-
-                if (response.ok) {
-                    setUsername(data.username)
-                    setUserEmail(data.email)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        if (token) {
-            fetchUserInfo()
-        }
-    }, [])
-
     // FETCHING GET USER NOTE
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
@@ -73,7 +47,8 @@ export default function CatatanProvider({ children }) {
                 const response = await fetch(`${API_URL_NOTE}/get/catatan_user`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 })
                 if (response.ok) {
@@ -88,7 +63,7 @@ export default function CatatanProvider({ children }) {
         if (token) {
             FetchDataNote()
         }
-    }, [refreshData,token ])
+    }, [token, refreshData])
     return (
         <CatatanContext.Provider value={{ removeDraft, setRemoveDraft, note, setNote, onEditNoteIndex, setOnEditNoteIndex, onEditNote, setOnEditNote, valueOnNewNote, setValueOnNewNote, onNewNote, setOnNewNote, writeingNote, setWriteingNote, lastEdit, setLastEdit }}>
             {children}

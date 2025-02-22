@@ -5,7 +5,6 @@ import Header from "../Navbar-Top/Header"
 import Catatan from "./Catatan/Catatan"
 import EbookPage from "./eBookSection/ebookPage/ebook"
 import Jurnal from "./Jurnal/Jurnal"
-import BrainFocusPage from "./brainFocus/displayPage/brainFocusPage"
 import { ThemeAppContext } from "./Theme/toggleTheme.jsx/ThemeAppContext"
 import KalenderPage from "./kalender/kalenderPage/Kalender"
 import OnEditNote from "./Catatan/onEditNote/onEditNote"
@@ -41,7 +40,6 @@ export default function CodeBaseFeatures() {
                     <div>
                         {id === 'Jurnal' && <Jurnal />}
                         {id === 'Catatan' && <Catatan />}
-                        {id === 'BrainFocus' && <BrainFocusPage />}
                         {id === 'Kalender' && <KalenderPage />}
                         {id === 'Ebook' && <EbookPage />}
                         {id === 'EditCatatan' && <OnEditNote />}

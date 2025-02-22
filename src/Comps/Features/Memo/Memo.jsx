@@ -203,80 +203,80 @@ export default function Memo({ token }) {
     // Loading memo
     const [readyMemo, setReadyMemo] = useState(false)
 
-    const fetchMemo = async () => {
-        try {
-            const response = await fetch(`${API_URL_AUTH}/auth/get-memos`, {
-                method: "GET",
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setReadyMemo(true)
-                setValueMemo(data.memos); // Atur memo user
-            } else {
-                setReadyMemo(false)
-            }
-        } catch (err) {
-            console.error('Error fetching memo:', err);
-        }
-    };
+    // const fetchMemo = async () => {
+    //     try {
+    //         const response = await fetch(`${API_URL_AUTH}/auth/get-memos`, {
+    //             method: "GET",
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         });
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             setReadyMemo(true)
+    //             setValueMemo(data.memos); // Atur memo user
+    //         } else {
+    //             setReadyMemo(false)
+    //         }
+    //     } catch (err) {
+    //         console.error('Error fetching memo:', err);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (token) {
-            fetchMemo(); // Panggil fetchMemo setelah token tersedia
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //         fetchMemo(); // Panggil fetchMemo setelah token tersedia
+    //     }
+    // }, [token]);
 
 
-    const handleSaveMemo = async (newMemo) => {
-        const response = await fetch(`${API_URL_AUTH}/auth/save-memo`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ memos: [...valueMemo, newMemo] })
-        });
+    // const handleSaveMemo = async (newMemo) => {
+    //     const response = await fetch(`${API_URL_AUTH}/auth/save-memo`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${token}`
+    //         },
+    //         body: JSON.stringify({ memos: [...valueMemo, newMemo] })
+    //     });
 
-        if (response.ok) {
-            fetchMemo();
-        } else {
-            const error = await response.json();
-            console.error('Error saving memo:', error);
-        }
-    };
+    //     if (response.ok) {
+    //         fetchMemo();
+    //     } else {
+    //         const error = await response.json();
+    //         console.error('Error saving memo:', error);
+    //     }
+    // };
 
     // Add memo func in btn
-    const HandleAddMemo = () => {
+    // const HandleAddMemo = () => {
 
-        let delayAddMemo;
+    //     let delayAddMemo;
 
-        if (!memoInputValue) {
-            setIndicatorFromMemo(false)
-            setMemoInputValue('')
-            return
-        } else {
-            // setIndicatorFromMemo(false)
-            setValueMemo((prevValue) => [...prevValue, memoInputValue])
-            setVisibleMemo((prevValue) => [...prevValue, memoInputValue])
-        }
+    //     if (!memoInputValue) {
+    //         setIndicatorFromMemo(false)
+    //         setMemoInputValue('')
+    //         return
+    //     } else {
+    //         // setIndicatorFromMemo(false)
+    //         setValueMemo((prevValue) => [...prevValue, memoInputValue])
+    //         setVisibleMemo((prevValue) => [...prevValue, memoInputValue])
+    //     }
 
-        setOption1_Status(false)
-        setIndicatorFromMemo(false)
-        setMemoInputValue('')
+    //     setOption1_Status(false)
+    //     setIndicatorFromMemo(false)
+    //     setMemoInputValue('')
 
-        delayAddMemo = setTimeout(() => {
-            setActivePopupMemo(false)
-        }, 600)
+    //     delayAddMemo = setTimeout(() => {
+    //         setActivePopupMemo(false)
+    //     }, 600)
 
-        // import memo into server
-        handleSaveMemo(memoInputValue)
+    //     // import memo into server
+    //     handleSaveMemo(memoInputValue)
 
-        return () => clearTimeout(delayAddMemo)
+    //     return () => clearTimeout(delayAddMemo)
 
-    }
+    // }
 
 
 
@@ -327,7 +327,7 @@ export default function Memo({ token }) {
                      )}
                    </div> */}
 
-                            <button onClick={HandleAddMemo} style={SubmitMemo}>Tambah</button>
+                            {/* <button onClick={HandleAddMemo} style={SubmitMemo}>Tambah</button> */}
                         </div>
                     </div>
                 )}
