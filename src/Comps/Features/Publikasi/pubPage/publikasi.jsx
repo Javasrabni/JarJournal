@@ -421,12 +421,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                 <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                     {publikasi && (() => {
-                                                        const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                        const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                         return user ? (
                                                             <img
-                                                                src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
                                                                 alt="profile"
-                                                                className="w-[32px] h-[32px] rounded-[50px]"
+                                                                className="w-[32px] h-[32px] rounded-[50px] object-cover"
                                                             />
                                                         ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                     })()}
@@ -585,12 +585,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                             {publikasi && (() => {
-                                                                const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                                const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return user ? (
                                                                     <img
-                                                                        src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                        src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
                                                                         alt="profile"
-                                                                        className="w-[32px] h-[32px] rounded-[50px]"
+                                                                        className="w-[32px] h-[32px] rounded-[50px] object-cover"
                                                                     />
                                                                 ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                             })()}
@@ -748,12 +748,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
                                                         <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
                                                             {publikasi && (() => {
-                                                                const user = publikasi.find(user => user.userName === pub.userName); // Ambil user berdasarkan userName
+                                                                const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return user ? (
                                                                     <img
-                                                                        src={user.avatar || 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'}
+                                                                        src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
                                                                         alt="profile"
-                                                                        className="w-[32px] h-[32px] rounded-[50px]"
+                                                                        className="w-[32px] h-[32px] rounded-[50px] object-cover"
                                                                     />
                                                                 ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                             })()}

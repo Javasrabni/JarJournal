@@ -161,15 +161,15 @@ export default function Home() {
                                                     buttonFeatures={'Tulis'}
                                                 />
                                             </div>
-                                            <div>
+                                            {/* <div>
                                                 <CardFeatures
                                                     cardType2EBook={true}
                                                     onClickFeatures={'/ftr/Library'}
-                                                    descFeatures={'Bacaan gratis'}
+                                                    descFeatures={'Bacaan Harian'}
                                                     nameFeatures={"Library"}
                                                     buttonFeatures={'Baca'}
                                                 />
-                                            </div>
+                                            </div> */}
                                         </div>
                                         {/* Right side */}
                                         <div className="w-full grow-0 flex flex-col gap-[12px]">
@@ -217,9 +217,9 @@ export default function Home() {
                                                             <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
                                                                 <span>
                                                                     {user.avatar ? (
-                                                                        <img src={user.avatar.urlAvt} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
+                                                                        <img src={user.avatar} alt={user.username} className="w-[32px] h-[32px] rounded-full object-cover" />
                                                                     ) : (
-                                                                        <img src={'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
+                                                                        <img src={"https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"} alt={user.username} className="w-[32px] h-[32px] rounded-full" />
                                                                     )}
                                                                 </span>
                                                                 <div className="flex flex-col gap-[2px] justify-center">
@@ -288,7 +288,7 @@ export const FeedBackELM = ({ Text01, Text02, inHeader }) => {
     return (
         <div className="flex flex-col gap-[12px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
             <div>
-                <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS">{Text01}</a></p>
+                <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS" target="_blank">{Text01}</a></p>
             </div>
             <div>
                 <p className={`${inHeader ? 'text-[12px]' : 'text-[14px]'} text-[var(--blue-clr)]`}><a href="https://saweria.co/JJRCS" target="_blank">{Text02} </a></p>

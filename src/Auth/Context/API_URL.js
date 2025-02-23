@@ -43,7 +43,6 @@ export default function API_URL_PROVIDER({ children }) {
                     setUserId(data[0].id)
                     setUserEmail(data[0].email)
                     setIsLoading(false)
-
                 }
             } catch (err) {
                 console.error(err)
@@ -56,6 +55,7 @@ export default function API_URL_PROVIDER({ children }) {
 
     useEffect(() => {
         const getPublicDataUser = async () => {
+            setIsLoading(true)
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/public_userData`, {
                     method: "GET",
@@ -67,7 +67,8 @@ export default function API_URL_PROVIDER({ children }) {
                 }
             } catch (err) {
                 console.error(err)
-                setIsLoading(true)
+            } finally {
+                setIsLoading(false)
             }
         }
         getPublicDataUser()

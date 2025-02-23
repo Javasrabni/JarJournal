@@ -123,7 +123,7 @@ export default function EditProfilePage() {
                                                 <div className="w-fit m-auto h-fit flex items-center justify-center cursor-pointer z-[12]" onClick={HandleEditAvatar}>
                                                     <div className="absolute w-[100px] h-[100px] bg-[#00000090] rounded-[50px]" />
                                                     <span className="absolute">{cameraIcon}</span>
-                                                    <img src={item.avatar ? item.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px]' draggable='false' />
+                                                    <img src={item.avatar ? item.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={item.username + "user profile"} className='w-[100px] h-[100px] rounded-[50px] object-cover' draggable='false' />
                                                 </div>
                                                 <p className="text-[14px] text-[var(--black-subtext)] select-none">Foto profil</p>
                                             </div >

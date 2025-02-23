@@ -21,6 +21,9 @@ export default function Explore() {
     useEffect(() => {
         document.body.style.backgroundColor = themeActive ? 'var(--black-card)' : 'white'
     }, [])
+    // FUNC FOR FIND USER ON EXPLORE
+    const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT)
+    const [findedPublicUsers, setFindedPublicUsers] = useState([])
 
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
     const { dataPubToFilter, setDataPubToFilter } = useContext(ExploreContext)
@@ -43,8 +46,7 @@ export default function Explore() {
         totalLikePub: item.totalLikePub,
         likes: item.likes,
         komentar: item.komentar,
-        timeStamp: item.timeStamp,
-        imageUrl: item.imageUrl,
+        // timeStamp: item.timeStamp,
     }))
 
 
@@ -69,10 +71,9 @@ export default function Explore() {
             clearTimeout(delayOutput);
         }
     }
-
     function HandleChangeSearch(event) {
-        const filteringPublicUsername = usernameProfileData.filter(user =>
-            user.includes(valueInputExploreSementara)
+        const filteringPublicUsername = publicDataUser.filter(user =>
+            user.username.includes(valueInputExploreSementara)
         )
         setOutputSearchUsernameProfileData(filteringPublicUsername)
     }
@@ -97,16 +98,14 @@ export default function Explore() {
         }
     }
 
-    // FUNC FOR FIND USER ON EXPLORE
-    const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT)
-    const [findedPublicUsers, setFindedPublicUsers] = useState([])
+
 
     // console.log(findedPublicUsers)
     useEffect(() => {
         if (outputSearchUsernameProfileData.length < 1) {
             return
         }
-        const userFinded = publicDataUser.filter(user => outputSearchUsernameProfileData.includes(user.username))
+        const userFinded = publicDataUser.filter(user => user.username.includes(outputSearchUsernameProfileData))
         setFindedPublicUsers(userFinded)
     }, [outputSearchUsernameProfileData, publicDataUser])
 
@@ -161,7 +160,7 @@ export default function Explore() {
                                 {findedPublicUsers.map(user => (
                                     <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)}>
                                         <span className="flex flex-row gap-[8px] items-center">
-                                            <img src={user.avatar.urlAvt} alt="" className="w-[30px] h-[30px] rounded-[50px]" />
+                                            <img src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_30,h_30,q_auto,f_auto/no_profile_user_emaldm.svg"} alt="" className="w-[30px] h-[30px] rounded-[50px]" />
                                             <p className="text-[12px] text-white">{user.username}</p>
                                         </span>
                                     </div>
@@ -183,7 +182,7 @@ export default function Explore() {
                             <Publikasi publikasiData={filteredPub} />
                         ) : (
                             <>
-                            {/* ON TIPE EXPLORE */}
+                                {/* ON TIPE EXPLORE */}
                                 {tipeExplore ? (
                                     <Publikasi publikasiData={publikasi} />
                                 ) : (
@@ -194,7 +193,7 @@ export default function Explore() {
 
                         {statusSearchExplore && filteredPub.length <= 0 && (
                             <>
-                            {/* ON TIPE EXPLORE */}
+                                {/* ON TIPE EXPLORE */}
                                 {tipeExplore ? (
                                     <Publikasi publikasiData={publikasi} />
                                 ) : (

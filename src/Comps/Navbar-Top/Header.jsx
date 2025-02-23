@@ -19,7 +19,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     // GET TOKEN    
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    
+
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
@@ -34,8 +34,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         pathLocation.pathname === "/ftr/Jurnal" && setJudulHeader("Jurnal")
         pathLocation.pathname === "/ftr/Catatan" && setJudulHeader("Catatan")
         pathLocation.pathname === "/ftr/Library" && setJudulHeader("Library")
-        pathLocation.pathname === "/BrainFocus" && setJudulHeader("Brain Focus")
-    }, [])
+        pathLocation.pathname === "/KalenderPlanner" && setJudulHeader("Kalender Planner")
+    }, [pathLocation.pathname])
 
     const [backPageHeader, setbackPageHeader] = useState(false)
     useEffect(() => {
@@ -45,7 +45,10 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         if (pathLocation.pathname === '/ftr/Jurnal') {
             setbackPageHeader(true)
         }
-    }, [backPageHeader])
+        if (pathLocation.pathname === '/KalenderPlanner') {
+            setbackPageHeader(true)
+        }
+    }, [pathLocation.pathname])
 
     // Memo Section
     const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, setValueMemo, valueMemo, afterEditValueMemo, setAfterEditValueMemo, editValueMemoStatus, setEditValueMemoStatus } = useContext(MemoContext)
@@ -150,11 +153,15 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         } else if (pathLocation.pathname === '/ftr/Jurnal') {
             navigate('/dashboard')
         }
+
+        if (pathLocation.pathname === '/KalenderPlanner') {
+            navigate('/dashboard')
+        }
     }
 
     // HIDE SETTING ON SETTING PAGE 
     useEffect(() => {
-        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan']
+        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan', '/KalenderPlanner']
         if (pathToHideSetting.includes(pathLocation.pathname)) {
             setHideSetting(true)
         }
@@ -182,7 +189,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                             </div>
                         ) : (
                             // style={{ filter: "drop-shadow(0px 0px 12px gold)" }}
-                            < img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1734756936/LogoJJR_TrsprnLogo_n9ojre.webp" alt="JarJournal Icon" style={{ width: '28px', height: '28px', filter: 'brightness(150%)' }} loading="lazy" />
+                            < img src="https://res.cloudinary.com/dwf753l9w/image/upload/w_28,h_28,c_fill,q_auto,f_auto/v1734756936/LogoJJR_TrsprnLogo_n9ojre.webp" alt="JarJournal Icon" style={{ width: '28px', height: '28px', filter: 'brightness(150%)' }} loading="lazy" />
                         )}
                         <div>
                             <h1 className={`text-[12px] font-semibold text-${themeActive ? "white" : "black"}`}>{judulHeader}</h1>

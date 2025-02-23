@@ -120,7 +120,7 @@ export default function UserProfile() {
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
                                 {getRawDataUsername && usernameId == getRawDataUsername.username && (
                                     <>
-                                        <img src={getRawDataUsername.avatar ? getRawDataUsername.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover" onContextMenu={(e) => e.preventDefault()} />
+                                        <img src={getRawDataUsername.avatar ? getRawDataUsername.avatar : "https://res.cloudinary.com/dwf753l9w/image/upload/w_100,h_100,q_auto,f_auto/no_profile_user_emaldm.svg"} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover w-full h-full" onContextMenu={(e) => e.preventDefault()} />
                                     </>
                                 )}
                             </div>
@@ -251,9 +251,9 @@ export default function UserProfile() {
                             ) : (
                                 <>
                                     {statusPostRrSave ? (
-                                        <p className="text-[12px] font-[600]">Belum ada postingan</p>
+                                        <p className="text-[12px] font-[500] text-[var(--black-subtext)]">Belum ada postingan</p>
                                     ) : (
-                                        <p className="text-[12px] font-[600]">Belum ada likes</p>
+                                        <p className="text-[12px] font-[500] text-[var(--black-subtext)]">{getRawDataUsername.username} belum menyimpan sesuatu :/</p>
                                     )}
                                 </>
                             )}

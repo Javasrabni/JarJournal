@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import './style.css';
 import { useNavigate } from "react-router-dom";
 import NavFooter from "../Comps/Footer/Navigation footer/NavFooter";
+import { API_URL_CONTEXT } from "../Auth/Context/API_URL";
 
 // Komponen untuk merender pesan dengan ReactMarkdown
 const MarkdownMessage = React.memo(({ message }) => (
@@ -12,6 +13,11 @@ const MarkdownMessage = React.memo(({ message }) => (
 ));
 
 export default function Chatbot() {
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+
+    const [clearChatPopup, setclearChatPopup] = useState(false)
+
     // Func Navigate (var)
     const navigate = useNavigate()
 
@@ -221,6 +227,21 @@ export default function Chatbot() {
 
             // Simulasi efek mengetik
             simulateTypingEffect(aiResponse);
+
+            let userIdAsker = null
+            if (userId) {
+                userIdAsker = userId
+            } else {
+                userIdAsker = null
+            }
+
+            // SEND STRING INTO DB
+            await fetch(`${API_URL_AUTH}/string_chatbot`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }, body: JSON.stringify({ userId: userIdAsker, asking: userInput })
+            })
         } catch (error) {
             console.error("Error:", error);
             appendMessage("ai", "Maaf, terjadi kesalahan.");
@@ -263,161 +284,188 @@ export default function Chatbot() {
     const askIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
     </svg>
-
+    const delIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4" style={{ color: 'tomato' }}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+    </svg>
 
 
     return (
-        <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100svh]`}>
-            <div className={`h-[45px] w-full flex flex-row gap-[16px] items-center justify-between px-[16px] fixed ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'}`} role="heading">
+        <>
 
-                <div>
-                    <p className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] font-[600]`}>JJR Chatbot</p>
-                </div>
+            {clearChatPopup && (
+                <div className="fixed left-0 top-0 w-full h-full z-[2]">
+                    <div className="p-[16px] z-[2] w-[260px] h-fit bg-white rounded-lg flex flex-row justify-between items-center gap-[12px] absolute left-[50%] top-[40%] translate-x-[-50%]">
+                        <p className="text-black text-[12px] font-[500]">Bersihkan Obrolan</p>
+                        <button className="text-white py-[6px] px-[16px] text-[10px] font-[500] bg-[tomato] rounded-lg" onClick={() => { localStorage.removeItem('saveChat'); setclearChatPopup(false); navigate(0); }}>Hapus</button>
+                    </div>
+                    <div className="fixed w-full h-full bg-[#00000050] left-0 top-0 z-[1]" onClick={() => setclearChatPopup(false)} />
 
-                {/* -------------------- HEADING -------------------- */} 
-                {/* <div className="flex flex-row items-center gap-[18px]">
+                </div >
+            )
+            }
+            <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-full`}>
+                <div className={`h-[45px] w-full flex flex-row gap-[16px] items-center justify-between px-[16px] sticky top-0 ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'}`} role="heading">
+
+                    <div>
+                        <p className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] font-[600]`}>JJR Chatbot</p>
+                    </div>
+
+                    {/* -------------------- HEADING -------------------- */}
+                    {/* <div className="flex flex-row items-center gap-[18px]">
                     <span className={`${themeActive ? 'text-white' : 'text-black'}`} onClick={() => navigate('/dashboard')}>{backIcon}</span> */}
 
                     {/* DROPDOWN AGENT ROLE */}
                     {/* <span className="flex flex-row gap-[12px] items-center"> */}
-                        {/* DROPDOWN SECT */}
-                        {/* <div className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} flex flex-row gap-[6px] items-center rounded-[4px] py-[2px] px-[6px]`}>
+                    {/* DROPDOWN SECT */}
+                    {/* <div className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} flex flex-row gap-[6px] items-center rounded-[4px] py-[2px] px-[6px]`}>
                             <select name="role" className={`${themeActive ? 'bg-[var(--black-bg)] text-white' : 'bg-[var(--white-bg-100)] text-black'} text-[12px] outline-0 border-0 `} >
                                 <option value="RoleAgent">Set RoleAgent</option>
                                 <option value="Partner">Interactive AI</option>
                                 <option value="Asking">OnPoint AI</option>
                             </select>
                         </div> */}
-                        {/* INFO ICON */}
-                        {/* <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" >{askIcon}</span> */}
+                    {/* INFO ICON */}
+                    {/* <span className={`${themeActive ? 'text-white' : 'text-black'} text-[12px] cursor-pointer`} role="button" >{askIcon}</span> */}
                     {/* </span> */}
 
                     {/* <div className="flex flex-row items-center gap-[16px]">
                         <p className={`font-[600] text-[14px] ${themeActive ? 'text-white' : 'text-black'}`}>JJRC Chat</p>
                     </div> */}
-                {/* </div> */}
-                {/* -------------------- || -------------------- */}
+                    {/* </div> */}
+                    {/* -------------------- || -------------------- */}
 
-                <div className="flex flex-row gap-[16px] items-center ml-auto" style={{ color: themeActive ? "white" : "black" }}>
+                    <div className="flex flex-row gap-[16px] items-center ml-auto" style={{ color: themeActive ? "white" : "black" }}>
 
-                    <div>
-                        <span role="button"  className={`${themeActive ? 'text-white' : 'text-black'}`}>
-                            {dotIcon}
-                        </span>
+                        <div>
+                            <span role="button" className={`${themeActive ? 'text-white' : 'text-black'}`} onClick={() => setclearChatPopup(true)}>
+                                {delIcon}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col justify-center h-full" style={{ padding: "16px 16px 0px 16px" }}>
+                    <div
+                        id="messages"
+                        style={{
+                            // padding: "10px",
+                            overflowY: "scroll",
+                            marginBottom: "160px",
+                            color: themeActive ? 'white' : 'black',
+                            height: messages.length > 0 ? '100%' : 'calc(100vh - 180px)'
+                        }}
+                    >
+                        {messages.length >= 1 ? (
+                            <>
+                                {messages.map((msg, index) => (
+                                    <div
+                                        key={index}
+                                        style={{
+                                            textAlign: msg.sender === "user" ? "right" : "left",
+                                            margin: "12px 0",  // Menjaga jarak antar pesan
+                                            fontSize: '12px',
+                                            overflow: 'hidden',  // Mencegah overflow
+                                            whiteSpace: 'pre-wrap',  // Membungkus teks, tetapi tidak menyebabkan overflow
+                                        }}
+                                        id="ResAi"
+                                    >
+                                        {msg.sender !== "user" ? (
+                                            // BOT
+                                            <>
+                                                {msg.sender !== "user" && (
+                                                    <div className="flex jsutify-start">
+                                                        <span className="flex flex-row gap-[16px] ">
+                                                            <strong>{JJRCIcon}</strong>
+                                                            <div className="pt-[8px]">
+                                                                <MarkdownMessage message={msg.message} />
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </>
+                                        ) : (
+                                            // USER
+                                            <>
+                                                {msg.sender === "user" && (
+                                                    <div className="flex flex-col justify-end items-end gap-[6px]">
+                                                        <strong>Kamu</strong>
+                                                        <span className={` ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} py-[6px] px-[12px] rounded-lg w-fit text-start`}>
+                                                            <MarkdownMessage message={msg.message} />
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
+                                <div ref={messagesEndRef} />
+                                {typingResponse && (
+                                    <div style={{ textAlign: "left", fontSize: "12px", margin: "12px 0" }}>
+                                        <div className="flex jsutify-start">
+                                            <span className="flex flex-row gap-[16px] ">
+                                                <strong>{JJRCIcon}</strong>
+                                                <div className="pt-[8px]">
+                                                    {typingResponse}
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className="h-full w-full flex flex-col items-center justify-center gap-[6px]">
+                                <i className="fa-solid fa-fish" style={{ fontSize: '32px', color: 'var(--black-bg)' }}></i>
+                                <p className="text-[12px] text-[var(--black-subtext)]">Ayo kita mulai percakapan</p>
+                            </div>
+                        )}
+                    </div>
+                    <div className="w-full h-fit flex flex-col fixed bottom-0 left-0">
+                        <div className="w-full h-[32px] bg-gradient-to-b from-transparent to-[var(--bg-12)] absolute top-[-32px] left-0" />
+                        <div className="flex flex-col w-full gap-[8px] pb-[64px] relative bottom-0 left-0 p-[16px] bg-[var(--bg-12)]">
+                            {/* Gradient Effect */}
+
+                            <span className="flex flex-row w-full h-[45px]">
+                                <textarea
+                                    type="text"
+                                    id="user-input"
+                                    placeholder="Ajak ngobrol ajaa..."
+                                    ref={promptInputRef}
+                                    style={{
+                                        width: "100%",
+                                        padding: "12px 16px",
+                                        marginRight: "5px",
+                                        fontSize: "12px",
+                                        backgroundColor: themeActive ? "var(--black-bg)" : "var(--white-bg-100)",
+                                        borderRadius: "50px",
+                                        color: themeActive ? "white" : "black",
+                                        border: "none",
+                                        outline: "none",
+                                        resize: "none"
+                                    }}
+                                    autoComplete="off"
+                                    value={userInput}
+                                    onChange={(e) => setUserInput(e.target.value)}
+                                />
+                                <button
+                                    onClick={handleSend}
+                                    className={`${themeActive ? "bg-[var(--black-bg)] text-white" : "bg-[var(--white-bg-100)] text-black"
+                                        } py-[14px] px-[18px] rounded-[50px]`}
+                                >
+                                    {sendIcon}
+                                </button>
+                            </span>
+
+                            <span className="pl-[6px]">
+                                <p className="text-[11px]" style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>
+                                    *AI ini dirancang sebagai partner ngobrol dan belajar.
+                                </p>
+                            </span>
+                        </div>
+
+                        <NavFooter />
                     </div>
                 </div>
             </div>
-
-            <div className="flex flex-col justify-center h-full" style={{ padding: "16px 16px 0px 16px" }}>
-                <div
-                    id="messages"
-                    style={{
-                        // padding: "10px",
-                        overflowY: "scroll",
-                        marginBottom: "10px",
-                        color: themeActive ? 'white' : 'black',
-                        height: '73vh'
-                    }}
-                >
-                    {messages.length >= 1 ? (
-                        <>
-                            {messages.map((msg, index) => (
-                                <div
-                                    key={index}
-                                    style={{
-                                        textAlign: msg.sender === "user" ? "right" : "left",
-                                        margin: "12px 0",  // Menjaga jarak antar pesan
-                                        fontSize: '12px',
-                                        overflow: 'hidden',  // Mencegah overflow
-                                        whiteSpace: 'pre-wrap',  // Membungkus teks, tetapi tidak menyebabkan overflow
-                                    }}
-                                    id="ResAi"
-                                >
-                                    {msg.sender !== "user" ? (
-                                        // BOT
-                                        <>
-                                            {msg.sender !== "user" && (
-                                                <div className="flex jsutify-start">
-                                                    <span className="flex flex-row gap-[16px] ">
-                                                        <strong>{JJRCIcon}</strong>
-                                                        <div className="pt-[8px]">
-                                                            <MarkdownMessage message={msg.message} />
-                                                        </div>
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        // USER
-                                        <>
-                                            {msg.sender === "user" && (
-                                                <div className="flex flex-col justify-end items-end gap-[6px]">
-                                                    <strong>Kamu</strong>
-                                                    <span className={` ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} py-[6px] px-[12px] rounded-lg w-fit text-start`}>
-                                                        <MarkdownMessage message={msg.message} />
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                            <div ref={messagesEndRef} />
-                            {typingResponse && (
-                                <div style={{ textAlign: "left", fontSize: "12px", margin: "12px 0" }}>
-                                    <div className="flex jsutify-start">
-                                        <span className="flex flex-row gap-[16px] ">
-                                            <strong>{JJRCIcon}</strong>
-                                            <div className="pt-[8px]">
-                                                {typingResponse}
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className="h-full w-full flex flex-col items-center justify-center gap-[6px]">
-                            <i className="fa-solid fa-fish" style={{ fontSize: '32px', color: 'var(--black-bg)' }}></i>
-                            <p className="text-[12px] text-[var(--black-subtext)]">Ayo kita mulai percakapan</p>
-                        </div>
-                    )}
-                </div>
-                <div className="flex flex-col w-full gap-[8px] pb-[64px]">
-                    <span className="flex flex-row w-full h-[45px]">
-                        <textarea
-                            type="text"
-                            id="user-input"
-                            placeholder="Ajak ngobrol ajaa..."
-                            ref={promptInputRef}
-                            // autoFocus
-                            style={{
-                                width: "100%",
-                                padding: "12px 16px",
-                                marginRight: "5px",
-                                fontSize: '12px',
-                                backgroundColor: themeActive ? 'var(--black-bg)' : 'var(--white-bg-100)',
-                                borderRadius: '50px',
-                                color: themeActive ? 'white' : 'black',
-                                border: 'none',
-                                outline: 'none',
-                                resize: 'none'
-                            }}
-                            autoComplete="off"
-                            value={userInput}
-                            onChange={(e) => setUserInput(e.target.value)}
-                        // onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                        />
-                        <button onClick={handleSend} className={`${themeActive ? "bg-[var(--black-bg)] text-white" : "bg-[var(--white-bg-100)] text-black"} py-[14px] px-[18px] rounded-[50px]`}>
-                            {sendIcon}
-                        </button>
-                    </span>
-                    <span className="pl-[6px]">
-                        <p className="text-[11px] " style={{ color: themeActive ? "var(--white-bg-200)" : "black" }}>*AI ini dirancang sebagai partner ngobrol dan belajar.</p>
-                    </span>
-                </div>
-                <NavFooter />
-            </div>
-        </div>
+        </>
     );
 };

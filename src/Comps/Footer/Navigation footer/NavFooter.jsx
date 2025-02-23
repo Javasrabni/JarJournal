@@ -52,8 +52,9 @@ export default function NavFooter() {
             <div onClick={() => navigate('/Explore')} className="cursor-pointer">
                 <span>{globeIcon}</span>
             </div>
-            <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer">
+            <div onClick={() => navigate('/JJR-ChatBot')} className="cursor-pointer flex flex-col gap-[4px] items-center">
                 <i class="fa-solid fa-robot"></i>
+                <p className="text-[8px]">AI ChatBot</p>
                 {/* <span>{cubeIcon}</span> */}
             </div>
             {username && token && (
