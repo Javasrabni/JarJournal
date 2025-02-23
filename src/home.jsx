@@ -19,6 +19,7 @@ import Skeleton from "react-loading-skeleton"
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRef } from "react"
 import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
+import { ArtikelContext } from "./Comps/Features/Publikasi/Context/artikelContext"
 
 // Cartjs
 import { Line } from 'react-chartjs-2';
@@ -115,7 +116,9 @@ export default function Home() {
         }
     }, [publicDataUser, token])
 
-    // GET DATA JURNAL USER
+    // STATE ON UPLOAD PUBLIKASI
+    const { onUploadPubLoading, setOnUploadPubLoading } = useContext(ArtikelContext)
+    const { onProgressUpPub, setonProgressUpPub } = useContext(ArtikelContext)
 
     return (
         <>
@@ -130,6 +133,20 @@ export default function Home() {
 
                 {/* {MobileView.matches ? ( */}
                 <div className={`max-w-[42rem] m-[auto] h-[100lvh] flex justify-center ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-white'}`} style={{ paddingBottom: '60px' }}>
+                    {onUploadPubLoading && (
+                        <div className="fixed top-0 left-[50%] translate-x-[-50%] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] z-[30]">
+                            <div className="flex flex-col items-center justify-between p-[32px] w-full gap-[6px]">
+                                <div className="flex w-full justify-between">
+                                    <span className="text-[12px] font-bold text-white">Uploading..</span>
+                                    <span className="text-[12px] font-bold text-white">{onProgressUpPub}%</span>
+                                </div>
+                                <div className="w-full bg-[var(--black-bg)] rounded-full h-[6px]">
+                                    <div className="bg-[var(--blue-clr)] h-[6px] rounded-full transition-all duration-300 ease-in-out" style={{ width: `${onProgressUpPub}%` }}></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    )}
                     <div className={`w-full h-full flex flex-col gap-[8px] justify-between`}>
                         <div>
                             <header>

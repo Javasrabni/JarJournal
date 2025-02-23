@@ -125,9 +125,27 @@ export default function Explore() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
 
+    // STATE ON UPLOAD PUBLIKASI
+    const { onUploadPubLoading, setOnUploadPubLoading } = useContext(ArtikelContext)
+    const { onProgressUpPub, setonProgressUpPub } = useContext(ArtikelContext)
+
 
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-[100vh] max-w-[42rem] px-[16px] m-auto py-[16px]`}>
+            {onUploadPubLoading && (
+                <div className="fixed top-0 left-[50%] translate-x-[-50%] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] z-[30]">
+                    <div className="flex flex-col items-center justify-between p-[32px] w-full gap-[6px]">
+                        <div className="flex w-full justify-between">
+                            <span className="text-[12px] font-bold text-white">Uploading..</span>
+                            <span className="text-[12px] font-bold text-white">{onProgressUpPub}%</span>
+                        </div>
+                        <div className="w-full bg-[var(--black-bg)] rounded-full h-[6px]">
+                            <div className="bg-[var(--blue-clr)] h-[6px] rounded-full transition-all duration-300 ease-in-out" style={{ width: `${onProgressUpPub}%` }}></div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
 
             <div className={`h-[100vh] w-full flex flex-col m-auto`}>
                 {/* TOP SECT */}

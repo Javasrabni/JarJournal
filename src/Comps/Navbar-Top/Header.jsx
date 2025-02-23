@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { MemoContext } from "../Features/Memo/MemoContext";
 import { PopupFrSettingsContext } from "../Popup_settings/popupSetting/boxPopupFromSetting";
 import { ThemeAppContext } from "../Features/Theme/toggleTheme.jsx/ThemeAppContext";
-import LoginPage from "../../Auth/loginPage/loginPage";
-import DropdownMenu from "./menuComp/dropdownMenu";
 import { API_URL_CONTEXT } from "../../Auth/Context/API_URL";
 import Skeleton from "react-loading-skeleton";
 import { CatatanContext } from "../Features/Catatan/catatanContex";

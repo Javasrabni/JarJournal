@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
 import { ArtikelContext } from "../Context/artikelContext"
+import axios from "axios"
 
 export default function ArtikelForm() {
     // NAVIGATE
@@ -9,6 +10,8 @@ export default function ArtikelForm() {
 
     // STATE
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
+    const { onUploadPubLoading, setOnUploadPubLoading } = useContext(ArtikelContext)
+    const { onProgressUpPub, setonProgressUpPub } = useContext(ArtikelContext)
     const [judulPublikasi, setJudulPublikasi] = useState(null)
     const [newPublikasi, setNewPublikasi] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null)
@@ -38,53 +41,63 @@ export default function ArtikelForm() {
     // TOTAL LIKE PUB
     const { likePub, setLikePub } = useContext(ArtikelContext)
 
+    const [onLoading, setLoading] = useState(false)
+
 
     const HandleAddPub = async () => {
+
         if (!judulPublikasi || !newPublikasi) {
             alert('judul dan konten dibutuhkan!');
             return;
         }
-
-        const articleData = new FormData()
-        articleData.append('userId', userId)
-        if (judulPublikasi) {
-            articleData.append('judulContent', judulPublikasi)
-        }
-        if (newPublikasi) {
-            articleData.append('content', newPublikasi)
-        }
-        if (username) {
-            articleData.append('userName', username)
-        }
-        if (likePub) {
-            articleData.append('totalLikePub', likePub)
-
-        }
-        if (selectedImage) {
-            articleData.append('file', selectedImage)
-        }
-
         try {
-            const response = await fetch(`${API_URL_PUB}/post/userPublikasi`, {
-                method: "POST",
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                body: articleData
-            });
+            setOnUploadPubLoading(true)
+            navigate('/dashboard')
+            const articleData = new FormData()
+            articleData.append('userId', userId)
+            if (judulPublikasi) {
+                articleData.append('judulContent', judulPublikasi)
+            }
+            if (newPublikasi) {
+                articleData.append('content', newPublikasi)
+            }
+            if (username) {
+                articleData.append('userName', username)
+            }
+            if (likePub) {
+                articleData.append('totalLikePub', likePub)
 
-            const data = await response.json()
-            if (response.ok) {
-                setSelectedImage(null)
+            }
+            if (selectedImage) {
+                articleData.append('file', selectedImage)
+            }
+            const response = await axios.post(`${API_URL_PUB}/post/userPublikasi`, articleData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: (ProgressEvent) => {
+                    const persen = Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total);
+                    setonProgressUpPub(persen)
+                }
+            })
+
+            const data = response.data
+            if (response.status === 200 || response.status === 201) {
+                setSelectedImage(null);
                 setNewPublikasi(''); // Reset input
-                navigate('/Explore') // after publish, return path
-                setRefreshData(prev => !prev)
+                navigate('/Explore'); // Navigate setelah upload berhasil
+                setRefreshData(prev => !prev);
             } else {
                 alert(data.ErrMsg);
             }
         } catch (err) {
             console.error(`Error adding publication: ${err}`);
+        } finally {
+            setOnUploadPubLoading(false)
+            setonProgressUpPub(0)
         }
+
     };
 
     return (

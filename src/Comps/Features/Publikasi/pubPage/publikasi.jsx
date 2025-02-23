@@ -79,20 +79,21 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         if (!confirm) return
 
         try {
-            const response = await fetch(`del-pub/${id}`, {
+            const response = await fetch(`${API_URL_PUB}/delete/user_publikasi`, {
                 method: 'DELETE',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username }),
+                body: JSON.stringify({ userId: userId, pubId: id }),
             });
 
+            const data = await response.json()
             if (response.ok) {
-                setPublikasi((prev) => prev.filter((pub) => pub.id !== id)); // Perbarui state
-                alert('Clips berhasil dihapus');
+                setOnSettingPost(false)
+                setRefreshData(prev => !prev)
             } else {
-                const errorData = await response.json();
-                alert(errorData.message); // Tampilkan pesan error dari server
+                alert(data.Msg)
             }
         } catch (err) {
             console.error(`Error deleting publication: ${err}`);

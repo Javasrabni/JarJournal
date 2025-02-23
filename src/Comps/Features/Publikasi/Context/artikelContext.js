@@ -18,6 +18,9 @@ export default function ArtikelProvider({ children }) {
 
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
+    const [onUploadPubLoading, setOnUploadPubLoading] = useState(false)
+    const [onProgressUpPub, setonProgressUpPub] = useState(0)
+
     useEffect(() => {
         const fetchPub = async () => {
             setLoading(true)
@@ -103,7 +106,7 @@ export default function ArtikelProvider({ children }) {
 
 
     return (
-        <ArtikelContext.Provider value={{ getSavedPublikasi, setGetSavedPublikasi, komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
+        <ArtikelContext.Provider value={{ onProgressUpPub, setonProgressUpPub, onUploadPubLoading, setOnUploadPubLoading, getSavedPublikasi, setGetSavedPublikasi, komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
             {children}
         </ArtikelContext.Provider>
     )
