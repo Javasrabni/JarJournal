@@ -23,7 +23,6 @@ export default function Explore() {
     }, [])
     // FUNC FOR FIND USER ON EXPLORE
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT)
-    const [findedPublicUsers, setFindedPublicUsers] = useState([])
 
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
     const { dataPubToFilter, setDataPubToFilter } = useContext(ExploreContext)
@@ -36,21 +35,6 @@ export default function Explore() {
     const { usernameProfileData, setUsernameProfileData } = useContext(UserProfileContext) // GET API USERNAME DATA 
     const [outputSearchUsernameProfileData, setOutputSearchUsernameProfileData] = useState([])
 
-    const mergeJudulnContentPub = publikasi.map(item => ({
-        // GET OBJ OF PUBLICATION STRUCTURE TO MAPPING OUTPUT
-        id: item.id,
-        userName: item.userName,
-        judulContent: item.judulContent,
-        content: item.content,
-        imageUrl: item.imageUrl,
-        totalLikePub: item.totalLikePub,
-        likes: item.likes,
-        komentar: item.komentar,
-        // timeStamp: item.timeStamp,
-    }))
-
-
-
     function HandleSearchExplore() {
         if (!valueInputExploreSementara || !valueInputExplore) return
         // setValueInputExplore(event.target.value.toLowerCase())
@@ -58,12 +42,12 @@ export default function Explore() {
         // setValueInputExploreSementara('') // clear input
         if (inputSearchExploreRef.current) inputSearchExploreRef.current.blur() // unfocus input 
         const delayOutput = setTimeout(() => {
-            const filteringPub = mergeJudulnContentPub.filter(item =>
+            const filteringPub = publikasi.filter(item =>
                 item.judulContent.toLowerCase().includes(valueInputExplore) ||
                 item.content.toLowerCase().includes(valueInputExplore)
             )
             setFilteredPub(filteringPub)
-        }, 400)
+        }, 300)
 
         // LOGIKA JIKA VALUE INPUT TIDAK COCOK DENGAN DATA TOPIK
         filteredPub.length <= 0 ? setValueDsntMatchWithPub(true) : setValueDsntMatchWithPub(false)
@@ -71,11 +55,14 @@ export default function Explore() {
             clearTimeout(delayOutput);
         }
     }
-    function HandleChangeSearch(event) {
+    function HandleChangeSearch() {
         const filteringPublicUsername = publicDataUser.filter(user =>
-            user.username.includes(valueInputExploreSementara)
+            user.username.toLowerCase().includes(valueInputExploreSementara.toLowerCase())
         )
-        setOutputSearchUsernameProfileData(filteringPublicUsername)
+        const delay = setTimeout(() => {
+            setOutputSearchUsernameProfileData(filteringPublicUsername)
+        }, 300)
+        return () => clearTimeout(delay)
     }
 
     useEffect(() => {
@@ -97,17 +84,6 @@ export default function Explore() {
             return () => clearTimeout(delay)
         }
     }
-
-
-
-    // console.log(findedPublicUsers)
-    useEffect(() => {
-        if (outputSearchUsernameProfileData.length < 1) {
-            return
-        }
-        const userFinded = publicDataUser.filter(user => user.username.includes(outputSearchUsernameProfileData))
-        setFindedPublicUsers(userFinded)
-    }, [outputSearchUsernameProfileData, publicDataUser])
 
     // tinggi full height client 
     const innerHeightWindowPortClient = window.innerHeight
@@ -173,13 +149,18 @@ export default function Explore() {
                         )}
 
                         {/* LOGIC FOR SEARCH PUBLIC USER */}
-                        {!statusSearchExplore && outputSearchUsernameProfileData && valueInputExploreSementara.length >= 4 && (
+                        {!statusSearchExplore && outputSearchUsernameProfileData && valueInputExploreSementara.length >= 2 && (
                             <>
-                                {findedPublicUsers.map(user => (
-                                    <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)}>
-                                        <span className="flex flex-row gap-[8px] items-center">
-                                            <img src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_30,h_30,q_auto,f_auto/no_profile_user_emaldm.svg"} alt="" className="w-[30px] h-[30px] rounded-[50px]" />
-                                            <p className="text-[12px] text-white">{user.username}</p>
+                                {outputSearchUsernameProfileData.map(user => (
+                                    <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)} style={{ transition: 'all 0.3s' }}>
+                                        <span className="flex flex-row gap-[8px] items-center justify-between">
+                                            <span className="flex flex-row gap-[12px] items-center">
+                                                <img src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_30,h_30,q_auto,f_auto/no_profile_user_emaldm.svg"} alt="" className="w-[30px] h-[30px] rounded-[50px]" />
+                                                <p className="text-[12px] text-white">{user.username}</p>
+                                            </span>
+                                            <span>
+                                                <p className="text-[12px] text-[var(--black-subtext)]">{user.userBio.slice(0, 10)}...</p>
+                                            </span>
                                         </span>
                                     </div>
                                 ))}
@@ -204,7 +185,7 @@ export default function Explore() {
                                 {tipeExplore ? (
                                     <Publikasi publikasiData={publikasi} />
                                 ) : (
-                                    <p>lorem ipsum</p>
+                                    <p>Akan tersedia</p>
                                 )}
                             </>
                         )}

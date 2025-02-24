@@ -542,6 +542,7 @@ const ReportJurnal = () => {
 
 // REPORT CATATAN USER
 const ReportCatatan = () => {
+    const navigate = useNavigate()
     const { onNewNote, setOnNewNote } = useContext(CatatanContext)
     return (
         <div className="w-full  h-fit min-h-[120px]">
@@ -553,7 +554,7 @@ const ReportCatatan = () => {
                     {onNewNote.length > 0 ? (
                         <>
                             {onNewNote.slice(0, 2).map(item =>
-                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]">
+                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]" onClick={()=> navigate('/ftr/Catatan')}>
                                     <div
                                         className="text-white  text-[12px]"
                                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text

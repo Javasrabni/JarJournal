@@ -751,22 +751,22 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             {publikasi && (() => {
                                                                 const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return user ? (
-                                                                    <img
-                                                                        src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
-                                                                        alt="profile"
-                                                                        className="w-[32px] h-[32px] rounded-[50px] object-cover"
-                                                                    />
+                                                                    <>
+                                                                        <img
+                                                                            src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
+                                                                            alt="profile"
+                                                                            className="w-[32px] h-[32px] rounded-[50px] object-cover"
+                                                                        />
+                                                                        <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
+                                                                            <span className="flex flex-col gap-[1.5px] justify-center">
+                                                                                {/* {userIcon} */}
+                                                                                <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
+                                                                                <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.createdAt.slice(0, 10)}</p>
+                                                                            </span>
+                                                                        </p>
+                                                                    </>
                                                                 ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                             })()}
-                                                            <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
-                                                                <span className="flex flex-col gap-[1.5px] justify-center">
-                                                                    {/* {userIcon} */}
-                                                                    <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
-                                                                </span>
-                                                            </p>
-
-
                                                         </div>
 
                                                         {/* CTA PUB */}
