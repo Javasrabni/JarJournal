@@ -337,7 +337,7 @@ const ReportJurnal = () => {
 
 
     useEffect(() => {
-        const getMoodUser = outputDataUserJurnal && outputDataUserJurnal.map(item => item.moodtype)
+        const getMoodUser = (Array.isArray(outputDataUserJurnal) ? outputDataUserJurnal : []).map(item => item.moodtype);
 
         if (JSON.stringify(getMoodUser.current) !== JSON.stringify(getMoodUser)) {
             const dataAnalisis = {};
@@ -458,6 +458,7 @@ const ReportJurnal = () => {
         },
     };
 
+    console.log(outputDataUserJurnal)
 
     return (
         <div className="w-full h-fit min-h-[120px]">
@@ -468,7 +469,7 @@ const ReportJurnal = () => {
 
                 </div>
                 <div>
-                    {outputDataUserJurnal.length < 1 ? (
+                    {outputDataUserJurnal.length <= 3 ? (
                         <div className="flex flex-col w-full h-full items-center justify-center">
                             {/* <div className="w-full h-full items-center flex justify-center">
                                 <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg" alt="report chart jurnal" className="w-[35%] h-[35%] object-cover" />

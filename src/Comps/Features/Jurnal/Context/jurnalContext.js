@@ -5,15 +5,10 @@ import { useState } from "react";
 export const JurnalContext = createContext()
 export default function JurnalContextProvider({ children }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []); // GET USER TOKEN
 
     const [onWriteJurnal, setOnWriteJurnal] = useState(false) //OnWrite Jurnal state (Popup)
     const [outputDataUserJurnal, setOutputDataUserJurnal] = useState([])
@@ -39,8 +34,7 @@ export default function JurnalContextProvider({ children }) {
             }
         }
         GetUserJurnal()
-    }, [token])
-
+    }, [refreshData])
 
     // Produktifitas user
     const [valueProduktifitasUser, setValueProduktifitasUser] = useState(40)
@@ -67,7 +61,7 @@ export default function JurnalContextProvider({ children }) {
             }
         };
         getEmotMood();
-    }, [token]);
+    }, [refreshData]);
 
     return (
         <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, outputDataUserJurnal, setOutputDataUserJurnal, onWriteJurnal, setOnWriteJurnal }}>

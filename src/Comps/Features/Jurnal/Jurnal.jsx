@@ -4,7 +4,7 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { OnPopupSetting } from "../Publikasi/pubPage/publikasi"
 import { JurnalContext } from "./Context/jurnalContext"
 import { useNavigate } from "react-router-dom"
-import { desc, div, li, pre } from "framer-motion/client"
+import { desc, div, i, li, pre } from "framer-motion/client"
 
 export default function Jurnal() {
     // AUTH SECT
@@ -75,31 +75,46 @@ export default function Jurnal() {
 
     // ON AUTO FILL INPUT STATE
     const [inputFieldJurnalState, setInputFieldJurnalState] = useState(false)
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
 
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
+    console.log(dataInputFieldJurnal.descJurnal)
     async function HandleAddJurnal() {
-        const payLoad = { ...dataInputFieldJurnal, descJurnal: dataInputFieldJurnal.descJurnal ?? "JurnalHarian" }
-
         try {
             const payloadData = new FormData()
-            payloadData.append('day', )
-
-            const response = await fetch(`${API_URL_AUTH}/auth/day-journal`, {
+            payloadData.append('userId', userId)
+            payloadData.append('day', dataInputFieldJurnal.day)
+            payloadData.append('descJurnal', dataInputFieldJurnal.descJurnal)
+            payloadData.append('file', dataInputFieldJurnal.fotoJurnal)
+            payloadData.append('moodToday', dataInputFieldJurnal.moodToday)
+            payloadData.append('moodType', dataInputFieldJurnal.moodtype)
+            payloadData.append('date', dataInputFieldJurnal.date)
+            payloadData.append('evaluasi', dataInputFieldJurnal.evaluasi)
+            payloadData.append('myGoals', dataInputFieldJurnal.myGoals)
+            payloadData.append('whatIHaveLearned', dataInputFieldJurnal.whatIHaveLearned)
+            payloadData.append('motivation', dataInputFieldJurnal.motivation)
+            payloadData.append('productivity', dataInputFieldJurnal.productivity)
+            payloadData.append('gratefulFor', dataInputFieldJurnal.gratefulFor)
+            payloadData.append('improve', dataInputFieldJurnal.improve)
+            payloadData.append('folderColor', dataInputFieldJurnal.folderColor)
+            const response = await fetch(`${API_URL_AUTH}/post/user_jurnal  `, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ dataInputFieldJurnal: payLoad })
+                }, body: payloadData
             })
+            const data = await response.json()
             if (response.ok) {
-                const { message } = await response.json()
                 // Tambahkan data baru ke state outputDataUserJurnal
-                const newJournal = { ...payLoad }; // Pastikan struktur sesuai
-                setOutputDataUserJurnal(prevJournals => [...prevJournals, newJournal]);
+                // const newJournal = { ...payLoad }; // Pastikan struktur sesuai
+                // setOutputDataUserJurnal(prevJournals => [...prevJournals, newJournal]);
                 // alert(message)
+                setRefreshData(prev => !prev)
                 setOnWriteJurnal(false)
                 const delay = setTimeout(() => {
-                    navigate(`/Jurnal/${outputDataUserJurnal.length}/${dataInputFieldJurnal.descJurnal ?? "JurnalHarian"}`)
-                }, 2000)
+                    navigate(`/Jurnal/${outputDataUserJurnal.id}/${dataInputFieldJurnal.descJurnal ?? "JurnalHarian"}`)
+                }, 300)
 
                 setInputFieldJurnalState(false)
                 // setAddNewDayJournal(data)
@@ -168,14 +183,12 @@ export default function Jurnal() {
                                 <p className="text-[12px] text-white">Minggu ke-{weekIndex + 1}</p>
                             </span> */}
                     <div className="flex flex-row gap-[12px] flex-wrap ">
-                        {outputDataUserJurnal.length > 0 ? (
-                            <>
-                                {outputDataUserJurnal.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex-col w-[48%]"
-
-                                    >
+                        {(Array.isArray(outputDataUserJurnal) ? outputDataUserJurnal : [])
+                            .filter(user => user.userId === userId).length > 0 ? (
+                            outputDataUserJurnal
+                                .filter(user => user.userId === userId)
+                                .map(item => (
+                                    <div key={item.id} className="flex-col w-[48%]">
                                         {/* Efek Folder */}
                                         <div
                                             className="w-[52px] h-[6px]"
@@ -186,258 +199,281 @@ export default function Jurnal() {
                                         ></div>
 
                                         {/* Konten Jurnal */}
-                                        <div className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-col gap-[6px] justify-between"
+                                        <div
+                                            className="w-full bg-[var(--black-card)] text-white p-[12px] flex flex-col gap-[6px] justify-between"
                                             style={{
                                                 borderRadius: "0px 8px 8px",
                                                 outline: "1px solid var(--black-bg)",
                                             }}
                                         >
                                             {/* JUDUL DAN DESKRIPSI */}
-                                            <div className="w-full " onClick={() => navigate(`/Jurnal/${index}/${item.descJurnal}`)}>
+                                            <div
+                                                className="w-full"
+                                                onClick={() => navigate(`/Jurnal/${item.id}/${item.descJurnal}`)}
+                                            >
                                                 <p className="text-[12px] text-white font-[600]">
-                                                    Day {item.day}</p>
+                                                    Day {item.day}
+                                                </p>
                                                 <p className="text-[12px] text-[var(--black-subtext)]">
                                                     {item.descJurnal}
                                                 </p>
                                             </div>
 
                                             {/* DATE N SETTINGS */}
-                                            <div className="flex flex-row items-center justify-between" >
+                                            <div className="flex flex-row items-center justify-between">
                                                 <p className="text-[11px] text-white">{item.date}</p>
-                                                <span className="cursor-pointer" onClick={() => { setOnSetting(prev => !prev); setIndexOnSetting(index) }}>{settingPostIcon}</span>
+                                                <span
+                                                    className="cursor-pointer"
+                                                    onClick={() => {
+                                                        setOnSetting((prev) => !prev);
+                                                        setIndexOnSetting(item.id);
+                                                    }}
+                                                >
+                                                    {settingPostIcon}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
-                            </>
+                                ))
                         ) : (
                             <div className="w-full min-h-[50svh] h-full flex flex-col items-center justify-center text-white">
                                 <span>
-                                    <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg" alt="jurnal report icon" className="w-full h-full " />
+                                    <img
+                                        src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg"
+                                        alt="jurnal report icon"
+                                        className="w-full h-full"
+                                    />
                                 </span>
                                 <p className="text-[12px]">Ayo kita buat jurnal pertamamu</p>
                             </div>
                         )}
+
                     </div>
                 </div>
             </div>
 
             {/* FUNGSI ADD JURNAL (POPUP) */}
-            {onWriteJurnal && (
-                <OnPopupSetting
-                    JurnalSect={true}
-                    Heading={`Jurnal Harian`}
-                    onClickFunc={() => setOnWriteJurnal(false)}
-                    Button1={
-                        <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
-                            <span className="w-fit shrink-0">
-                                <p className="text-[12px] font-[600] text-white">Day {outputDataUserJurnal.length + 1}</p>
-                            </span>
-                            <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="search" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
-                        </div>
-                    }
-                    Button2={<p className="text-[12px] font-[600] text-white" onClick={() => { setTimeout(() => { setInputFieldJurnalState(true); setOnWriteJurnal(false); }, 1000) }}>Tambah</p>}
-                />
-            )}
+            {
+                onWriteJurnal && (
+                    <OnPopupSetting
+                        JurnalSect={true}
+                        Heading={`Jurnal Harian`}
+                        onClickFunc={() => setOnWriteJurnal(false)}
+                        Button1={
+                            <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
+                                <span className="w-fit shrink-0">
+                                    <p className="text-[12px] font-[600] text-white">Day {outputDataUserJurnal ? '1' : outputDataUserJurnal.length + 1}</p>
+                                </span>
+                                <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="search" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
+                            </div>
+                        }
+                        Button2={<p className="text-[12px] font-[600] text-white" onClick={() => { setTimeout(() => { setInputFieldJurnalState(true); setOnWriteJurnal(false); }, 1000) }}>Tambah</p>}
+                    />
+                )
+            }
 
             {/* FUNGSI ON CLICK SETTING JURNAL (POPUP) */}
-            {onSetting && (
-                <OnPopupSetting
-                    Heading={`Hapus Jurnal`}
-                    onClickFunc={() => setOnSetting(prev => !prev)}
-                    Button2={<button role="button" onClick={HandleDeleteJurnal}>
-                        <span className="flex flex-row items-center gap-[8px]">
-                            {deletePost}
-                            <span className="text-[12px] text-white">Hapus</span>
-                        </span>
-                    </button>}
-                />
-            )}
+            {
+                onSetting && (
+                    <OnPopupSetting
+                        Heading={`Hapus Jurnal`}
+                        onClickFunc={() => setOnSetting(prev => !prev)}
+                        Button2={<button role="button" onClick={HandleDeleteJurnal}>
+                            <span className="flex flex-row items-center gap-[8px]">
+                                {deletePost}
+                                <span className="text-[12px] text-white">Hapus</span>
+                            </span>
+                        </button>}
+                    />
+                )
+            }
 
             {/* POPUP INPUT FIELD JURNAL AFTER USER CLICKING ADD JURNAL */}
-            {inputFieldJurnalState && (
-                <PopupModal
-                    onClickFunc={() => setInputFieldJurnalState(false)}
-                    Heading={<p className="text-[12px] font-[600] text-center">Day {outputDataUserJurnal.map(item => item.day + 1)}</p>}
+            {
+                inputFieldJurnalState && (
+                    <PopupModal
+                        onClickFunc={() => setInputFieldJurnalState(false)}
+                        Heading={<p className="text-[12px] font-[600] text-center">Day {outputDataUserJurnal ? '1' : outputDataUserJurnal.map(item => item.day + 1)}</p>}
 
-                    subHeading={<p className="text-[11px] text-[var(--black-subtext)] text-center pb-[8px]" style={{ borderBottom: '1px solid var(--black-border)' }}>{new Date().toLocaleString('id-Id', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                        hourCycle: 'h23'
-                    })}</p>}
-                    bodySect={
-                        <div className="w-full h-fit">
-                            <div className="flex flex-col gap-[12px] w-full">
-                                {statusFieldJurnal === 0 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Bagaimana perasaan kamu hari ini</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center relative" >
-                                            {emotOutput.map((item, idx) =>
-                                                <div className={`w-[35px] h-[35px] overflow-hidden ${handleClickEmot === idx ? 'bg-[var(--blue-clr)]' : "bg-[var(--black-bg)]"} p-[0px] rounded-[8px]`}>
-                                                    <img src={item.emotUrl} alt={item.type} className={`w-full h-full object-cover `} style={{ transform: 'scale(300%)' }} onClick={() => {
-                                                        setDataInputFieldJurnal((prevState) => ({
-                                                            ...prevState, moodToday: item.emotUrl, moodtype: item.type
-                                                        })); setHandleClickEmot(idx);
-                                                    }} />
-                                                </div>
-                                            )}
-                                        </div>
-                                    </>
-                                )}
-
-                                {statusFieldJurnal === 1 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Evaluasi yang dilakukan</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
-                                            <textarea
-                                                placeholder="Bagaimana dengan evaluasi hari ini?"
-                                                className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
-                                                rows={4}
-                                                value={dataInputFieldJurnal.evaluasi}
-                                                onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, evaluasi: e.target.value })) }}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-
-                                {statusFieldJurnal === 2 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Goal kamu hari ini apa aja?</p>
-                                        </span>
-                                        <div className="flex flex-col gap-[6px] items-center justify-center w-full" >
-                                            {/* INPUT GOAL */}
-                                            <div className="w-full h-[90px] bg-[var(--black-bg)] rounded-[6px] p-[12px]">
-                                                <span className="w-full flex gap-[8px]">
-                                                    <input type="text" className="text-[11px] text-white bg-[var(--black-bg)] rounded-[4px] w-full outline-none border-none px-[8px]" value={myGoalJurnal} onChange={(e) => setMyGoalJurnal(e.target.value)} placeholder="Tambah goal" />
-
-                                                    <button className="text-white bg-[var(--blue-clr)] px-[2px] py-[2px] rounded-[4px]" onClick={() => { setDataInputFieldJurnal((prevState) => ({ ...prevState, myGoals: [...(prevState.myGoals || []), myGoalJurnal] })); setMyGoalJurnal(''); }}>{AddIcon}</button>
-                                                </span>
-
-                                                {/* OUTPUT GOAL */}
-                                                <div className="w-full pl-[8px] h-full max-h-[calc(90px-54px)] overflow-auto mt-[12px]">
-                                                    <ul>
-                                                        {dataInputFieldJurnal.myGoals && dataInputFieldJurnal.myGoals.map((goal, idx) => (
-                                                            <li key={idx} className="text-[11px] text-white">{idx + 1}. {goal}</li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
+                        subHeading={<p className="text-[11px] text-[var(--black-subtext)] text-center pb-[8px]" style={{ borderBottom: '1px solid var(--black-border)' }}>{new Date().toLocaleString('id-Id', {
+                            day: '2-digit',
+                            month: 'long',
+                            year: 'numeric',
+                            hourCycle: 'h23'
+                        })}</p>}
+                        bodySect={
+                            <div className="w-full h-fit">
+                                <div className="flex flex-col gap-[12px] w-full">
+                                    {statusFieldJurnal === 0 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Bagaimana perasaan kamu hari ini</p>
+                                            </span>
+                                            <div className="flex flex-row gap-[6px] items-center justify-center relative" >
+                                                {emotOutput.map((item, idx) =>
+                                                    <div className={`w-[35px] h-[35px] overflow-hidden ${handleClickEmot === idx ? 'bg-[var(--blue-clr)]' : "bg-[var(--black-bg)]"} p-[0px] rounded-[8px]`}>
+                                                        <img src={item.emotUrl} alt={item.type} className={`w-full h-full object-cover `} style={{ transform: 'scale(300%)' }} onClick={() => {
+                                                            setDataInputFieldJurnal((prevState) => ({
+                                                                ...prevState, moodToday: item.emotUrl, moodtype: item.type
+                                                            })); setHandleClickEmot(idx);
+                                                        }} />
+                                                    </div>
+                                                )}
                                             </div>
+                                        </>
+                                    )}
 
-
-                                        </div>
-                                    </>
-                                )}
-
-                                {statusFieldJurnal === 3 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Pelajaran yang didapat hari ini</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
-                                            <textarea
-                                                placeholder="Apa yang sudah kamu pelajari dan pelajaran yang didapat hari ini?"
-                                                className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
-                                                rows={4}
-                                                value={dataInputFieldJurnal.whatIHaveLearned}
-                                                onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, whatIHaveLearned: e.target.value })) }}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-
-                                {statusFieldJurnal === 4 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Motivasi kamu hari ini</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
-                                            <textarea
-                                                placeholder="Apa yang memotivasi kamu dalam menjalani aktifitas hari ini?"
-                                                className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
-                                                rows={4}
-                                                value={dataInputFieldJurnal.motivation}
-                                                onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, motivation: e.target.value })) }}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-
-                                {statusFieldJurnal === 5 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Berapa persen tingkat produktif kamu hari ini</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
-                                            <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[12px]">
-                                                <input type="range" name="" id="" min={0} max={100} value={dataInputFieldJurnal.productivity} onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, productivity: parseInt(e.target.value) }))} className="slider w-[80%]" />
-
-                                                <p className="text-center text-[12px] w-fit text-white"><span className="font-[500]">{dataInputFieldJurnal.productivity}%, </span><span className="font-[400]">{dataInputFieldJurnal.productivity >= 80 ? 'Sangat membara!' : dataInputFieldJurnal.productivity >= 40 ? 'Butuh energi lebih!' : 'Kurang semangat'}</span></p>
+                                    {statusFieldJurnal === 1 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Evaluasi yang dilakukan</p>
                                             </span>
-                                        </div>
-                                    </>
-                                )}
+                                            <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                                <textarea
+                                                    placeholder="Bagaimana dengan evaluasi hari ini?"
+                                                    className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
+                                                    rows={4}
+                                                    value={dataInputFieldJurnal.evaluasi}
+                                                    onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, evaluasi: e.target.value })) }}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
 
-                                {statusFieldJurnal === 6 && (
-                                    <>
-                                        <span className="w-full">
-                                            <p className="text-[12px] text-white font-[600] text-center">Jurnal harian kamu sudah siap! ✨</p>
-                                        </span>
-                                        <div className="flex flex-row gap-[6px] items-center justify-center w-full cursor-pointer" >
-                                            <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[0px]" onClick={HandleAddJurnal}>
-                                                <p className="text-center text-[12px] w-fit text-white bg-[var(--blue-clr)] rounded-[6px] px-[12px] py-[6px]">Simpan & Buka Jurnal</p>
+                                    {statusFieldJurnal === 2 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Goal kamu hari ini apa aja?</p>
                                             </span>
-                                        </div>
-                                    </>
-                                )}
+                                            <div className="flex flex-col gap-[6px] items-center justify-center w-full" >
+                                                {/* INPUT GOAL */}
+                                                <div className="w-full h-[90px] bg-[var(--black-bg)] rounded-[6px] p-[12px]">
+                                                    <span className="w-full flex gap-[8px]">
+                                                        <input type="text" className="text-[11px] text-white bg-[var(--black-bg)] rounded-[4px] w-full outline-none border-none px-[8px]" value={myGoalJurnal} onChange={(e) => setMyGoalJurnal(e.target.value)} placeholder="Tambah goal" />
+
+                                                        <button className="text-white bg-[var(--blue-clr)] px-[2px] py-[2px] rounded-[4px]" onClick={() => { setDataInputFieldJurnal((prevState) => ({ ...prevState, myGoals: [...(prevState.myGoals || []), myGoalJurnal] })); setMyGoalJurnal(''); }}>{AddIcon}</button>
+                                                    </span>
+
+                                                    {/* OUTPUT GOAL */}
+                                                    <div className="w-full pl-[8px] h-full max-h-[calc(90px-54px)] overflow-auto mt-[12px]">
+                                                        <ul>
+                                                            {dataInputFieldJurnal.myGoals && dataInputFieldJurnal.myGoals.map((goal, idx) => (
+                                                                <li key={idx} className="text-[11px] text-white">{idx + 1}. {goal}</li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </div>
 
 
-                            </div>
-                        </div>
-                    }
-                    bottomSect={
-                        <div className="flex flex-col items-center justify-center w-full font-[600]">
-                            {/* SKIP PREV NEXT */}
-                            <div className="w-full flex flex-row items-center justify-center gap-[12px]">
-                                <div>
-                                    <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev > 0 ? prev - 1 : prev); setProgressBarJurnalField((prev) => prev > 0 ? prev - 1 : prev) }}>Kembali</p>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {statusFieldJurnal === 3 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Pelajaran yang didapat hari ini</p>
+                                            </span>
+                                            <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                                <textarea
+                                                    placeholder="Apa yang sudah kamu pelajari dan pelajaran yang didapat hari ini?"
+                                                    className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
+                                                    rows={4}
+                                                    value={dataInputFieldJurnal.whatIHaveLearned}
+                                                    onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, whatIHaveLearned: e.target.value })) }}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {statusFieldJurnal === 4 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Motivasi kamu hari ini</p>
+                                            </span>
+                                            <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                                <textarea
+                                                    placeholder="Apa yang memotivasi kamu dalam menjalani aktifitas hari ini?"
+                                                    className="p-[12px] w-full flex rounded-[6px] bg-[var(--black-bg)] resize-none outline-none text-white text-[11px]"
+                                                    rows={4}
+                                                    value={dataInputFieldJurnal.motivation}
+                                                    onChange={(e) => { setDataInputFieldJurnal((prevState) => ({ ...prevState, motivation: e.target.value })) }}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {statusFieldJurnal === 5 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Berapa persen tingkat produktif kamu hari ini</p>
+                                            </span>
+                                            <div className="flex flex-row gap-[6px] items-center justify-center w-full" >
+                                                <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[12px]">
+                                                    <input type="range" name="" id="" min={0} max={100} value={dataInputFieldJurnal.productivity} onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, productivity: parseInt(e.target.value) }))} className="slider w-[80%]" />
+
+                                                    <p className="text-center text-[12px] w-fit text-white"><span className="font-[500]">{dataInputFieldJurnal.productivity}%, </span><span className="font-[400]">{dataInputFieldJurnal.productivity >= 80 ? 'Sangat membara!' : dataInputFieldJurnal.productivity >= 40 ? 'Butuh energi lebih!' : 'Kurang semangat'}</span></p>
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {statusFieldJurnal === 6 && (
+                                        <>
+                                            <span className="w-full">
+                                                <p className="text-[12px] text-white font-[600] text-center">Jurnal harian kamu sudah siap! ✨</p>
+                                            </span>
+                                            <div className="flex flex-row gap-[6px] items-center justify-center w-full cursor-pointer" >
+                                                <span className="w-full flex flex-col gap-[12px] items-center justify-center mt-[0px]" onClick={HandleAddJurnal}>
+                                                    <p className="text-center text-[12px] w-fit text-white bg-[var(--blue-clr)] rounded-[6px] px-[12px] py-[6px]">Simpan & Buka Jurnal</p>
+                                                </span>
+                                            </div>
+                                        </>
+                                    )}
+
+
                                 </div>
+                            </div>
+                        }
+                        bottomSect={
+                            <div className="flex flex-col items-center justify-center w-full font-[600]">
+                                {/* SKIP PREV NEXT */}
+                                <div className="w-full flex flex-row items-center justify-center gap-[12px]">
+                                    <div>
+                                        <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev > 0 ? prev - 1 : prev); setProgressBarJurnalField((prev) => prev > 0 ? prev - 1 : prev) }}>Kembali</p>
+                                    </div>
+                                    {statusFieldJurnal <= 5 && (
+                                        <>
+                                            <div>
+                                                <p className="text-[12px] text-[var(--blue-clr)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Berikutnya</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer font-[400]" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Lewatkan</p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+
+                                {/* PROGRESS FIELD */}
                                 {statusFieldJurnal <= 5 && (
-                                    <>
-                                        <div>
-                                            <p className="text-[12px] text-[var(--blue-clr)] cursor-pointer" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Berikutnya</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-[12px] text-[var(--black-subtext)] cursor-pointer font-[400]" onClick={() => { setStatusFieldJurnal((prev) => prev + 1); setProgressBarJurnalField((prev) => prev + 1) }}>Lewatkan</p>
-                                        </div>
-                                    </>
+                                    <div className="w-full">
+                                        <progress
+                                            className="bg-transparent w-full h-[4px] appearance-none [&::-webkit-progress-bar]:bg-[var(--black-bg)] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[var(--blue-clr)] [&::-webkit-progress-value]:rounded-full"
+                                            value={progressBarJurnalField}
+                                            max={6}
+                                        />
+                                    </div>
                                 )}
+
                             </div>
+                        }
 
 
-                            {/* PROGRESS FIELD */}
-                            {statusFieldJurnal <= 5 && (
-                                <div className="w-full">
-                                    <progress
-                                        className="bg-transparent w-full h-[4px] appearance-none [&::-webkit-progress-bar]:bg-[var(--black-bg)] [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-value]:bg-[var(--blue-clr)] [&::-webkit-progress-value]:rounded-full"
-                                        value={progressBarJurnalField}
-                                        max={6}
-                                    />
-                                </div>
-                            )}
-
-                        </div>
-                    }
-
-
-                />
-            )}
-        </div>
+                    />
+                )
+            }
+        </div >
     )
 }
 
