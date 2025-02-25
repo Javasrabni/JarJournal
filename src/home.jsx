@@ -337,7 +337,7 @@ const ReportJurnal = () => {
 
 
     useEffect(() => {
-        const getMoodUser = outputDataUserJurnal.map(item => item.moodtype)
+        const getMoodUser = outputDataUserJurnal && outputDataUserJurnal.map(item => item.moodtype)
 
         if (JSON.stringify(getMoodUser.current) !== JSON.stringify(getMoodUser)) {
             const dataAnalisis = {};
@@ -486,7 +486,7 @@ const ReportJurnal = () => {
                             <div className="flex flex-row items-center gap-[16px] w-full">
                                 {/* DATA JURNAL PERTAMA */}
                                 <div>
-                                    {outputDataUserJurnal && outputDataUserJurnal.slice(0, 1).map((item, index) =>
+                                    {outputDataUserJurnal.length > 0 && outputDataUserJurnal.slice(0, 1).map((item, index) =>
                                         <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col" onClick={() => console.log(index)}>
                                             <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{item.day}</p>
                                             <p className="text-[11px] text-[var(--black-subtext)]">{item.descJurnal}</p>
@@ -554,7 +554,7 @@ const ReportCatatan = () => {
                     {onNewNote.length > 0 ? (
                         <>
                             {onNewNote.slice(0, 2).map(item =>
-                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]" onClick={()=> navigate('/ftr/Catatan')}>
+                                <div className="bg-[var(--black-bg)] p-[12px] rounded-[6px]  mt-[12px] flex flex-col gap-[8px]" onClick={() => navigate('/ftr/Catatan')}>
                                     <div
                                         className="text-white  text-[12px]"
                                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text

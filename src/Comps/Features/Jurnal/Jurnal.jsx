@@ -78,7 +78,11 @@ export default function Jurnal() {
 
     async function HandleAddJurnal() {
         const payLoad = { ...dataInputFieldJurnal, descJurnal: dataInputFieldJurnal.descJurnal ?? "JurnalHarian" }
+
         try {
+            const payloadData = new FormData()
+            payloadData.append('day', )
+
             const response = await fetch(`${API_URL_AUTH}/auth/day-journal`, {
                 method: 'POST',
                 headers: {
@@ -254,7 +258,7 @@ export default function Jurnal() {
             {inputFieldJurnalState && (
                 <PopupModal
                     onClickFunc={() => setInputFieldJurnalState(false)}
-                    Heading={<p className="text-[12px] font-[600] text-center">Day {outputDataUserJurnal.slice(-1).map(item => item.day + 1)}</p>}
+                    Heading={<p className="text-[12px] font-[600] text-center">Day {outputDataUserJurnal.map(item => item.day + 1)}</p>}
 
                     subHeading={<p className="text-[11px] text-[var(--black-subtext)] text-center pb-[8px]" style={{ borderBottom: '1px solid var(--black-border)' }}>{new Date().toLocaleString('id-Id', {
                         day: '2-digit',
