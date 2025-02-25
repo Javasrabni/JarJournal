@@ -33,19 +33,20 @@ export default function SelectedPub({ items }) {
     // FETCHING DATA PUB
     useEffect(() => {
         const FetchSelectedPub = async () => {
+            if (!id) return
             try {
-                const response = await fetch(`${API_URL_PUB}/pub/get-pub/${id}`)
+                const response = await fetch(`${API_URL_PUB}/pub/${id}`)
                 const data = await response.json()
                 if (response.ok) {
                     setSelectedPub(data)
-                    console.log(selectedPub)
+                    console.log(data)
                 }
             } catch (err) {
                 console.error(err)
             }
         }
         FetchSelectedPub()
-    }, [])
+    }, [id])
 
     // ICON
     const shareIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3">
@@ -63,6 +64,7 @@ export default function SelectedPub({ items }) {
                 <div className="flex flex-col w-full h-full">
                     <Header
                         hideLogo={true}
+                        
                         backPage={
                             <div className="flex flex-row justify-between items-center w-full" onClick={() => navigate('/Explore')}>
                                 <div>
@@ -96,18 +98,18 @@ export default function SelectedPub({ items }) {
                         )}
 
                         <div className={`flex flex-col gap-[8px] ${themeActive ? 'text-white' : 'text-black'} bg-[tomato]`}>
-                            {selectedPub.komentar.map((item) =>
+                            {/* {selectedPub.komentar.map((item) =>
                                 <>
                                     <p>{item.username}</p>
                                     <p>{item.valueKomentar}</p>
                                 </>
-                            )}
+                            )} */}
                         </div>
 
 
                         <div className={`flex flex-row gap-[8px] ${themeActive ? 'text-white' : 'text-black'}`}>
                             <p className="text-[12px] font-[600]">{selectedPub.userName}</p>
-                            <p>{selectedPub.timeStamp}</p>
+                            <p>{selectedPub.updatedAt.slice(0, 10)}</p>
                         </div>
                     </div>
 

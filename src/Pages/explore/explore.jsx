@@ -185,7 +185,9 @@ export default function Explore() {
                                 {tipeExplore ? (
                                     <Publikasi publikasiData={publikasi} />
                                 ) : (
-                                    <p>Akan tersedia</p>
+                                    <div className="w-full h-[50svh] flex items-center justify-center">
+                                        <p className="text-[var(--black-subtext)] text-[12px]">Akan tersedia</p>
+                                    </div>
                                 )}
                             </>
                         )}
@@ -196,7 +198,9 @@ export default function Explore() {
                                 {tipeExplore ? (
                                     <Publikasi publikasiData={publikasi} />
                                 ) : (
-                                    <p>lorem ipsum</p>
+                                    <div className="w-full h-[50svh] flex items-center justify-center">
+                                        <p className="text-[var(--black-subtext)] text-[12px]">Akan tersedia</p>
+                                    </div>
                                 )}
                             </>
                         )}

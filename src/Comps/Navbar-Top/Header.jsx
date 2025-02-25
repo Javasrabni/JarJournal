@@ -17,11 +17,10 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     // GET TOKEN    
     const { token, setToken } = useContext(API_URL_CONTEXT)
-
+    const { id } = useParams()
 
     const pathLocation = useLocation()
     const navigate = useNavigate()
-    const { id } = useParams()
 
     const appName = "JarJournal";
     const appSlogan = "Achieve your goals";
@@ -44,6 +43,9 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             setbackPageHeader(true)
         }
         if (pathLocation.pathname === '/KalenderPlanner') {
+            setbackPageHeader(true)
+        }
+        if (pathLocation.pathname === `/clips/${id}`) {
             setbackPageHeader(true)
         }
     }, [pathLocation.pathname])
@@ -155,11 +157,14 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         if (pathLocation.pathname === '/KalenderPlanner') {
             navigate('/dashboard')
         }
+        if (pathLocation.pathname === '/clips/:id') {
+            navigate('/Explore')
+        }
     }
 
     // HIDE SETTING ON SETTING PAGE 
     useEffect(() => {
-        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan', '/KalenderPlanner']
+        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan', '/KalenderPlanner', `/clips/${id}`]
         if (pathToHideSetting.includes(pathLocation.pathname)) {
             setHideSetting(true)
         }
@@ -182,7 +187,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                 {!hideLogo ? (
                     <div className="text-white flex items-center gap-[12px]" onClick={HandlebackPageHeader}>
                         {backPageHeader ? (
-                            <div className="flex items-center justify-center pr-[12px] cursor-pointer">
+                            <div className="flex items-center justify-center cursor-pointer">
                                 {backIcon}
                             </div>
                         ) : (
@@ -195,8 +200,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
                         </div>
                     </div>
                 ) : (
-                    <div className="text-white flex gap-[8px] w-full pr-[32px]">
-                        {backPageHeader}
+                    <div className="text-white flex gap-[8px] w-full">
+                        {backPage}
                     </div>
                 )}
 

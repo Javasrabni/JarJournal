@@ -104,7 +104,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     // Handle Select pub
     function HandleSelectedPub(id) {
-        navigate(`/posts/${id}`)
+        navigate(`/clips/${id}`)
     }
 
     // HANDLE SHARE PUB

@@ -72,7 +72,7 @@ function App() {
                                           <Route path='/JJR-ChatBot' element={<Chatbot />} />
 
                                           {/* Publikasi link */}
-                                          <Route path='/posts/:id' element={<SelectedPub />} />
+                                          <Route path='/clips/:id' element={<SelectedPub />} />
                                           <Route path='*' element={<Page404 />} />
 
                                         </Routes>
