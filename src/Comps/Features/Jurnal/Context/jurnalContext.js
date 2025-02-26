@@ -63,8 +63,17 @@ export default function JurnalContextProvider({ children }) {
         getEmotMood();
     }, [refreshData]);
 
+    const [selectedIdxJurnal, setSelectedIdxJurnal] = useState(() => {
+        const saveData = localStorage.getItem('I21NNsj&as')
+        return saveData ? JSON.parse(saveData) : null
+    })
+
+    useEffect(() => {
+        localStorage.setItem('I21NNsj&as', JSON.stringify(selectedIdxJurnal))
+    }, [selectedIdxJurnal])
+
     return (
-        <JurnalContext.Provider value={{ emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, outputDataUserJurnal, setOutputDataUserJurnal, onWriteJurnal, setOnWriteJurnal }}>
+        <JurnalContext.Provider value={{ selectedIdxJurnal, setSelectedIdxJurnal, emotOutput, setEmotOutput, valueProduktifitasUser, setValueProduktifitasUser, outputDataUserJurnal, setOutputDataUserJurnal, onWriteJurnal, setOnWriteJurnal }}>
             {children}
         </JurnalContext.Provider>
     )

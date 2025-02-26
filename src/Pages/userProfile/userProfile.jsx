@@ -133,7 +133,7 @@ export default function UserProfile() {
                                         <p className={`${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--white-bg-100)]'} mt-[-3px] `} style={{ fontSize: '11px' }}>
                                             <span className="flex flex-row gap-[6px] items-center">
                                                 {/* <span className="shrink-0">{kalenderIcon}</span> */}
-                                                <span className="mt-[2px]">Bergabung pada {getRawDataUsername.createdAt.slice(0, 10)}</span>
+                                                <span className="mt-[2px]">Bergabung pada {getRawDataUsername.createdAt.slice(0, 10).split('-').reverse().join('-')}</span>
                                             </span>
                                         </p>
 

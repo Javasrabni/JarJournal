@@ -435,7 +435,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <span className="flex flex-col gap-[1.5px] justify-center">
                                                             {/* {userIcon} */}
                                                             <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
+                                                            <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10).split('-').reverse().join('-')}</p>
                                                         </span>
                                                     </p>
 
@@ -599,7 +599,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 <span className="flex flex-col gap-[1.5px] justify-center">
                                                                     {/* {userIcon} */}
                                                                     <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10)}</p>
+                                                                    <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.updatedAt.slice(0, 10).split('-').reverse().join('-')}</p>
                                                                 </span>
                                                             </p>
 
@@ -761,7 +761,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                             <span className="flex flex-col gap-[1.5px] justify-center">
                                                                                 {/* {userIcon} */}
                                                                                 <span className="text-[12px] font-[600] text-white">{pub.userName}</span>
-                                                                                <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.createdAt.slice(0, 10)}</p>
+                                                                                <p className={`text-[10px] text-[var(--black-subtext)] pt-[0px] font-[500]`}>{pub.createdAt.slice(0, 10).split('-').reverse().join('-')}</p>
                                                                             </span>
                                                                         </p>
                                                                     </>

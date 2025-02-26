@@ -1,8 +1,14 @@
 import { createContext, useState, useEffect } from "react";
+import { useContext } from "react";
+import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL";
 
 export const MemoContext = createContext()
 
 export default function MemoProvider({ children }) {
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+
+    const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
+
     const [indicatorFromMemo, setIndicatorFromMemo] = useState(false)
     // Value input memo
     const [memoInputValue, setMemoInputValue] = useState('')
@@ -26,15 +32,30 @@ export default function MemoProvider({ children }) {
         return saveState ? JSON.parse(saveState) : false
     })
     const [visibleMemo, setVisibleMemo] = useState([])
-
-    // useEffect(() => {
-    //     localStorage.setItem('saveUserMemo', JSON.stringify(valueMemo))
-    // }, [valueMemo])
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
     useEffect(() => {
-        localStorage.setItem('saveStateHeightMemo', changeHeightMemo)
+        const GetMemoUser = async () => {
+            try {
 
-    }, [changeHeightMemo])
+                const response = await fetch(`${API_URL_AUTH}/get/memo_user`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    setValueMemo(data)
+                }
+
+            } catch (err) {
+                console.error(err)
+            }
+
+        }
+        GetMemoUser()
+    }, [refreshData])
 
     return (
         <MemoContext.Provider value={{ valueMemo, setValueMemo, indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo }}>

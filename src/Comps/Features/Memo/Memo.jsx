@@ -109,25 +109,24 @@ export default function Memo({ token }) {
         }
     })
 
-    async function HandleDelMemo(SelectedValueMemo, SelectedIndexToDel) {
+    async function HandleDelMemo(index) {
+        const confirmDelMemo = window.confirm(`Yakin ingin menghapus?`)
+        if (!confirmDelMemo) return
+
         try {
-            const response = await fetch(`${API_URL_AUTH}/auth/del-memos`, {
+            const response = await fetch(`${API_URL_AUTH}/del/memo_user`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ nameUser, memo: SelectedValueMemo })
+                body: JSON.stringify({ userId: userId, memo_idx: index })
             })
-
+            const data = await response.json()
             if (response.ok) {
-                const confirmDelMemo = window.confirm(`Yakin ingin menghapus "${SelectedValueMemo}"?`)
-                if (confirmDelMemo) {
-                    setValueMemo((prev) => prev.filter((memo) => memo !== SelectedValueMemo))
-                    setVisibleMemo((index) =>
-                        index.filter((_, i) => i !== SelectedIndexToDel)
-                    );
-                }
+                setRefreshData(prev => !prev)
+            } else {
+                console.log(data.Msg)
             }
         } catch (err) {
             console.error(err)
@@ -169,10 +168,10 @@ export default function Memo({ token }) {
 
     // Handle popup view memo
     const [openPopupMemo, setOpenPopupMemo] = useState(false)
-    const [indexValueMemo, setIndexValueMemo] = useState('')
-    function PopupMemoView(valueMemoIndex) {
+    const [indexValueMemo, setIndexValueMemo] = useState([])
+    function PopupMemoView(valueMemoIndex, time) {
         setOpenPopupMemo((prev) => !prev)
-        setIndexValueMemo(valueMemoIndex)
+        setIndexValueMemo({ index: valueMemoIndex, time: time })
     }
 
     // Style 
@@ -184,7 +183,7 @@ export default function Memo({ token }) {
         height: "fit-content",
         backgroundColor: "white",
         borderRadius: "16px",
-        padding: "16px",
+        padding: "12px",
         display: "flex",
         flexDirection: "column",
     }
@@ -248,45 +247,42 @@ export default function Memo({ token }) {
     //     }
     // };
 
+
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
     // Add memo func in btn
-    // const HandleAddMemo = () => {
-
-    //     let delayAddMemo;
-
-    //     if (!memoInputValue) {
-    //         setIndicatorFromMemo(false)
-    //         setMemoInputValue('')
-    //         return
-    //     } else {
-    //         // setIndicatorFromMemo(false)
-    //         setValueMemo((prevValue) => [...prevValue, memoInputValue])
-    //         setVisibleMemo((prevValue) => [...prevValue, memoInputValue])
-    //     }
-
-    //     setOption1_Status(false)
-    //     setIndicatorFromMemo(false)
-    //     setMemoInputValue('')
-
-    //     delayAddMemo = setTimeout(() => {
-    //         setActivePopupMemo(false)
-    //     }, 600)
-
-    //     // import memo into server
-    //     handleSaveMemo(memoInputValue)
-
-    //     return () => clearTimeout(delayAddMemo)
-
-    // }
-
-
-
-
-    useEffect(() => {
-        const storedMemos = localStorage.getItem('valueMemo');
-        if (storedMemos) {
-            setValueMemo(JSON.parse(storedMemos));
+    const HandleAddMemo = async () => {
+        if (!memoInputValue) {
+            setIndicatorFromMemo(false)
+            setMemoInputValue('')
+            return
         }
-    }, []);
+        try {
+
+            const response = await fetch(`${API_URL_AUTH}/post/memo_user`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }, body: JSON.stringify({ userId: userId, value_memo: memoInputValue })
+            })
+
+            const data = await response.json()
+
+            if (response.ok) {
+                console.log(data)
+                setRefreshData(prev => !prev)
+                setOption1_Status(false)
+                setIndicatorFromMemo(false)
+                setMemoInputValue('')
+                setActivePopupMemo(false)
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     return (
         <>
@@ -296,8 +292,10 @@ export default function Memo({ token }) {
                     <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setOpenPopupMemo(false) }} />
 
                     <div style={BoxPopupNote}>
-                        <div style={{ marginBottom: "8px", width: "100%", marginBottom: "12px" }} className="flex flex-col gap-[4px] items-center">
-                            <p className="text-[12px] font-[500]" style={{ whiteSpace: "pre-wrap" }}>{indexValueMemo}</p>
+                        <div style={{ width: "100%" }} className="flex flex-col gap-[4px] items-center">
+                            <p className="text-[12px] font-[500]" style={{ whiteSpace: "pre-wrap" }}>{indexValueMemo.index}</p>
+                            <p className="whitespace-pre-wrap text-[10px] break-words text-[var(--black-subtext)]">{indexValueMemo.time}</p>
+
                         </div>
                         {/* <button onClick={() => setOpenPopupMemo(false)} style={SubmitMemo}>Tutup</button> */}
                     </div>
@@ -327,7 +325,7 @@ export default function Memo({ token }) {
                      )}
                    </div> */}
 
-                            {/* <button onClick={HandleAddMemo} style={SubmitMemo}>Tambah</button> */}
+                            <button onClick={HandleAddMemo} style={SubmitMemo}>Tambah</button>
                         </div>
                     </div>
                 )}
@@ -398,7 +396,7 @@ export default function Memo({ token }) {
                                                         <div className="flex flex-row gap-[8px]">
                                                             {/* Icon edit-del */}
                                                             <div className="flex flex-col items-center justify-center">
-                                                                <span className="flex flex-row gap-[6px] cursor-pointer" onClick={() => HandleDelMemo(item, index)}>
+                                                                <span className="flex flex-row gap-[6px] cursor-pointer" onClick={() => HandleDelMemo(item.id)}>
                                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-3 text-[tomato]">
                                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                                     </svg>
@@ -410,7 +408,7 @@ export default function Memo({ token }) {
 
                                                             {/* Value memo on edit */}
                                                             <div className={`w-full ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                                <p className="whitespace-pre-wrap text-[10px] break-words"> {item}</p>
+                                                                <p className="whitespace-pre-wrap text-[10px] break-words"> {item.value_memo}</p>
                                                             </div>
                                                             {/* {editValueMemoStatus ? ():()} */}
 
@@ -428,7 +426,7 @@ export default function Memo({ token }) {
                                                         </div>
                                                     ) : (
                                                         <div className={`w-full  ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item)}> {item}</p>
+                                                            <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item.value_memo, item.updatedAt.slice(0, 10))}> {item.value_memo}</p>
                                                         </div>
                                                     )}
                                                     {/* </li> */}

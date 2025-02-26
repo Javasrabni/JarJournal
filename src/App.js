@@ -66,7 +66,7 @@ function App() {
                                           <Route path='/user/:usernameId' element={<UserProfile />} />
                                           <Route path='/:user/profile/edit' element={<EditProfilePage />} />
                                           <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
-                                          <Route path='/Jurnal/:index/:desc' element={<JurnalPage />} />
+                                          <Route path='/Jurnal/:desc' element={<JurnalPage />} />
                                           <Route path='/clips/publish' element={<ArtikelForm />} />
                                           <Route path='/KalenderPlanner' element={<KalenderPage />} />
                                           <Route path='/JJR-ChatBot' element={<Chatbot />} />

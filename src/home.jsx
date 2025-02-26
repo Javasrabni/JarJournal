@@ -241,7 +241,7 @@ export default function Home() {
                                                                 </span>
                                                                 <div className="flex flex-col gap-[2px] justify-center">
                                                                     <p className="text-[11px] font-[600] text-[11px] text-white">{user.username}</p>
-                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">Bergabung pada {user.createdAt.slice(0, 10)}</p>
+                                                                    <p className="text-[11px] text-[var(--black-subtext)] text-[11px]">Bergabung pada {user.createdAt.slice(0, 10).split('-').reverse().join('-')}</p>
                                                                 </div>
                                                             </div>
                                                         )}
@@ -337,7 +337,7 @@ const ReportJurnal = () => {
 
 
     useEffect(() => {
-        const getMoodUser = (Array.isArray(outputDataUserJurnal) ? outputDataUserJurnal : []).map(item => item.moodtype);
+        const getMoodUser = (Array.isArray(outputDataUserJurnal) ? outputDataUserJurnal : []).map(item => item.moodType);
 
         if (JSON.stringify(getMoodUser.current) !== JSON.stringify(getMoodUser)) {
             const dataAnalisis = {};
@@ -465,7 +465,7 @@ const ReportJurnal = () => {
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
                 <div className="flex flex-col gap-[4px]">
                     <p className="text-[12px] font-[600] text-white">Ringkasan jurnal harian</p>
-                    <span><p className="text-[11px] text-[var(--black-subtext)]">*Dalam proses analisis akan lebih ideal jika setidaknya terdapat 3 data.</p></span>
+                    <span><p className="text-[11px] text-[var(--black-subtext)]">*Dalam proses analisis akan lebih ideal jika setidaknya terdapat 7 data.</p></span>
 
                 </div>
                 <div>
@@ -490,7 +490,7 @@ const ReportJurnal = () => {
                                     {outputDataUserJurnal.length > 0 && outputDataUserJurnal.slice(0, 1).map((item, index) =>
                                         <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col" onClick={() => console.log(index)}>
                                             <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{item.day}</p>
-                                            <p className="text-[11px] text-[var(--black-subtext)]">{item.descJurnal}</p>
+                                            <p className="text-[11px] text-[var(--black-subtext)]">{item.descJurnal == 'null' ? `Jurnal harian ku yang ke-${item.day}` : item.descJurnal}</p>
                                         </div>
                                     )}
                                 </div>

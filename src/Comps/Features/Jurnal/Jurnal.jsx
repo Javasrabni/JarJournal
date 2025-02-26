@@ -24,7 +24,7 @@ export default function Jurnal() {
     // DATA TO SEND INTO SERVER
     const [dataInputFieldJurnal, setDataInputFieldJurnal] = useState(
         {
-            day: outputDataUserJurnal?.length > 0 ? outputDataUserJurnal.length + 1 : 1,
+            day: outputDataUserJurnal?.length > 0 ? outputDataUserJurnal.length + 1 : '1',
             descJurnal: null,
             fotoJurnal: null,
             moodToday: null,
@@ -79,7 +79,6 @@ export default function Jurnal() {
 
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
-    console.log(dataInputFieldJurnal.descJurnal)
     async function HandleAddJurnal() {
         try {
             const payloadData = new FormData()
@@ -112,8 +111,9 @@ export default function Jurnal() {
                 // alert(message)
                 setRefreshData(prev => !prev)
                 setOnWriteJurnal(false)
+                setSelectedIdxJurnal(dataInputFieldJurnal.day)
                 const delay = setTimeout(() => {
-                    navigate(`/Jurnal/${outputDataUserJurnal.id}/${dataInputFieldJurnal.descJurnal ?? "JurnalHarian"}`)
+                    navigate(`/Jurnal/${dataInputFieldJurnal.day}-${dataInputFieldJurnal.descJurnal ?? "JurnalHarian"}`)
                 }, 300)
 
                 setInputFieldJurnalState(false)
@@ -161,6 +161,12 @@ export default function Jurnal() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
 
+    const { selectedIdxJurnal, setSelectedIdxJurnal } = useContext(JurnalContext)
+    function openSelectedJurnal(index, desc) {
+        setSelectedIdxJurnal(index)
+        navigate(`/Jurnal/${index}-${desc}`)
+    }
+
     return (
         <div>
             {/* <p className="text-[12px] font-[600] text-white">Perjalanan jurnal harianmu</p> */}
@@ -183,6 +189,7 @@ export default function Jurnal() {
                                 <p className="text-[12px] text-white">Minggu ke-{weekIndex + 1}</p>
                             </span> */}
                     <div className="flex flex-row gap-[12px] flex-wrap ">
+
                         {(Array.isArray(outputDataUserJurnal) ? outputDataUserJurnal : [])
                             .filter(user => user.userId === userId).length > 0 ? (
                             outputDataUserJurnal
@@ -209,13 +216,13 @@ export default function Jurnal() {
                                             {/* JUDUL DAN DESKRIPSI */}
                                             <div
                                                 className="w-full"
-                                                onClick={() => navigate(`/Jurnal/${item.id}/${item.descJurnal}`)}
+                                                onClick={() => openSelectedJurnal(item.day, item.descJurnal == "null" ? `Jurnal-hari-ke-${item.day}` : item.descJurnal)}
                                             >
                                                 <p className="text-[12px] text-white font-[600]">
                                                     Day {item.day}
                                                 </p>
                                                 <p className="text-[12px] text-[var(--black-subtext)]">
-                                                    {item.descJurnal}
+                                                    {item.descJurnal == 'null' ? `Jurnal harian ku yang ke-${item.day}` : item.descJurnal}
                                                 </p>
                                             </div>
 
@@ -262,7 +269,7 @@ export default function Jurnal() {
                         Button1={
                             <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
                                 <span className="w-fit shrink-0">
-                                    <p className="text-[12px] font-[600] text-white">Day {outputDataUserJurnal ? '1' : outputDataUserJurnal.length + 1}</p>
+                                    <p className="text-[12px] font-[600] text-white">Day {outputDataUserJurnal?.length > 0 ? outputDataUserJurnal.length + 1 : '1'}</p>
                                 </span>
                                 <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="search" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
                             </div>
