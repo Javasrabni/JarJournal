@@ -9,7 +9,7 @@ import Publikasi from "../../Comps/Features/Publikasi/pubPage/publikasi"
 import { ArtikelContext } from "../../Comps/Features/Publikasi/Context/artikelContext"
 import { useNavigate } from "react-router-dom"
 import { useOnEditUserProfileContext } from "./Context/onEditUserProfileCTX"
-
+import Skeleton from "react-loading-skeleton"
 
 export default function UserProfile() {
     // AUTH SECT
@@ -102,7 +102,7 @@ export default function UserProfile() {
         <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
     </svg>
 
-
+    const [onLoading, setOnLoading] = useState(true)
 
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
@@ -118,11 +118,17 @@ export default function UserProfile() {
 
                             {/* PHOTO PROFILE */}
                             <div className="w-[100px] h-[100px] rounded-[50px] shrink-0">
-                                {getRawDataUsername && usernameId == getRawDataUsername.username && (
-                                    <>
-                                        <img src={getRawDataUsername.avatar ? getRawDataUsername.avatar : "https://res.cloudinary.com/dwf753l9w/image/upload/w_100,h_100,q_auto,f_auto/no_profile_user_emaldm.svg"} alt={`${getRawDataUsername.username} Photo Profile`} draggable='false' width={'100%'} className="rounded-[50px] object-cover w-full h-full" onContextMenu={(e) => e.preventDefault()} />
-                                    </>
+                                {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />
                                 )}
+                                <img
+                                    src={getRawDataUsername.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_100,h_100,q_auto,f_auto/no_profile_user_emaldm.svg"}
+                                    alt={`${getRawDataUsername.username} Photo Profile`}
+                                    draggable="false"
+                                    width="100%"
+                                    className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                    onLoad={() => setOnLoading(false)} // Hilangkan BlurHash setelah gambar dimuat
+                                    onContextMenu={(e) => e.preventDefault()}
+                                />
                             </div>
 
                             <div className="w-full flex flex-col gap-[16px] justify-center">

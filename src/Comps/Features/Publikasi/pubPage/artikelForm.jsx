@@ -104,19 +104,39 @@ export default function ArtikelForm() {
 
 
 
-    const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
-    const [judulEdit, setJudulEdit] = useState(null)
-    const [contentEdit, setContentEdit] = useState(null)
-    const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
+    // const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
+    // const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
+    // const [judulEdit, setJudulEdit] = useState(null)
+    // const [contentEdit, setContentEdit] = useState(null)
 
 
-    useEffect(() => {
-        if (location.pathname !== "/clips/publish") {
-            setOnEditPub(false);
-            setNewEntriesPubEdit({}); // Reset state saat pindah halaman
-            console.log("State di-reset");
-        }
-    }, [location.pathname])
+    // useEffect(() => {
+    //     if (location.pathname !== "/clips/publish") {
+    //         setOnEditPub(false);
+    //         setNewEntriesPubEdit({}); // Reset state saat pindah halaman
+    //     }
+    // }, [location.pathname])
+
+    // async function HandlePatchPub(pubId) {
+    //     try {
+    //         const response = await fetch(`${API_URL_PUB}/patch/user_publikasi`, {
+    //             method: "PATCH",
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`,
+    //                 'Content-Type': 'application/json'
+    //             }, body: JSON.stringify({ userId: userId, pubId: pubId, newJudul: judulEdit, newContent: contentEdit })
+    //         })
+    //         const data = await response.json()
+    //         if (response.ok) {
+    //             setRefreshData(prev => !prev)
+    //             console.log(data)
+    //         }
+    //     } catch (err) {
+    //         console.error(err)
+    //     }
+
+    // }
+
 
 
     return (
@@ -129,15 +149,17 @@ export default function ArtikelForm() {
                     <label for="small-input" className="block mb-2 outline-none text-[12px] font-medium text-white ">Judul</label>
                     <input type="text" id="small-input" className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full"
                         placeholder="Judul postingan"
-                        value={onEditPub ? newEntriesPubEdit.judul : null}
-                        onChange={(e) => (onEditPub ? setJudulEdit(e.target.value) : setJudulPublikasi(e.target.value))} />
+                        // value={onEditPub ? newEntriesPubEdit.judul : null}
+                        // onChange={(e) => (onEditPub ? setJudulEdit(e.target.value) : setJudulPublikasi(e.target.value))} />
+                        onChange={(e) => setJudulPublikasi(e.target.value)} />
                 </div>
                 <div>
                     <label for="large-input" className="block mb-2 text-[12px] font-medium text-white">Content</label>
                     <textarea type="text" id="large-input" className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full min-h-[240px] max-h-[340px] h-full"
                         placeholder="Isi konten dari postingan, curahkan isi hatimu"
-                        value={onEditPub ? newEntriesPubEdit.content : newPublikasi}
-                        onChange={(e) => (onEditPub ? setContentEdit(e.target.value) : setNewPublikasi(e.target.value))}
+                        // value={onEditPub ? newEntriesPubEdit.content : newPublikasi}
+                        // onChange={(e) => (onEditPub ? setContentEdit(e.target.value) : setNewPublikasi(e.target.value))}
+                        onChange={(e) => setNewPublikasi(e.target.value)}
 
                     />
                 </div>
@@ -147,8 +169,24 @@ export default function ArtikelForm() {
                 <div className="text-[11px] text-[var(--black-subtext)]" id="user_avatar_help">Format JPG, JPEG, dan PNG, Mohon untuk menjaga sikap dan sopan santun antar sesama.</div>
 
 
-                <button onClick={HandleAddPub} className="mt-[12px] w-full bg-[var(--blue-clr)] rounded-lg text-white text-[12px] font-semibold" style={{ padding: '8px 16px' }}>
+                <button
+                    // onClick={() => {
+                    //     if (onEditPub) {
+                    //         if (newEntriesPubEdit.pubId) {
+                    //             HandlePatchPub(newEntriesPubEdit.pubId);
+                    //         } else {
+                    //             console.error("Error: pubId is missing!");
+                    //         }
+                    //     } else {
+                    //         HandleAddPub();
+                    //     }
+                    // }}
+                    onClick={HandleAddPub}
+                    className="mt-[12px] w-full bg-[var(--blue-clr)] rounded-lg text-white text-[12px] font-semibold"
+                    style={{ padding: "8px 16px" }}
+                >
                     Publish
+                    {/* {onEditPub ? "Update" : "Publish"} */}
                 </button>
             </div>
         </div>

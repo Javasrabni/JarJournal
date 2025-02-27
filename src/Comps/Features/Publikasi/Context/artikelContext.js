@@ -22,9 +22,8 @@ export default function ArtikelProvider({ children }) {
     const [onProgressUpPub, setonProgressUpPub] = useState(0)
 
     // ON EDIT PUB
-    const [onEditPub, setOnEditPub] = useState(false)
-    const [newEntriesPubEdit, setNewEntriesPubEdit] = useState({})
-    console.log(onEditPub)
+    // const [onEditPub, setOnEditPub] = useState(false)
+    // const [newEntriesPubEdit, setNewEntriesPubEdit] = useState({})
 
     useEffect(() => {
         const fetchPub = async () => {
@@ -111,7 +110,7 @@ export default function ArtikelProvider({ children }) {
 
 
     return (
-        <ArtikelContext.Provider value={{ newEntriesPubEdit, setNewEntriesPubEdit, onEditPub, setOnEditPub, onProgressUpPub, setonProgressUpPub, onUploadPubLoading, setOnUploadPubLoading, getSavedPublikasi, setGetSavedPublikasi, komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
+        <ArtikelContext.Provider value={{ onProgressUpPub, setonProgressUpPub, onUploadPubLoading, setOnUploadPubLoading, getSavedPublikasi, setGetSavedPublikasi, komentarPublikasi, setKomentarPublikasi, infiniteScrollPub, setInfiniteScrollPub, onRenderImg, setOnRenderImg, likePub, setLikePub, selectedImage, setSelectedImage, publikasi, setPublikasi, newPublikasi, setNewPublikasi, judulPublikasi, setJudulPublikasi }}>
             {children}
         </ArtikelContext.Provider>
     )

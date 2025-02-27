@@ -5,6 +5,7 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 import { UserProfileContext } from "../../../Pages/userProfile/Context/userProfileContext"
 import { ChooseAvatarContext } from "../../../introWeb/chooseAvatar/Context/choseAvtContext"
 import { OVERALL_CONTEXT } from "../../../Context/OVERALL_CONTEXT"
+import Skeleton from "react-loading-skeleton"
 
 export default function NavFooter() {
     const { token, setToken } = useContext(API_URL_CONTEXT)
@@ -42,6 +43,7 @@ export default function NavFooter() {
     const cubeIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
     </svg>
+    const [onLoading, setOnLoading] = useState(true)
 
 
     return (
@@ -59,8 +61,11 @@ export default function NavFooter() {
             </div>
             {username && token && (
                 <div onClick={() => navigate(`/user/${findUser?.username}`)} className="cursor-pointer w-[25px] h-[25px]">
+                    {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />)}
+
                     <span>
-                        <img src={findUser?.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className="w-full h-full rounded-[50px] object-cover" />
+                        <img src={findUser.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                            loading="lazy" onLoad={() => setOnLoading(false)} />
                     </span>
                 </div>
             )}

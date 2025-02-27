@@ -103,10 +103,10 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
     const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
 
-    const PatchPublikasi = async (judul, content, image, pubId, userIdPub) => {
-        navigate(`/clips/publish`)
+    function PatchPublikasi(judul, content, image, pubId, userIdPub) {
         setNewEntriesPubEdit({ judul: judul, content: content, image: image, pubId: pubId, userId: userIdPub })
         setOnEditPub(true)
+        navigate(`/clips/publish`)
     }
 
     const navigate = useNavigate()
@@ -377,6 +377,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
     const AlgorithmPub = ShufflePub([...publikasi])
 
+
+    const [onLoading, setOnLoading] = useState(true)
+
     return (
         <div>
             {/* Daftar publikasi */}
@@ -406,21 +409,29 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                 {/* IMAGE PUB*/}
                                                 <div>
+                                                    {onLoading && (
+                                                        <div className="w-full h-[260px] rounded-[16px]">
+                                                            <Skeleton count={1} className="w-full h-[260px] rounded-[16px]" />
+
+                                                        </div>
+                                                    )}
                                                     {pub.imageUrl && (
                                                         <>
-                                                            {/* {onRenderImg ? ( */}
-                                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
-                                                                <img
-                                                                    src={`${pub.imageUrl}`}
-                                                                    alt="pub-image"
-                                                                    className="w-full h-auto max-h-full object-cover rounded-[8px]"
-                                                                    loading="lazy"
-                                                                    onLoad={HandleRenderImg}
-                                                                />
+                                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                                <>
+
+
+                                                                    < img
+                                                                        src={`${pub.imageUrl}`}
+                                                                        alt="pub-image"
+                                                                        className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                        onLoad={() => setOnLoading(false)}
+
+                                                                    />
+
+                                                                </>
                                                             </div>
-                                                            {/* ) : (
-                                       <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                                   )} */}
+
 
                                                         </>
                                                     )}
@@ -433,11 +444,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {publikasi && (() => {
                                                         const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                         return user ? (
-                                                            <img
-                                                                src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
-                                                                alt="profile"
-                                                                className="w-[32px] h-[32px] rounded-[50px] object-cover"
-                                                            />
+                                                            <div className="w-[32px] h-[32px]">
+                                                                {onLoading && (<Skeleton count={1} circle={true} className="w-full h-full" />)}
+                                                                <img
+                                                                    src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
+                                                                    alt="profile"
+                                                                    loading="lazy"
+                                                                    onLoad={() => setOnLoading(false)}
+                                                                    className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                />
+                                                            </div>
                                                         ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                     })()}
                                                     <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -570,21 +586,29 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                         {/* IMAGE PUB*/}
                                                         <div>
+                                                            {onLoading && (
+                                                                <div className="w-full h-[260px] rounded-[16px]">
+                                                                    <Skeleton count={1} className="w-full h-[260px] rounded-[16px]" />
+
+                                                                </div>
+                                                            )}
                                                             {pub.imageUrl && (
                                                                 <>
-                                                                    {/* {onRenderImg ? ( */}
-                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
-                                                                        <img
-                                                                            src={`${pub.imageUrl}`}
-                                                                            alt="pub-image"
-                                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
-                                                                            loading="lazy"
-                                                                            onLoad={HandleRenderImg}
-                                                                        />
+                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                                        <>
+
+
+                                                                            < img
+                                                                                src={`${pub.imageUrl}`}
+                                                                                alt="pub-image"
+                                                                                className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                                onLoad={() => setOnLoading(false)}
+
+                                                                            />
+
+                                                                        </>
                                                                     </div>
-                                                                    {/* ) : (
-                                              <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                                          )} */}
+
 
                                                                 </>
                                                             )}
@@ -597,11 +621,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             {publikasi && (() => {
                                                                 const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return user ? (
-                                                                    <img
-                                                                        src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
-                                                                        alt="profile"
-                                                                        className="w-[32px] h-[32px] rounded-[50px] object-cover"
-                                                                    />
+                                                                    <div className="w-[32px] h-[32px]">
+                                                                        {onLoading && (<Skeleton count={1} circle={true} className="w-full h-full" />)}
+                                                                        <img
+                                                                            src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
+                                                                            alt="profile"
+                                                                            loading="lazy"
+                                                                            onLoad={() => setOnLoading(false)}
+                                                                            className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                        />
+                                                                    </div>
                                                                 ) : null; // Jika user tidak ditemukan, jangan tampilkan apa pun
                                                             })()}
                                                             <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
@@ -718,7 +747,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                 ) : (
                                     <>
                                         {/* EXPLORE VIEW */}
-                                        {publikasiData.map((pub) => (
+                                        {publikasiData.map(pub => (
                                             <div key={pub.id} style={{ marginBottom: '12px', border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
@@ -732,22 +761,29 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                         {/* IMAGE PUB*/}
                                                         <div>
+                                                            {onLoading && (
+                                                                <div className="w-full h-[260px] rounded-[16px]">
+                                                                    <Skeleton count={1} className="w-full h-[260px] rounded-[16px]" />
+
+                                                                </div>
+                                                            )}
                                                             {pub.imageUrl && (
                                                                 <>
-                                                                    {/* {onRenderImg ? ( */}
-                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden">
+                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                                        <>
 
-                                                                        <img
-                                                                            src={pub.imageUrl
-                                                                            }
-                                                                            alt="pub-image"
-                                                                            className="w-full h-auto max-h-full object-cover rounded-[8px]"
-                                                                            loading="lazy"
-                                                                        />
+
+                                                                            < img
+                                                                                src={`${pub.imageUrl}`}
+                                                                                alt="pub-image"
+                                                                                className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                                onLoad={() => setOnLoading(false)}
+
+                                                                            />
+
+                                                                        </>
                                                                     </div>
-                                                                    {/* ) : (
-                                                  <Skeleton count={1} width={'100%'} height={'80px'} className="animate-pulse" style={{ borderRadius: '8px' }} />
-                                              )} */}
+
 
                                                                 </>
                                                             )}
@@ -761,11 +797,16 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 const user = publikasi.find(user => user.userName === pub.userName) && publicDataUser.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return user ? (
                                                                     <>
-                                                                        <img
-                                                                            src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
-                                                                            alt="profile"
-                                                                            className="w-[32px] h-[32px] rounded-[50px] object-cover"
-                                                                        />
+                                                                        <div className="w-[32px] h-[32px]">
+                                                                            {onLoading && (<Skeleton count={1} circle={true} className="w-full h-full" />)}
+                                                                            <img
+                                                                                src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_32,h_32,q_auto,f_auto/no_profile_user_emaldm.svg"}
+                                                                                alt="profile"
+                                                                                loading="lazy"
+                                                                                onLoad={() => setOnLoading(false)}
+                                                                                className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                            />
+                                                                        </div>
                                                                         <p className={`text-[11px] font-[600] pb-[0px] ${themeActive ? 'text-[var(--black-subtext)]' : 'text-[var(--black-subtext)]'} `} >
                                                                             <span className="flex flex-col gap-[1.5px] justify-center">
                                                                                 {/* {userIcon} */}
@@ -812,12 +853,21 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                                 <OnPopupSetting
                                                                                     Heading={'Pengaturan Clips'}
                                                                                     onClickFunc={() => setOnSettingPost(prev => !prev)}
-                                                                                    Button1={<button role="button" onClick={() => PatchPublikasi(pub.judulContent, pub.content, pub.imageUrl, pub.id, pub.userId)}>
-                                                                                        <span className="flex flex-row items-center gap-[8px]">
-                                                                                            <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
-                                                                                            <span className="text-[12px] text-white">Edit</span>
-                                                                                        </span>
-                                                                                    </button>}
+                                                                                    // Button1={<button role="button" onClick={() => {
+                                                                                    //     const selectedPub = { ...pub }; // Tangkap data yang sedang diklik
+                                                                                    //     PatchPublikasi(
+                                                                                    //         selectedPub.judulContent,
+                                                                                    //         selectedPub.content,
+                                                                                    //         selectedPub.imageUrl,
+                                                                                    //         selectedPub.id,
+                                                                                    //         selectedPub.userId
+                                                                                    //     );
+                                                                                    // }}>
+                                                                                    //     <span className="flex flex-row items-center gap-[8px]">
+                                                                                    //         <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
+                                                                                    //         <span className="text-[12px] text-white">Edit</span>
+                                                                                    //     </span>
+                                                                                    // </button>}
                                                                                     Button2={<button role="button" onClick={() => DelPublikasi(pub.id)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
                                                                                             {deletePost}
