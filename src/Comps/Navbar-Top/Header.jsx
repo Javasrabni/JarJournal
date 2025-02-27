@@ -32,6 +32,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         pathLocation.pathname === "/ftr/Catatan" && setJudulHeader("Catatan")
         pathLocation.pathname === "/ftr/Library" && setJudulHeader("Library")
         pathLocation.pathname === "/KalenderPlanner" && setJudulHeader("Kalender Planner")
+        pathLocation.pathname === "/clips/publish" && setJudulHeader("Posting")
     }, [pathLocation.pathname])
 
     const [backPageHeader, setbackPageHeader] = useState(false)
@@ -46,6 +47,9 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             setbackPageHeader(true)
         }
         if (pathLocation.pathname === `/clips/${id}`) {
+            setbackPageHeader(true)
+        }
+        if (pathLocation.pathname === `/clips/publish`) {
             setbackPageHeader(true)
         }
     }, [pathLocation.pathname])
@@ -158,6 +162,9 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             navigate('/dashboard')
         }
         if (pathLocation.pathname === '/clips/:id') {
+            navigate('/Explore')
+        }
+        if (pathLocation.pathname === '/clips/publish') {
             navigate('/Explore')
         }
     }

@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { API_URL_CONTEXT } from "../../../../Auth/Context/API_URL"
 import { ArtikelContext } from "../Context/artikelContext"
 import axios from "axios"
+import Header from "../../../Navbar-Top/Header"
 
 export default function ArtikelForm() {
     // NAVIGATE
     const navigate = useNavigate()
+    const location = useLocation()
 
     // STATE
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
@@ -100,26 +102,52 @@ export default function ArtikelForm() {
 
     };
 
+
+
+    const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
+    const [judulEdit, setJudulEdit] = useState(null)
+    const [contentEdit, setContentEdit] = useState(null)
+    const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
+
+
+    useEffect(() => {
+        if (location.pathname !== "/clips/publish") {
+            setOnEditPub(false);
+            setNewEntriesPubEdit({}); // Reset state saat pindah halaman
+            console.log("State di-reset");
+        }
+    }, [location.pathname])
+
+
     return (
         <div>
             {/* Form untuk menambah publikasi */}
-            <div style={{ marginBottom: '20px' }}>
-                <input
-                    placeholder="judul pub"
-                    type="text"
-                    // value={judulPublikasi}
-                    onChange={(e) => setJudulPublikasi(e.target.value)}
+            <Header />
+            <div className="p-[16px] flex flex-col gap-[12px]">
 
-                />
-                <textarea
-                    placeholder="Write your publication..."
-                    value={newPublikasi}
-                    onChange={(e) => setNewPublikasi(e.target.value)}
-                    style={{ width: '300px', height: '100px', marginRight: '10px' }}
-                />
-                <input type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+                <div>
+                    <label for="small-input" className="block mb-2 outline-none text-[12px] font-medium text-white ">Judul</label>
+                    <input type="text" id="small-input" className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full"
+                        placeholder="Judul postingan"
+                        value={onEditPub ? newEntriesPubEdit.judul : null}
+                        onChange={(e) => (onEditPub ? setJudulEdit(e.target.value) : setJudulPublikasi(e.target.value))} />
+                </div>
+                <div>
+                    <label for="large-input" className="block mb-2 text-[12px] font-medium text-white">Content</label>
+                    <textarea type="text" id="large-input" className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full min-h-[240px] max-h-[340px] h-full"
+                        placeholder="Isi konten dari postingan, curahkan isi hatimu"
+                        value={onEditPub ? newEntriesPubEdit.content : newPublikasi}
+                        onChange={(e) => (onEditPub ? setContentEdit(e.target.value) : setNewPublikasi(e.target.value))}
 
-                <button onClick={HandleAddPub} className="text-[yellow]" style={{ padding: '5px 10px' }}>
+                    />
+                </div>
+
+                <label className="block outline-none text-[12px] font-medium text-white " for="user_avatar">Post dengan gambar</label>
+                <input className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+                <div className="text-[11px] text-[var(--black-subtext)]" id="user_avatar_help">Format JPG, JPEG, dan PNG, Mohon untuk menjaga sikap dan sopan santun antar sesama.</div>
+
+
+                <button onClick={HandleAddPub} className="mt-[12px] w-full bg-[var(--blue-clr)] rounded-lg text-white text-[12px] font-semibold" style={{ padding: '8px 16px' }}>
                     Publish
                 </button>
             </div>

@@ -72,6 +72,7 @@ export default function Jurnal() {
     // STATUS SETTING 
     const [onSetting, setOnSetting] = useState(false)
     const [indexOnSetting, setIndexOnSetting] = useState(null)
+    console.log(indexOnSetting)
 
     // ON AUTO FILL INPUT STATE
     const [inputFieldJurnalState, setInputFieldJurnalState] = useState(false)
@@ -128,18 +129,21 @@ export default function Jurnal() {
     // DELETE JURNAL
     const HandleDeleteJurnal = async () => {
         try {
-            const response = await fetch(`${API_URL_AUTH}/auth/del-jurnal`, {
+            const response = await fetch(`${API_URL_AUTH}/del/user_jurnal`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ IdxJurnal: indexOnSetting })
+                }, body: JSON.stringify({ userId: userId, jurnalId: indexOnSetting })
             })
+            const data = await response.json()
             if (response.ok) {
-                const data = await response.json()
-                alert(data.message)
+                setRefreshData(prev => !prev)
+                alert(data.Msg)
                 setOnSetting(false)
-                navigate(0)
+            } else {
+                alert(data.ErrMsg)
+                console.log(data)
             }
         } catch (err) {
             console.error(err)

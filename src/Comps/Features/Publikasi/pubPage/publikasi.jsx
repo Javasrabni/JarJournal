@@ -100,6 +100,15 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         }
     }
 
+    const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
+    const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
+
+    const PatchPublikasi = async (judul, content, image, pubId, userIdPub) => {
+        navigate(`/clips/publish`)
+        setNewEntriesPubEdit({ judul: judul, content: content, image: image, pubId: pubId, userId: userIdPub })
+        setOnEditPub(true)
+    }
+
     const navigate = useNavigate()
 
     // Handle Select pub
@@ -803,7 +812,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                                 <OnPopupSetting
                                                                                     Heading={'Pengaturan Clips'}
                                                                                     onClickFunc={() => setOnSettingPost(prev => !prev)}
-                                                                                    Button1={<button role="button" onClick={() => DelPublikasi(pub.id)}>
+                                                                                    Button1={<button role="button" onClick={() => PatchPublikasi(pub.judulContent, pub.content, pub.imageUrl, pub.id, pub.userId)}>
                                                                                         <span className="flex flex-row items-center gap-[8px]">
                                                                                             <i class="fa-regular fa-pen-to-square" style={{ fontSize: '13px', fontWeight: '400', }}></i>
                                                                                             <span className="text-[12px] text-white">Edit</span>

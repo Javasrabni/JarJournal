@@ -458,8 +458,6 @@ const ReportJurnal = () => {
         },
     };
 
-    console.log(outputDataUserJurnal)
-
     return (
         <div className="w-full h-fit min-h-[120px]">
             <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -469,7 +467,7 @@ const ReportJurnal = () => {
 
                 </div>
                 <div>
-                    {outputDataUserJurnal.length <= 3 ? (
+                    {outputDataUserJurnal.length <= 0 ? (
                         <div className="flex flex-col w-full h-full items-center justify-center">
                             {/* <div className="w-full h-full items-center flex justify-center">
                                 <img src="https://res.cloudinary.com/dwf753l9w/image/upload/v1737171056/Line_1_a7ivrx.svg" alt="report chart jurnal" className="w-[35%] h-[35%] object-cover" />
@@ -502,7 +500,7 @@ const ReportJurnal = () => {
                                     {outputDataUserJurnal && outputDataUserJurnal[outputDataUserJurnal.length - 1] && (
                                         <div className="w-fit h-fit bg-[var(--blue-clr)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col">
                                             <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{outputDataUserJurnal[outputDataUserJurnal.length - 1].day}</p>
-                                            <p className="text-[11px] text-[var(--white-bg-200)]">{outputDataUserJurnal[outputDataUserJurnal.length - 1].descJurnal}</p>
+                                            <p className="text-[11px] text-[var(--white-bg-200)]">{outputDataUserJurnal[outputDataUserJurnal.length - 1]?.descJurnal }</p>
                                         </div>
                                     )}
                                 </div>
