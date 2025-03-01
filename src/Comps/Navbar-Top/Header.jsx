@@ -13,8 +13,8 @@ import { FeedBackELM } from "../../home";
 import { ArtikelContext } from "../Features/Publikasi/Context/artikelContext";
 
 export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
-    const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
-    const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
+    // const { onEditPub, setOnEditPub } = useContext(ArtikelContext)
+    // const { newEntriesPubEdit, setNewEntriesPubEdit } = useContext(ArtikelContext)
 
     // AUTH
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
@@ -169,8 +169,8 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
         }
         if (pathLocation.pathname === '/clips/publish') {
             navigate('/Explore')
-            setOnEditPub(false)
-            setNewEntriesPubEdit({})
+            // setOnEditPub(false)
+            // setNewEntriesPubEdit({})
         }
     }
 

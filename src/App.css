@@ -19,6 +19,11 @@
   src: url(/public/Assets/font/newspaper/EtherealDemo-Bold.otf);
 }
 
+@font-face {
+  font-family: 'newspaper black';
+  src: url(/public/Assets/font/newspaper/EtherealDemo-Black.otf);
+}
+
 :root {
   /* --blue-clr: #1D4ED8; */
   --blue-clr: #1585FF;

@@ -64,7 +64,7 @@ export default function NavFooter() {
                     {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />)}
 
                     <span>
-                        <img src={findUser.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                        <img src={findUser?.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
                             loading="lazy" onLoad={() => setOnLoading(false)} />
                     </span>
                 </div>

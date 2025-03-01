@@ -123,7 +123,7 @@ export default function Explore() {
                 </div>
             )}
 
-            <div className={`h-[100vh] w-full flex flex-col m-auto`}>
+            <div className={`h-fit w-full flex flex-col m-auto`}>
                 {/* TOP SECT */}
                 <div className="w-full h-fit flex flex-col justify-center gap-[8px] mb-[16px] mt-[12px]" role='heading'>
                     {/* ON SEARCH */}
@@ -159,7 +159,7 @@ export default function Explore() {
                                                 <p className="text-[12px] text-white">{user.username}</p>
                                             </span>
                                             <span>
-                                                <p className="text-[12px] text-[var(--black-subtext)]">{user.userBio.slice(0, 10)}...</p>
+                                                <p className="text-[12px] text-[var(--black-subtext)]">{user.userBio && user.userBio.slice(0, 10)}...</p>
                                             </span>
                                         </span>
                                     </div>

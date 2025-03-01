@@ -30,6 +30,7 @@ export default function UserProfile() {
 
     const [statusPostRrSave, setStatusPostRrSave] = useState(true)
     const getRawDataUsername = publicDataUser.find(item => item.username === usernameId) //Filtering user porfile
+    console.log(getRawDataUsername)
 
     const [lengthUserPost, setLengthUserPost] = useState(0)
     useEffect(() => {
@@ -248,21 +249,24 @@ export default function UserProfile() {
                         <div>
                             {lengthUserPost > 0 ? (
                                 <>
-                                    {statusPostRrSave ? (
+                                    {statusPostRrSave && (
                                         <Publikasi publikasiData={publikasi} profilePage={getRawDataUsername.username} />
-                                    ) : (
-                                        <Publikasi publikasiData={publikasi} profilePageUserLikes={getRawDataUsername.username} />
                                     )}
+
+
                                 </>
                             ) : (
                                 <>
-                                    {statusPostRrSave ? (
+                                    {statusPostRrSave && (
                                         <p className="text-[12px] font-[500] text-[var(--black-subtext)]">Belum ada postingan</p>
-                                    ) : (
-                                        <p className="text-[12px] font-[500] text-[var(--black-subtext)]">{getRawDataUsername.username} belum menyimpan sesuatu :/</p>
                                     )}
                                 </>
                             )}
+
+                            {!statusPostRrSave && (
+                                <Publikasi publikasiData={publikasi} profilePageUserLikes={getRawDataUsername.username} />
+                            )}
+
                         </div>
                     </div>
                 </div>

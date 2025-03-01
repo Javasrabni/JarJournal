@@ -226,7 +226,7 @@ export default function Jurnal() {
                                                     Day {item.day}
                                                 </p>
                                                 <p className="text-[12px] text-[var(--black-subtext)]">
-                                                    {item.descJurnal == 'null' ? `Jurnal harian ku yang ke-${item.day}` : item.descJurnal}
+                                                    {item.descJurnal == 'null' ? `Jurnal harianku yang ke-${item.day}` : item.descJurnal}
                                                 </p>
                                             </div>
 
