@@ -231,7 +231,7 @@ export default function Home() {
                                                 <div className="flex flex-row gap-[32px] mt-[32px] w-full h-fit overflow-x-auto pb-[16px]">
                                                     <>
                                                         {publicDataUser.slice(0, 10).map((user, index) =>
-                                                            <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.username}`)}>
+                                                            <div className="flex flex-row gap-[16px] items-center shrink-0" key={index} onClick={() => navigate(`/user/${user.id}/${user.username}`)}>
                                                                 <span>
                                                                     {user.avatar ? (
                                                                         <img src={user.avatar} alt={user.username} className="w-[32px] h-[32px] rounded-full object-cover" />

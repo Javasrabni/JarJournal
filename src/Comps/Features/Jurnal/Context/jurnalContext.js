@@ -18,6 +18,7 @@ export default function JurnalContextProvider({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/user_jurnal`, {
                     method: "GET",
+                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -25,7 +26,6 @@ export default function JurnalContextProvider({ children }) {
                 const data = await response.json()
                 if (response.ok) {
                     setOutputDataUserJurnal(data)
-                    console.log(data)
                 } else {
                     console.log(data)
                 }
@@ -48,6 +48,7 @@ export default function JurnalContextProvider({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/emot_jurnal`, {
                     method: "GET",
+                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

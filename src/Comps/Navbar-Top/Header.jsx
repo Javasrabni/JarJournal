@@ -176,7 +176,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
 
     // HIDE SETTING ON SETTING PAGE 
     useEffect(() => {
-        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan', '/KalenderPlanner', `/clips/${id}`]
+        const pathToHideSetting = ['/ftr/Catatan', '/ftr/EditCatatan', '/KalenderPlanner']
         if (pathToHideSetting.includes(pathLocation.pathname)) {
             setHideSetting(true)
         }

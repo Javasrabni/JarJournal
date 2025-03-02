@@ -30,6 +30,7 @@ export default function ArtikelProvider({ children }) {
             setLoading(true)
             try {
                 const response = await fetch(`${API_URL_PUB}/get/all_user_publikasi`, {
+                    cache: "no-cache",
                     method: "GET"
                 })
                 const data = await response.json()
@@ -58,6 +59,7 @@ export default function ArtikelProvider({ children }) {
 
             try {
                 const response = await fetch(`${API_URL_PUB}/get/komentar_publikasi`, {
+                    cache: "no-cache",
                     method: "GET"
                 })
                 const data = await response.json()
@@ -82,6 +84,7 @@ export default function ArtikelProvider({ children }) {
 
             try {
                 const response = await fetch(`${API_URL_PUB}/get/save_publikasi`, {
+                    cache: "no-cache",
                     method: "GET"
                 })
                 const data = await response.json()
@@ -98,6 +101,12 @@ export default function ArtikelProvider({ children }) {
         }
         GetAllSavedPublikasi()
     }, [refreshData])
+
+
+
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
+
+
 
     // LIKE PUB
     const [likePub, setLikePub] = useState(false)

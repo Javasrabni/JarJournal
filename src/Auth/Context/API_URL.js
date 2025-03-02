@@ -32,6 +32,7 @@ export default function API_URL_PROVIDER({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/user_info`, {
                     method: "GET",
+                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -58,6 +59,7 @@ export default function API_URL_PROVIDER({ children }) {
             setIsLoading(true)
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/public_userData`, {
+                    cache: "no-cache",
                     method: "GET",
                 })
                 const data = await response.json()

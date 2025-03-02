@@ -63,7 +63,7 @@ function App() {
                                           <Route path='/Auth' element={<AuthPage />} />
                                           <Route path='/dashboard' element={<Home />} />
                                           <Route path='/Explore' element={<Explore />} />
-                                          <Route path='/user/:usernameId' element={<UserProfile />} />
+                                          <Route path='/user/:userId/:usernameId' element={<UserProfile />} />
                                           <Route path='/:user/profile/edit' element={<EditProfilePage />} />
                                           <Route path='/ftr/:id' element={<CodeBaseFeatures />} />
                                           <Route path='/Jurnal/:desc' element={<JurnalPage />} />

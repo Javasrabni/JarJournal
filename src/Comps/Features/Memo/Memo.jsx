@@ -9,7 +9,9 @@ import { API_URL_CONTEXT } from "../../../Auth/Context/API_URL"
 // import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom"
 
-export default function Memo({ token }) {
+export default function Memo() {
+    const { token, setToken } = useContext(API_URL_CONTEXT)
+
     const { API_URL_AUTH } = useContext(API_URL_CONTEXT)
     const navigate = useNavigate()
 

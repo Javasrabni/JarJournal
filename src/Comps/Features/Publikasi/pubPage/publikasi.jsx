@@ -115,8 +115,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const navigate = useNavigate()
 
     // Handle Select pub
-    function HandleSelectedPub(id, pubUsername) {
-        navigate(`/clips/${id}-${pubUsername}`)
+    function HandleSelectedPub(id, pubUsername, onImage) {
+        if (!onImage) {
+            return
+        } else {
+            navigate(`/clips/${id}-${pubUsername}`)
+        }
     }
 
     // HANDLE SHARE PUB
@@ -222,12 +226,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const savedPubUsername = getSavedPublikasi.map(item => item.username)
     const publicDataUserUsername = publicDataUser.map(item => item.username)
 
-    console.log(savedPubPubId)
-    console.log(savedPubUsername)
-    console.log(publicDataUserUsername)
-    console.log(getSavedPublikasi)
-    console.log(publikasi.filter(item => savedPubPubId.includes(item.id) && savedPubUsername.includes()))
-    console.log(publikasiData.filter(pub => savedPubPubId.includes(pub.id) && savedPubUsername.filter(user => user === 'javasrabni')))
     // RAND INDEX LIKE
     const [randomUserLikes, setRandomUserLikes] = useState({}); // Menyimpan random per pub.id
     useEffect(() => {
@@ -255,11 +253,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                 // Buat wrapper untuk menghindari layout berantakan
                 const wrapper = document.createElement("div");
-                wrapper.style.position = "relative";
-                wrapper.style.padding = "32px";
+                wrapper.style.padding = "8px 32px 32px 32px";
                 wrapper.style.height = "640px";
                 wrapper.style.display = "flex";
+                wrapper.style.flexDirection = "column";
                 wrapper.style.alignItems = "center";
+                wrapper.style.gap = "12px";
                 wrapper.style.justifyContent = "center";
                 wrapper.style.backgroundColor = "white";
                 wrapper.style.borderRadius = "16px";
@@ -267,10 +266,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                 const logo = document.createElement('p')
                 logo.style.fontSize = '16px';
-                logo.style.position = 'absolute';
-                logo.style.bottom = '32px';
-                logo.style.left = '50%';
-                logo.style.transform = 'translateX(-50%)';
                 logo.style.color = "black";
                 logo.style.fontWeight = "800";
                 logo.style.marginTop = "16px";
@@ -337,6 +332,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
     const [valueINPUTComment, setValueINPUTComment] = useState('')
 
     const AddComentPub = async (pubId) => {
+        setPubOnComment(null)
         try {
             const response = await fetch(`${API_URL_PUB}/post/komentar_publikasi`, {
                 method: "POST",
@@ -361,8 +357,10 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         }
     }
 
-    function HandleChangeComment(e) {
+    const [pubOnComment, setPubOnComment] = useState(null)
+    function HandleChangeComment(e, pubId) {
         setValueINPUTComment(e.target.value)
+        setPubOnComment(pubId)
     }
 
     // ON SETTING USER'S POST
@@ -465,14 +463,14 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                         {profilePage ? (
                             <div className="flex flex-col-reverse gap-[16px]">
 
-                                {profilePage && publikasiData && publikasiData.filter(user => user.userName === profilePage).map((pub) =>
+                                {profilePage && publikasiData && publikasiData.filter(user => user.userId === profilePage).map((pub) =>
                                     <div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                         <div className={`font-[inter] flex flex-col `}>
-                                            <span onClick={() => HandleSelectedPub(pub.id, pub.userName)}>
+                                            <span onClick={() => HandleSelectedPub(pub.id, pub.userName, pub.imageUrl)}>
 
                                                 {/* JUDUL PUB */}
-                                                <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+                                                <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[6px]`}>{pub.judulContent}</p>
 
                                                 {/* KONTEN PUB */}
                                                 <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id, pub.userName)}>{pub.content}</p>
@@ -510,7 +508,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                             {/* AUTHOR PUB */}
                                             <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
-                                                <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
+                                                <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userId}/${pub.userName}`)}>
                                                     {publikasi && (() => {
                                                         const user = publikasi?.find(user => user.userName === pub.userName) && publicDataUser?.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                         return (
@@ -659,7 +657,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                 <div className="pt-[6px]">
                                                     <div className="flex flex-row justify-between items-center ">
 
-                                                        <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+                                                        <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e, pub.id)} value={pub.id === pubOnComment ? valueINPUTComment : null} />
 
                                                         <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                     </div>
@@ -673,7 +671,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                             <div className="flex flex-row gap-[8px]">
                                                                                 <span className="text-[var(--black-subtext)]">{komenArrow}</span>
                                                                                 <p key={item.id} className="text-[11px] text-white pt-[4px]">
-                                                                                    <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                    <span className="font-[600] " onClick={() => navigate(`/user/${item.userId}/${item.username}`)}>{item.username}</span> {item.komentar}
                                                                                 </p>
                                                                             </div>
                                                                         )}
@@ -695,15 +693,14 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                 {profilePageUserLikes ? (
                                     <div className="flex flex-col-reverse gap-[16px]">
 
-                                        {profilePageUserLikes && publikasiData.filter(pub => getSavedPublikasi.filter(item => item.id.toString().includes(pub.id) && item.userId.toString().includes(profilePageUserLikes))).map((pub) =>
-
-                                            <div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
+                                        {profilePageUserLikes && publikasiData.filter(item => profilePageUserLikes.includes(item.id)).map(pub =>
+                                            < div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
-                                                    <span onClick={() => HandleSelectedPub(pub.id, pub.userName)}>
+                                                    <span onClick={() => HandleSelectedPub(pub.id, pub.userName, pub.imageUrl)}>
 
                                                         {/* JUDUL PUB */}
-                                                        <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+                                                        <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[6px]`}>{pub.judulContent}</p>
 
                                                         {/* KONTEN PUB */}
                                                         <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id, pub.userName)}>{pub.content}</p>
@@ -741,7 +738,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
-                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
+                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userId}/${pub.userName}`)}>
                                                             {publikasi && (() => {
                                                                 const user = publikasi?.find(user => user.userName === pub.userName) && publicDataUser?.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return (
@@ -890,7 +887,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <div className="pt-[6px]">
                                                             <div className="flex flex-row justify-between items-center ">
 
-                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e, pub.id)} value={pub.id === pubOnComment ? valueINPUTComment : null} />
 
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
@@ -904,7 +901,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                                     <div className="flex flex-row gap-[8px]">
                                                                                         <span className="text-[var(--black-subtext)]">{komenArrow}</span>
                                                                                         <p key={item.id} className="text-[11px] text-white pt-[4px]">
-                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.userId}/${item.username}`)}>{item.username}</span> {item.komentar}
                                                                                         </p>
                                                                                     </div>
                                                                                 )}
@@ -931,10 +928,10 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                             <div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
-                                                    <span onClick={() => HandleSelectedPub(pub.id, pub.userName)}>
+                                                    <span onClick={() => HandleSelectedPub(pub.id, pub.userName, pub.imageUrl)}>
 
                                                         {/* JUDUL PUB */}
-                                                        <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[2px]`}>{pub.judulContent}</p>
+                                                        <p className={`text-[16px] ${themeActive ? 'text-white' : 'text-black'} font-[600] pb-[6px]`}>{pub.judulContent}</p>
 
                                                         {/* KONTEN PUB */}
                                                         <p className={`Content-artikel text-[11px] text-white`} onClick={() => HandleSelectedPub(pub.id, pub.userName)}>{pub.content}</p>
@@ -972,7 +969,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
                                                     {/* AUTHOR PUB */}
                                                     <div className={`flex flex-row items-center justify-between ${pub.imageUrl ? 'mt-[8px]' : 'mt-[32px]'} h-fit`} >
-                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userName}`)}>
+                                                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${pub.userId}/${pub.userName}`)}>
                                                             {publikasi && (() => {
                                                                 const user = publikasi?.find(user => user.userName === pub.userName) && publicDataUser?.find(user => user.username === pub.userName); // Ambil user berdasarkan userName
                                                                 return (
@@ -1121,7 +1118,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         <div className="pt-[6px]">
                                                             <div className="flex flex-row justify-between items-center ">
 
-                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e)} value={valueINPUTComment} />
+                                                                <input ref={commentPub} type="text" name="commentPub" id="commentPub" placeholder="Tambahkan komentar..." className={`text-[11px] bg-transparent outline-0 border-0 pl-[0px] w-full pr-[12px]`} style={{ color: commentStateTyping ? 'white' : 'var(--black-subtext)' }} onChange={(e) => HandleChangeComment(e, pub.id)} value={pub.id === pubOnComment ? valueINPUTComment : null} />
 
                                                                 <button className={`${themeActive ? 'bg-white text-black' : 'bg-black text-white'} py-[4px] px-[4px] rounded-[6px]`} onClick={() => AddComentPub(pub.id)}>{sendIcon}</button>
                                                             </div>
@@ -1135,7 +1132,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                                     <div className="flex flex-row gap-[8px]">
                                                                                         <span className="text-[var(--black-subtext)]">{komenArrow}</span>
                                                                                         <p key={item.id} className="text-[11px] text-white pt-[4px]">
-                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.username}`)}>{item.username}</span> {item.komentar}
+                                                                                            <span className="font-[600] " onClick={() => navigate(`/user/${item.userId}/${item.username}`)}>{item.username}</span> {item.komentar}
                                                                                         </p>
                                                                                     </div>
                                                                                 )}

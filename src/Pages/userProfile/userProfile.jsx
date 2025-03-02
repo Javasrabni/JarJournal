@@ -14,30 +14,25 @@ import Skeleton from "react-loading-skeleton"
 export default function UserProfile() {
     // AUTH SECT
     const { token, setToken } = useContext(API_URL_CONTEXT)
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            setToken(savedToken); // Set token untuk menganggap user sudah login
-        }
-    }, []); // GET USER TOKEN
 
     const navigate = useNavigate()
-    const { usernameId } = useParams()
+    const { usernameId, userId } = useParams()
     const { MainDomain } = useContext(API_URL_CONTEXT)
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT) // Get public data user
     const { publikasi, setPublikasi } = useContext(ArtikelContext)
+    const { API_URL_PUB } = useContext(API_URL_CONTEXT)
+    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+
     // const { getBadge, setGetBadge } = useContext(UserProfileContext)
 
     const [statusPostRrSave, setStatusPostRrSave] = useState(true)
-    const getRawDataUsername = publicDataUser.find(item => item.username === usernameId) //Filtering user porfile
-    console.log(getRawDataUsername)
+    const getRawDataUsername = publicDataUser.find(item => item.id == userId) //Filtering user porfile
 
     const [lengthUserPost, setLengthUserPost] = useState(0)
     useEffect(() => {
-        const userPost = publikasi.filter((user) => user.userName === usernameId)
+        const userPost = publikasi.filter(user => userId.includes(user.userId))
         setLengthUserPost(userPost.length)
-    }, [usernameId, publikasi])
-
+    }, [userId, publikasi])
 
     const { username, setUsername } = useContext(API_URL_CONTEXT) // username from token
     const { themeActive, setThemeActive } = useContext(ThemeAppContext)
@@ -73,7 +68,7 @@ export default function UserProfile() {
 
     // HANDLE COPY LINK (SHARE USER)
     async function HandleShareUser() {
-        const CopyText = `${MainDomain}/user/${usernameId}`;
+        const CopyText = `${MainDomain}/user/${userId}/${usernameId}`;
         try {
             await navigator.clipboard.writeText(CopyText);
             alert('Tautan pengguna berhasil disalin');
@@ -105,11 +100,40 @@ export default function UserProfile() {
 
     const [onLoading, setOnLoading] = useState(true)
 
+
+    // GET SAVED TERRTENTU USER 
+    const [getSavedTertentuUser, setGetSavedTertentuUser] = useState([])
+
+    const [nullDataSaved, setNullDataSaved] = useState(null)
+    useEffect(() => {
+        const GetCertainSavedUser = async () => {
+            setOnLoading(true)
+            try {
+                const response = await fetch(`${API_URL_PUB}/get/saved_publikasi?userId=${userId}&username=${usernameId}`, {
+                    cache: "no-cache",
+                    method: "GET"
+                })
+                const data = await response.json()
+                if (response.ok) {
+                    const Mapping = data.map(item => item.pubId)
+                    setGetSavedTertentuUser(Mapping)
+                } else {
+                    setNullDataSaved(data.Msg400)
+                }
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setOnLoading(false)
+            }
+        }
+        GetCertainSavedUser()
+    }, [refreshData])
+
     return (
         <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
 
             {/*  height profile nama bio link `${sisaHeightGoldenRatio}px`  */}
-            {getRawDataUsername && usernameId === getRawDataUsername.username ? (
+            {getRawDataUsername && userId == getRawDataUsername.id ? (
                 <div className={`w-full h-full flex flex-col w-full`}>
                     {/* IDENTITY PROFILE */}
                     <div className="w-full flex flex-col items-start bg-[transparent]" style={{ height: 'fit-content' }}>
@@ -157,7 +181,7 @@ export default function UserProfile() {
                                         </span>
                                     ) : (
                                         <span className="flex flex-row items-center justify-start gap-[6px]">
-                                            <button className={`px-[12px] w-full h-[24px] ${themeActive ? 'bg-[#1585FF]' : 'bg-[var(--black-bg)]'} text-[12px] rounded-[6px] font-[600]`}>Follow</button>
+                                            <button className={`px-[12px] w-full h-[24px] ${themeActive ? 'bg-[#1585FF]' : 'bg-[var(--black-bg)]'} text-[12px] rounded-[6px] font-[600]`} onClick={() => alert("Maaf, segera tersedia fiturnya!")}>Follow</button>
 
                                             <button className={`h-[24px] w-[32px] ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} text-[12px] rounded-[6px] flex items-center justify-center`} onClick={HandleShareUser}>{shareIcon}</button>
                                         </span>
@@ -200,11 +224,11 @@ export default function UserProfile() {
                                     </span>
                                     <span className="flex flex-row gap-[6px] items-center">
                                         <p className="font-[600]">0</p>
-                                        <p>Followers</p>
+                                        <p>Pengikut</p>
                                     </span>
                                     <span className="flex flex-row gap-[6px] items-center">
                                         <p className="font-[600]">0</p>
-                                        <p>Following</p>
+                                        <p>Mengikuti</p>
                                     </span>
                                 </div>
 
@@ -246,27 +270,33 @@ export default function UserProfile() {
                         </div>
 
                         {/* CLIPS AND LIKE SECT */}
-                        <div>
-                            {lengthUserPost > 0 ? (
+                        <div className="pb-[64px]">
+                            {statusPostRrSave ? (
+                                // POST SECT
                                 <>
-                                    {statusPostRrSave && (
-                                        <Publikasi publikasiData={publikasi} profilePage={getRawDataUsername.username} />
-                                    )}
-
-
-                                </>
-                            ) : (
-                                <>
-                                    {statusPostRrSave && (
+                                    {lengthUserPost > 0 ? (
+                                        <Publikasi publikasiData={publikasi} profilePage={getRawDataUsername.id} />
+                                    ) : (
                                         <p className="text-[12px] font-[500] text-[var(--black-subtext)]">Belum ada postingan</p>
                                     )}
                                 </>
-                            )}
+                            ) : (
+                                // SAVED SECT
+                                <>
+                                    {getSavedTertentuUser.length <= 0 ? (
+                                        <>
+                                            {nullDataSaved ? (
+                                                <p className="text-[12px] font-[500] text-[var(--black-subtext)]">{nullDataSaved}</p>
+                                            ) : (
+                                                <p className="text-[12px] font-[500] text-[var(--black-subtext)]">Belum ada yang disimpan</p>
 
-                            {!statusPostRrSave && (
-                                <Publikasi publikasiData={publikasi} profilePageUserLikes={getRawDataUsername.username} />
+                                            )}
+                                        </>
+                                    ) : (
+                                        <Publikasi publikasiData={publikasi} profilePageUserLikes={getSavedTertentuUser} />
+                                    )}
+                                </>
                             )}
-
                         </div>
                     </div>
                 </div>

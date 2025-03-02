@@ -152,7 +152,7 @@ export default function Explore() {
                         {!statusSearchExplore && outputSearchUsernameProfileData && valueInputExploreSementara.length >= 2 && (
                             <>
                                 {outputSearchUsernameProfileData.map(user => (
-                                    <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.username}`)} style={{ transition: 'all 0.3s' }}>
+                                    <div className={`${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-100)]'} w-[calc(100%-48px)] p-[12px] mt-[-9px] rounded-[0px_0px_8px_8px] cursor-pointer`} onClick={() => navigate(`/user/${user.id}/${user.username}`)} style={{ transition: 'all 0.3s' }}>
                                         <span className="flex flex-row gap-[8px] items-center justify-between">
                                             <span className="flex flex-row gap-[12px] items-center">
                                                 <img src={user.avatar || "https://res.cloudinary.com/dwf753l9w/image/upload/w_30,h_30,q_auto,f_auto/no_profile_user_emaldm.svg"} alt="" className="w-[30px] h-[30px] rounded-[50px]" />

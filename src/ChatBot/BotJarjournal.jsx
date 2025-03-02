@@ -303,7 +303,7 @@ export default function Chatbot() {
                 </div >
             )
             }
-            <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} h-full`}>
+            <div className={`${themeActive ? "bg-[var(--bg-12)]" : "white"} max-w-[42rem] w-full h-full m-auto flex flex-col`}>
                 <div className={`h-[45px] w-full flex flex-row gap-[16px] items-center justify-between px-[16px] sticky top-0 ${themeActive ? 'bg-[var(--bg-12)]' : 'bg-[var(--white-bg-100)]'}`} role="heading">
 
                     <div>

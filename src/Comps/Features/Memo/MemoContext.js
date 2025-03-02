@@ -40,6 +40,7 @@ export default function MemoProvider({ children }) {
 
                 const response = await fetch(`${API_URL_AUTH}/get/memo_user`, {
                     method: "GET",
+                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

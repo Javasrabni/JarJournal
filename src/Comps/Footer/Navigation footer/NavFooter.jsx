@@ -60,7 +60,7 @@ export default function NavFooter() {
                 {/* <span>{cubeIcon}</span> */}
             </div>
             {username && token && (
-                <div onClick={() => navigate(`/user/${findUser?.username}`)} className="cursor-pointer w-[25px] h-[25px]">
+                <div onClick={() => navigate(`/user/${findUser?.id}/${findUser?.username}`)} className="cursor-pointer w-[25px] h-[25px]">
                     {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />)}
 
                     <span>
