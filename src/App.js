@@ -1,6 +1,5 @@
 import './App.css';
 import { Route, Routes, BrowserRouter, } from 'react-router-dom';
-
 // Context
 import MemoProvider from './Comps/Features/Memo/MemoContext';
 import { PopupFrSettingsProvider } from './Comps/Popup_settings/popupSetting/boxPopupFromSetting';
