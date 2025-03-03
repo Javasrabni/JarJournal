@@ -137,19 +137,29 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         }
     }
 
-
     // HANDLE LIKE
-    const { likePub, setLikePub } = useContext(ArtikelContext)
-    function HandleColorLike(pubId) {
-        const idPub = publikasi.find(item => item.id === parseInt(pubId))
-        if (idPub) {
-            setLikePub((prev) => !prev)
-        }
-    }
 
+    const [likedPosts, setLikedPosts] = useState(new Set()); // Menyimpan post yang di-like
 
+    // Ambil data like dari localStorage saat pertama kali render
+    useEffect(() => {
+        const storedLikes = JSON.parse(localStorage.getItem("likedPosts")) || [];
+        setLikedPosts(new Set(storedLikes));
+    }, []);
 
     async function HandleLikePub(pubId) {
+        const isLiked = likedPosts.has(pubId);
+        const newLikedPosts = new Set(likedPosts);
+
+        if (isLiked) {
+            newLikedPosts.delete(pubId);
+        } else {
+            newLikedPosts.add(pubId);
+        }
+
+        setLikedPosts(newLikedPosts);
+        localStorage.setItem("likedPosts", JSON.stringify([...newLikedPosts])); // Simpan ke localStorage
+
         try {
             const response = await fetch(`${API_URL_PUB}/patch/userPublikasi`, {
                 method: "PATCH",
@@ -157,74 +167,83 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ pubId, plusLike: true })
+                body: JSON.stringify({ pubId, plusLike: !isLiked })
             });
 
-            // const data = await response.json()
-            if (response.ok) {
-                setRefreshData(prev => !prev)
+            const data = await response.json();
+            if (!response.ok) {
+                alert(data.ErrMsg);
+                return;
             } else {
-                const { message } = await response.json();
-                alert(message); // Menampilkan pesan error jika user sudah memberikan "like"
+                setRefreshData(prev => !prev)
+                // console.log(data.StatusLike);
             }
         } catch (err) {
             console.error(err);
         }
     }
 
+    const { getSavedPublikasi, setGetSavedPublikasi } = useContext(ArtikelContext);
+    const [savedPub, setSavedPub] = useState([]);
 
-    const { getSavedPublikasi, setGetSavedPublikasi } = useContext(ArtikelContext)
-    const [savedPub, setSavedPub] = useState(getSavedPublikasi)
-    const [statusSave, setStatusSave] = useState(false)
+    useEffect(() => {
+        // Ambil data `savedPub` dari localStorage saat pertama kali render
+        const storedSavedPub = JSON.parse(localStorage.getItem("savedPublikasi")) || [];
+        setSavedPub(storedSavedPub);
+    }, []);
+
+    useEffect(() => {
+        // Simpan `savedPub` ke localStorage setiap kali ada perubahan
+        if (savedPub.length > 0) {
+            localStorage.setItem("savedPublikasi", JSON.stringify(savedPub));
+        }
+    }, [savedPub]);
+
     async function HandleSavePub(pubId) {
+        let updatedSavedPub;
+
         setSavedPub((prev) => {
             if (prev.includes(pubId)) {
-                return prev.filter(id => id !== pubId)
+                updatedSavedPub = prev.filter(id => id !== pubId);
             } else {
-                return [...prev, pubId]
+                updatedSavedPub = [...prev, pubId];
             }
-        })
-        if (statusSave) {
-            try {
-                const response = await fetch(`${API_URL_PUB}/save_publikasi`, {
+            return updatedSavedPub;
+        });
+
+        try {
+            let response;
+            if (!savedPub.includes(pubId)) {
+                response = await fetch(`${API_URL_PUB}/save_publikasi`, {
                     method: "POST",
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
-                    }, body: JSON.stringify({ userId: userId, pubId, username: username })
-                })
-
-                const data = await response.json()
-                if (response.ok) {
-                    setStatusSave(true)
-                    setRefreshData(data => !data)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        } else {
-            try {
-                const response = await fetch(`${API_URL_PUB}/del/save_publikasi`, {
+                    },
+                    body: JSON.stringify({ userId: userId, pubId, username: username })
+                });
+            } else {
+                response = await fetch(`${API_URL_PUB}/del/save_publikasi`, {
                     method: "DELETE",
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
-                    }, body: JSON.stringify({ userId: userId, pubId, username: username })
-                })
-                const data = await response.json()
-                if (response.ok) {
-                    setRefreshData(prev => !prev)
-                }
-            } catch (err) {
-                console.error(err)
+                    },
+                    body: JSON.stringify({ userId: userId, pubId, username: username })
+                });
             }
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log(data)
+                setRefreshData(prev => !prev)
+                localStorage.setItem("savedPublikasi", JSON.stringify(updatedSavedPub));
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 
-    const savedPubUserId = getSavedPublikasi.map(item => item.userId)
-    const savedPubPubId = getSavedPublikasi.map(item => item.pubId)
-    const savedPubUsername = getSavedPublikasi.map(item => item.username)
-    const publicDataUserUsername = publicDataUser.map(item => item.username)
 
     // RAND INDEX LIKE
     const [randomUserLikes, setRandomUserLikes] = useState({}); // Menyimpan random per pub.id
@@ -381,15 +400,9 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
         <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
     </svg>
 
-    const saveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="var(--bg-12)" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-    </svg>
+
     const saveIconSolid = <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
-    </svg>
-
-    const loveIcon = <svg xmlns="http://www.w3.org/2000/svg" fill={`${likePub ? 'tomato' : 'var(--bg-12)'}`} viewBox="0 0 24 24" strokeWidth={2} stroke={!likePub && 'white'} className="size-4" >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
     </svg>
 
     const sendIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-3">
@@ -581,20 +594,19 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                         }>
                                                             {shareIcon}
                                                         </div>
-                                                        <div onClick={() => { HandleSavePub(pub.id); setStatusSave(prev => !prev) }}>
-                                                            {publikasiData.find(pub => savedPubPubId.includes(pub.id) && savedPubUsername == publicDataUserUsername) ? (
-                                                                <>
-                                                                    {saveIconSolid}
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    {saveIcon}
-                                                                </>
-                                                            )}
+                                                        <div onClick={() => { HandleSavePub(pub.id); }}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill={`${savedPub.includes(pub.id) ? "white" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                                                            </svg>
                                                         </div>
-                                                        <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+
+                                                        <div role="button" onClick={() => { HandleLikePub(pub.id); }}>
                                                             <div className="relative flex flex-row gap-[2px] items-center">
-                                                                {loveIcon}
+                                                                <span>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill={`${likedPosts.has(pub.id) ? "tomato" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke={!likedPosts.has(pub.id) && 'white'} className="size-4" >
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                                                    </svg>
+                                                                </span>
                                                                 <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
                                                             </div>
                                                         </div>
@@ -678,6 +690,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     </div>
                                                                 </>
                                                             )
+
+
                                                         })()}
 
                                                     </div>
@@ -694,7 +708,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                     <div className="flex flex-col-reverse gap-[16px]">
 
                                         {profilePageUserLikes && publikasiData.filter(item => profilePageUserLikes.includes(item.id)).map(pub =>
-                                            < div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
+                                            <div key={pub.id} style={{ border: themeActive ? '1px solid var(--black-border)' : '1px solid var(--white-bg-200)', padding: '16px', backgroundColor: themeActive ? 'var(--black-card)' : 'var(--white-bg-100)', borderRadius: '8px', cursor: 'pointer', height: 'fit-content', width: '100%' }} ref={(el) => pubElement2Download.current[pub.id] = el} >
 
                                                 <div className={`font-[inter] flex flex-col `}>
                                                     <span onClick={() => HandleSelectedPub(pub.id, pub.userName, pub.imageUrl)}>
@@ -811,20 +825,19 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 }>
                                                                     {shareIcon}
                                                                 </div>
-                                                                <div onClick={() => { HandleSavePub(pub.id); setStatusSave(prev => !prev) }}>
-                                                                    {publikasiData.find(pub => savedPubPubId.includes(pub.id) && savedPubUsername == publicDataUserUsername) ? (
-                                                                        <>
-                                                                            {saveIconSolid}
-                                                                        </>
-                                                                    ) : (
-                                                                        <>
-                                                                            {saveIcon}
-                                                                        </>
-                                                                    )}
+                                                                <div onClick={() => { HandleSavePub(pub.id); }}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill={`${savedPub.includes(pub.id) ? "white" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                                                                    </svg>
                                                                 </div>
-                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+
+                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); }}>
                                                                     <div className="relative flex flex-row gap-[2px] items-center">
-                                                                        {loveIcon}
+                                                                        <span>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill={`${likedPosts.has(pub.id) ? "tomato" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke={!likedPosts.has(pub.id) && 'white'} className="size-4" >
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                                                            </svg>
+                                                                        </span>
                                                                         <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
                                                                     </div>
                                                                 </div>
@@ -871,17 +884,17 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     {/* LIKE PUB */}
                                                     <div className="pt-[2px] flex flex-col gap-[4px]">
                                                         {/* <div className="flex flex-row text-white pt-[4px]">
-            {pub.likes.length >= 1 && (
-                <div className="leading-[1]" >
-                    <span className="text-[11px] pr-[4px]">Disukai oleh</span>
-                    {pub.likes.length >= 2 ? (
-                        <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
-                    ) : (
-                        <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
-                    )}
-                </div>
-            )}
-        </div> */}
+                                                        {pub.likes.length >= 1 && (
+                                                            <div className="leading-[1]" >
+                                                                <span className="text-[11px] pr-[4px]">Disukai oleh</span>
+                                                                {pub.likes.length >= 2 ? (
+                                                                    <span className="text-[11px]"><span className="font-[600]">{pub.likes[randomUserLikes[pub.id]]}</span> dan lainnya</span>
+                                                                ) : (
+                                                                    <span className="text-[11px] font-[600]">{pub.likes[0]}</span>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div> */}
 
                                                         {/* COMMENT SECTION */}
                                                         <div className="pt-[6px]">
@@ -1042,20 +1055,19 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                 }>
                                                                     {shareIcon}
                                                                 </div>
-                                                                <div onClick={() => { HandleSavePub(pub.id); setStatusSave(prev => !prev) }}>
-                                                                    {publikasiData.find(pub => savedPubPubId.includes(pub.id) && savedPubUsername == publicDataUserUsername) ? (
-                                                                        <>
-                                                                            {saveIconSolid}
-                                                                        </>
-                                                                    ) : (
-                                                                        <>
-                                                                            {saveIcon}
-                                                                        </>
-                                                                    )}
+                                                                <div onClick={() => { HandleSavePub(pub.id); }}>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill={`${savedPub.includes(pub.id) ? "white" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                                                                    </svg>
                                                                 </div>
-                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); HandleColorLike(pub.id) }}>
+
+                                                                <div role="button" onClick={() => { HandleLikePub(pub.id); }}>
                                                                     <div className="relative flex flex-row gap-[2px] items-center">
-                                                                        {loveIcon}
+                                                                        <span>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" fill={`${likedPosts.has(pub.id) ? "tomato" : "var(--bg-12)"}`} viewBox="0 0 24 24" strokeWidth={2} stroke={!likedPosts.has(pub.id) && 'white'} className="size-4" >
+                                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                                                            </svg>
+                                                                        </span>
                                                                         <p className="text-[14px] text-white pt-[1px]">{pub.totalLikePub}</p>
                                                                     </div>
                                                                 </div>

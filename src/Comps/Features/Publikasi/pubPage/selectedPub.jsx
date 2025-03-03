@@ -124,7 +124,7 @@ export default function SelectedPub({ items }) {
                                 ) // Jika user tidak ditemukan, jangan tampilkan apa pun
                             })()}
                         </div>
-                        
+
                         {/* IMAGE  */}
                         {selectedPub.imageUrl && (
                             <div className="w-full h-full max-h-[240px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
@@ -148,13 +148,15 @@ export default function SelectedPub({ items }) {
 
 
 
-                        <div className={`flex flex-col gap-[8px] ${themeActive ? 'text-white' : 'text-black'} bg-[tomato]`}>
+                        <div className={`flex flex-col gap-[8px] ${themeActive ? 'text-white' : 'text-black'} mt-[32px]`}>
                             {komentarPublikasi && (() => {
                                 const getKomentar = komentarPublikasi.filter(user => user.pubId === selectedPub.id)
                                 return (
                                     <>
-                                        <div className="flex flex-col gap-[4px]">
-                                            {getKomentar.slice(0, 2).map(item =>
+                                        <p className="text-[12px] font-[600] text-white text-center">Komentar ({getKomentar.length})</p>
+
+                                        <div className="flex flex-col gap-[6px]">
+                                            {getKomentar.map(item =>
                                                 <div className="flex flex-row gap-[8px]">
                                                     <p key={item.id} className="text-[11px] text-white pt-[4px]">
                                                         <span className="font-[600] " onClick={() => navigate(`/user/${item.userId}/${item.username}`)}>{item.username}</span> {item.komentar}

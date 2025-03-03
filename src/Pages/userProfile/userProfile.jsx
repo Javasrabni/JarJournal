@@ -289,7 +289,6 @@ export default function UserProfile() {
                                                 <p className="text-[12px] font-[500] text-[var(--black-subtext)]">{nullDataSaved}</p>
                                             ) : (
                                                 <p className="text-[12px] font-[500] text-[var(--black-subtext)]">Belum ada yang disimpan</p>
-
                                             )}
                                         </>
                                     ) : (
