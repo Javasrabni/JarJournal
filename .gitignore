@@ -9,7 +9,6 @@
 /coverage
 
 change hp git
-.env
 
 # production
 /build
