@@ -33,7 +33,9 @@ export default function JurnalContextProvider({ children }) {
                 console.error(err)
             }
         }
-        GetUserJurnal()
+        if (token) {
+            GetUserJurnal()
+        }
     }, [refreshData])
 
     // Produktifitas user

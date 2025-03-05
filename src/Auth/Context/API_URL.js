@@ -40,9 +40,10 @@ export default function API_URL_PROVIDER({ children }) {
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    setUsername(data[0].username)
-                    setUserId(data[0].id)
-                    setUserEmail(data[0].email)
+                    console.log(data)
+                    setUsername(data.username)
+                    setUserId(data.id)
+                    setUserEmail(data.email)
                     setIsLoading(false)
                 }
             } catch (err) {
