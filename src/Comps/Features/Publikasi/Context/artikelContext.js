@@ -57,7 +57,7 @@ export default function ArtikelProvider({ children }) {
 
             try {
                 const response = await fetch(`${API_URL_PUB}/get/komentar_publikasi`, {
-                    cache: "no-cache",
+                    // cache: "no-cache",
                     method: "GET"
                 })
                 const data = await response.json()
