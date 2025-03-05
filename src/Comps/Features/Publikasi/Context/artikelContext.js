@@ -37,9 +37,7 @@ export default function ArtikelProvider({ children }) {
                 if (response.ok) {
                     setPublikasi(data)
 
-                } else {
-                    alert(data.Msg)
-                }
+                } 
                 // console.log(data)
             } catch (err) {
                 console.error(`gagal mendapatkan pub ${err}`)

@@ -48,7 +48,6 @@ export default function OnEditNote({ dataNote, indexNote }) {
                 }, body: JSON.stringify({ noteIndex: onEditNoteIndex, editedNote: onEditNote })
             })
             const data = await response.json()
-            console.log(data + "INI RETURN JSON EDIT PUT")
             if (response.ok) {
                 setRefreshData(prev => !prev)
                 // setOnNewNote((prevNote) => prevNote.map((note, index) => index === onEditNoteIndex ? { content: updatedNote, timeStamp: updatedTimestamp } : note))

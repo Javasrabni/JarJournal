@@ -46,7 +46,6 @@ export default function SelectedPub({ items }) {
                 const data = await response.json()
                 if (response.ok) {
                     setSelectedPub(data)
-                    console.log(data)
                 }
             } catch (err) {
                 console.error(err)
@@ -175,7 +174,7 @@ export default function SelectedPub({ items }) {
 
                 </div>
             ) : (
-                <p>loadd..</p>
+                <Skeleton className="w-full h-[260px] animate-pulse"/>
             )}
         </div>
     )

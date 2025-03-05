@@ -96,7 +96,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                 setOnSettingPost(false)
                 setRefreshData(prev => !prev)
             } else {
-                alert(data.Msg)
+                // alert(data.Msg)
             }
         } catch (err) {
             console.error(`Error deleting publication: ${err}`);
@@ -172,7 +172,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
             const data = await response.json();
             if (!response.ok) {
-                alert(data.ErrMsg);
+                // alert(data.ErrMsg);
                 return;
             } else {
                 setRefreshData(prev => !prev)
@@ -235,7 +235,6 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 
             const data = await response.json();
             if (response.ok) {
-                console.log(data)
                 setRefreshData(prev => !prev)
                 localStorage.setItem("savedPublikasi", JSON.stringify(updatedSavedPub));
             }

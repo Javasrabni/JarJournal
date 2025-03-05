@@ -91,7 +91,7 @@ export function ChooseAvatar({ heading, subHeading, closeChooseAvatar, onChangeA
 
             } else {
                 console.log(data)
-                alert(data.Msg)
+                // alert(data.Msg)
                 setIsLoading(false)
             }
         } catch (err) {

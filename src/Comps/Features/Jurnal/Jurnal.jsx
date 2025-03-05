@@ -46,10 +46,6 @@ export default function Jurnal() {
         }
     )
 
-    useEffect(() => {
-        console.log(dataInputFieldJurnal)
-    }, [dataInputFieldJurnal])
-
     // CHOOSE MOOD JURNAL
     const [handleClickEmot, setHandleClickEmot] = useState(null)
     // STATUS FIELD JURNAL TO VISIBLE
@@ -72,7 +68,6 @@ export default function Jurnal() {
     // STATUS SETTING 
     const [onSetting, setOnSetting] = useState(false)
     const [indexOnSetting, setIndexOnSetting] = useState(null)
-    console.log(indexOnSetting)
 
     // ON AUTO FILL INPUT STATE
     const [inputFieldJurnalState, setInputFieldJurnalState] = useState(false)

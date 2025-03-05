@@ -273,7 +273,6 @@ export default function Memo() {
             const data = await response.json()
 
             if (response.ok) {
-                console.log(data)
                 setRefreshData(prev => !prev)
                 setOption1_Status(false)
                 setIndicatorFromMemo(false)

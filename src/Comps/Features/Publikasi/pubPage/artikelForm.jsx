@@ -91,7 +91,8 @@ export default function ArtikelForm() {
                 navigate('/Explore'); // Navigate setelah upload berhasil
                 setRefreshData(prev => !prev);
             } else {
-                alert(data.ErrMsg);
+                console.error(data)
+                // alert(data.ErrMsg);
             }
         } catch (err) {
             console.error(`Error adding publication: ${err}`);
