@@ -56,6 +56,7 @@ const LoginPage = () => {
                 setUserEmail(data.email)
                 setToken(data.token); // Simpan token ke dalam state aplikasi
                 localStorage.setItem('token', data.token)
+                console.log(typeof data.token, "FORMAT TOKEN")
                 // navigate('/dashboard')
             } else {
                 setError(data.ErrMsg);
