@@ -37,6 +37,7 @@ import {
 import { ThemeAppContext } from "./Comps/Features/Theme/toggleTheme.jsx/ThemeAppContext"
 import { API_URL_CONTEXT } from "./Auth/Context/API_URL"
 import NavFooter from "./Comps/Footer/Navigation footer/NavFooter"
+import TypingEffect from "./Comps/typing-effect/typing-text"
 
 export default function Home() {
     const { publicDataUser, setPublicDataUser, isLoading, setIsLoading } = useContext(API_URL_CONTEXT) // Get public data user
@@ -119,6 +120,8 @@ export default function Home() {
     // STATE ON UPLOAD PUBLIKASI
     const { onUploadPubLoading, setOnUploadPubLoading } = useContext(ArtikelContext)
     const { onProgressUpPub, setonProgressUpPub } = useContext(ArtikelContext)
+
+
 
     return (
         <>
@@ -222,7 +225,7 @@ export default function Home() {
                                         </div>
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
-                                        <div className="flex flex-col  w-full h-full py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
+                                        <div className="flex flex-col  w-full h-fit  py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
                                             <div className="flex flex-col gap-[2px]">
                                                 <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
                                                 <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
@@ -254,6 +257,9 @@ export default function Home() {
                                                 </div>
                                             )}
                                         </div>
+
+
+
                                     </div>
 
 
@@ -282,9 +288,9 @@ export default function Home() {
                                             <Publikasi token={token} />
                                         </div> */}
                                     {/* </div> */}
-                                    <div>
+                                    {/* <div>
                                         {publicDataUser.forEach(user => <p>{user.username}</p>)}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </main>
                         </div>
@@ -458,9 +464,40 @@ const ReportJurnal = () => {
         },
     };
 
+    // CHAT TYPING EFFECT
+    const sentences = [
+        "Bagaimana pendapatmu tentang orang yang terjebak pada masa lalu?",
+        "Apakah kamu dapat membantu menyelesaikan tugas sekolah saya?",
+        "Bagaimana melatih kemampuan berbicara secara efektif?",
+        "Apa yang perlu diperhatikan sebelum berbisnis?",
+        "Berapa lama waktu yang dibutuhkan untuk menjadi seorang programmer?"
+    ];
+
+    const arrow = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3" style={{color: 'var(--black-subtext)'}}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+    </svg>
+
+    const navigate = useNavigate()
+
     return (
-        <div className="w-full h-fit min-h-[120px]">
-            <div className="flex flex-col gap-[4px] py-[12px] " style={{ borderTop: '1px solid var(--black-border)' }}>
+        <div className="w-full h-full">
+            {/* FITUR CHAT BOT */}
+            <div className="w-full h-fit flex flex-col gap-[4px] text-white">
+                <p className="text-[12px] font-[600] text-center">Tanya AI</p>
+                <div className="w-full h-fit mb-[16px] length-1 pt-[16px] px-[16px] pb-[8px] bg-[var(--bg-12)] text-white rounded-lg flex flex-row items-center justify-between gap-[8px]" style={{ border: '1px solid var(--black-border)' }}>
+                    <div className="flex flex-row gap-[8px] items-center w-full">
+                        <TypingEffect texts={sentences} typingSpeed={50} deletingSpeed={55} delay={1500} />
+                        <span className="">{arrow}</span>
+                    </div>
+                    <div className="text-[var(--blue-clr)] text-[12px] w-fit font-[600] items-center flex">
+                        <button onClick={() => navigate('/JJR-ChatBot')}>Mulai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex flex-col gap-[4px] py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
+
+
                 <div className="flex flex-col gap-[4px]">
                     <p className="text-[12px] font-[600] text-white">Ringkasan jurnal harian</p>
                     <span><p className="text-[11px] text-[var(--black-subtext)]">*Dalam proses analisis akan lebih ideal jika setidaknya terdapat 7 data.</p></span>

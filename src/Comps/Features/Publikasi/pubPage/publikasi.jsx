@@ -567,7 +567,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     data-popover
                                                                     id="popover-top"
                                                                     role="tooltip"
-                                                                    className={`absolute z-[50] left-1/2 bottom-full mb-2 -translate-x-1/2 w-fit text-sm text-gray-500 transition-opacity duration-200 ${onShareClick ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-[var(--bg-12)] border border-[var(--black-border)] rounded-lg shadow-xs dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800`}
+                                                                    className={`absolute z-[50] left-1/2 bottom-full mb-2 -translate-x-1/2 w-fit text-sm text-gray-500 transition-opacity duration-200 ${onShareClick ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-[var(--bg-12)] border border-[var(--black-border)] rounded-lg shadow-xs`}
                                                                 >
                                                                     <div className="px-3 py-2 bg-[var(--black-bg)] border-b border-[var(--black-border)] rounded-t-lg ">
                                                                         <p className="font-semibold text-[11px] text-white">Opsi bagikan</p>
