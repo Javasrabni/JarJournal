@@ -20,6 +20,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { useRef } from "react"
 import { JurnalContext } from "./Comps/Features/Jurnal/Context/jurnalContext"
 import { ArtikelContext } from "./Comps/Features/Publikasi/Context/artikelContext"
+import Publikasi from "./Comps/Features/Publikasi/pubPage/publikasi"
+import InstallApp from "./Comps/downloadApp/downloadApp"
 
 // Cartjs
 import { Line } from 'react-chartjs-2';
@@ -64,9 +66,6 @@ export default function Home() {
     const MobileView = matchMedia(' (max-width: 600px) ')
     const navigate = useNavigate()
 
-    const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-    </svg>
 
     const artikelIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
@@ -75,6 +74,16 @@ export default function Home() {
     const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
     </svg>
+
+    const downloadIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+    </svg>
+
+    const mobileIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+    </svg>
+
+
 
 
     // Theme App
@@ -120,6 +129,10 @@ export default function Home() {
     // STATE ON UPLOAD PUBLIKASI
     const { onUploadPubLoading, setOnUploadPubLoading } = useContext(ArtikelContext)
     const { onProgressUpPub, setonProgressUpPub } = useContext(ArtikelContext)
+
+
+    const { publikasi, setPublikasi } = useContext(ArtikelContext)
+
 
 
 
@@ -226,9 +239,14 @@ export default function Home() {
 
                                         {/* ORANG ORANG DI JARJOURNAL */}
                                         <div className="flex flex-col  w-full h-fit  py-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
-                                            <div className="flex flex-col gap-[2px]">
-                                                <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
-                                                <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
+                                            <div className="flex flex-row items-center justify-between">
+                                                <div>
+                                                    <p className="text-[12px] font-[600] text-white">Terkoneksi dengan pengguna lain</p>
+                                                    <p className="text-[11px] text-[var(--black-subtext)]">Orang yang mungkin kamu kenali</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-[11px] cursor-pointer text-[var(--blue-clr)]">Lihat semua</p>
+                                                </div>
                                             </div>
                                             {!isLoading ? (
                                                 <div className="flex flex-row gap-[32px] mt-[32px] w-full h-fit overflow-x-auto pb-[16px]">
@@ -256,6 +274,20 @@ export default function Home() {
                                                     <Skeleton count={1} width={'100%'} height={'56px'} className="skeleton-delayed animate-pulse" style={{ borderRadius: '8px', animationDelay: '0.3s' }} />
                                                 </div>
                                             )}
+                                        </div>
+                                        <div classname="flex flex-row gap-[12px] w-full items-center justify-between" >
+                                            <div className="w-full">
+                                                <span className="text-white flex flex-row gap-[8px] items-center">{mobileIcon} <p className="text-[12px] text-white">Dapatkan pengalaman terbaik dalam versi Mobile App</p></span>
+                                            </div>
+                                            <div className="w-fit">
+                                                <button id="installButton"><span className="text-white flex flex-row gap-[8px] items-center">Download {downloadIcon}</span></button>
+                                                <InstallApp />
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col gap-[0px] mt-[16px] pt-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
+                                            {/* <p className="text-[12px] font-[600] text-white">Aktifitas pengguna</p> */}
+                                            <Publikasi publikasiData={publikasi} />
                                         </div>
 
 
@@ -300,7 +332,7 @@ export default function Home() {
                             <NavFooter />
                         </div>
                     </div>
-                </div>
+                </div >
             </>
         </>
     )
@@ -473,7 +505,7 @@ const ReportJurnal = () => {
         "Berapa lama waktu yang dibutuhkan untuk menjadi seorang programmer?"
     ];
 
-    const arrow = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3" style={{color: 'var(--black-subtext)'}}>
+    const arrow = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="size-3" style={{ color: 'var(--black-subtext)' }}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
     </svg>
 
@@ -482,15 +514,15 @@ const ReportJurnal = () => {
     return (
         <div className="w-full h-full">
             {/* FITUR CHAT BOT */}
-            <div className="w-full h-fit flex flex-col gap-[4px] text-white">
+            <div className="w-full h-fit flex flex-col gap-[4px] text-white" onClick={() => navigate('/JJR-ChatBot')}>
                 <p className="text-[12px] font-[600] text-center">Tanya AI</p>
                 <div className="w-full h-fit mb-[16px] length-1 pt-[16px] px-[16px] pb-[8px] bg-[var(--bg-12)] text-white rounded-lg flex flex-row items-center justify-between gap-[8px]" style={{ border: '1px solid var(--black-border)' }}>
                     <div className="flex flex-row gap-[8px] items-center w-full">
                         <TypingEffect texts={sentences} typingSpeed={50} deletingSpeed={55} delay={1500} />
                         <span className="">{arrow}</span>
                     </div>
-                    <div className="text-[var(--blue-clr)] text-[12px] w-fit font-[600] items-center flex">
-                        <button onClick={() => navigate('/JJR-ChatBot')}>Mulai</button>
+                    <div className="text-[var(--blue-clr)] text-[11px] w-fit items-center flex">
+                        <button>Mulai</button>
                     </div>
                 </div>
             </div>
