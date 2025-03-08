@@ -5,14 +5,14 @@ export const API_URL_CONTEXT = createContext()
 export default function API_URL_PROVIDER({ children }) {
     // ENDPOINT PATH
     const [MainDomain] = useState('https://jarjournal.cloud')
-    // const [API_URL_AUTH] = useState('https://new-jjr-server.vercel.app')
-    // const [API_URL_PUB] = useState('https://new-jjr-server.vercel.app')
-    // const [API_URL_NOTE] = useState('https://new-jjr-server.vercel.app')
-    // const [API_URL_CHATBOT] = useState('https://new-jjr-server.vercel.app')
-    const [API_URL_AUTH] = useState('http://localhost:8000')
-    const [API_URL_PUB] = useState('http://localhost:8000')
-    const [API_URL_NOTE] = useState('http://localhost:8000')
-    const [API_URL_CHATBOT] = useState('http://localhost:8000')
+    const [API_URL_AUTH] = useState('https://new-jjr-server.vercel.app')
+    const [API_URL_PUB] = useState('https://new-jjr-server.vercel.app')
+    const [API_URL_NOTE] = useState('https://new-jjr-server.vercel.app')
+    const [API_URL_CHATBOT] = useState('https://new-jjr-server.vercel.app')
+    // const [API_URL_AUTH] = useState('http://localhost:8000')
+    // const [API_URL_PUB] = useState('http://localhost:8000')
+    // const [API_URL_NOTE] = useState('http://localhost:8000')
+    // const [API_URL_CHATBOT] = useState('http://localhost:8000')
 
     // USER TOKEN
     const [token, setToken] = useState(() => localStorage.getItem('token'))
