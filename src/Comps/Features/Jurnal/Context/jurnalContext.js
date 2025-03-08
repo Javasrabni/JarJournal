@@ -19,7 +19,6 @@ export default function JurnalContextProvider({ children }) {
                 const response = await fetch(`${API_URL_AUTH}/get/user_jurnal`, {
                     keepalive: true,
                     method: "GET",
-                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Connection': 'keep-alive'
@@ -52,7 +51,6 @@ export default function JurnalContextProvider({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/emot_jurnal`, {
                     method: "GET",
-                    cache: "no-cache",
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

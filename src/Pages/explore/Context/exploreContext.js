@@ -21,7 +21,7 @@ export default function ExploreProvider({ children }) {
     //             if (response.ok) {
     //                 const data = await response.json()
     //                 setDataPubToFilter(data)
-                    setLoading(false)
+                    // setLoading(false)
     //             } else {
     //                 setLoading(true)
     //             }

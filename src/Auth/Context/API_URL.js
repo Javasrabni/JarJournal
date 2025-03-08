@@ -36,7 +36,6 @@ export default function API_URL_PROVIDER({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/user_info`, {
                     method: "GET",
-                    cache: "no-cache",
                     keepalive: true,
                     headers: {
                         'Connection': 'keep-alive',
@@ -69,7 +68,6 @@ export default function API_URL_PROVIDER({ children }) {
                     headers: {
                         'Connection': 'keep-alive'
                     },
-                    cache: "no-cache",
                     method: "GET",
                 })
                 const data = await response.json()

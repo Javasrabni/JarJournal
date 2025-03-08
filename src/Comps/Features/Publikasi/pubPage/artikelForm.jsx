@@ -48,7 +48,7 @@ export default function ArtikelForm() {
 
     const HandleAddPub = async () => {
 
-        if (!judulPublikasi || !newPublikasi) {
+        if (!judulPublikasi) {
             alert('judul dan konten dibutuhkan!');
             return;
         }

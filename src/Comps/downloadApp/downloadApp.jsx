@@ -6,7 +6,6 @@ const InstallApp = () => {
 
     useEffect(() => {
         const handler = (event) => {
-            console.log("beforeinstallprompt fired");
             event.preventDefault();
             setDeferredPrompt(event);
             setShowButton(true); // Tampilkan tombol
@@ -23,11 +22,6 @@ const InstallApp = () => {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             deferredPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === "accepted") {
-                    console.log("User accepted the install prompt");
-                } else {
-                    console.log("User dismissed the install prompt");
-                }
                 setDeferredPrompt(null);
                 setShowButton(false);
             });

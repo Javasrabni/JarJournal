@@ -45,7 +45,6 @@ export default function CatatanProvider({ children }) {
         const FetchDataNote = async () => {
             try {
                 const response = await fetch(`${API_URL_NOTE}/get/catatan_user`, {
-                    cache: 'no-cache',
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

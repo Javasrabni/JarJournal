@@ -44,6 +44,7 @@ export default function EditProfilePage() {
         setUsernameValue(findUser?.username)
     }, [publicDataUser])
 
+    const [activeButtonSave, setActiveButtonSave] = useState(false)
     const OnEditProfileBE = async () => {
         // Validasi form Link
         // const protocol = ['https://', 'http://', 'www.']
@@ -67,7 +68,7 @@ export default function EditProfilePage() {
                 setUsername(data.username)
                 setLinkUser(data.userLink)
                 setRefreshData(prev => !prev)
-                navigate(`/user/${data.username}`, { replace: true })
+                setActiveButtonSave(false)
             } else {
                 alert(data.ErrMsg)
             }
@@ -101,7 +102,7 @@ export default function EditProfilePage() {
                             <span onClick={() => navigate(-1)} className="pr-[6px] cursor-pointer">{backIcon}</span>
                             <p className="select-none">Edit profil</p>
                         </div>
-                        <button onClick={OnEditProfileBE} className="text-[12px] text-[var(--blue-clr)]">Simpan</button>
+                        <button onClick={OnEditProfileBE} className="text-[12px] text-[var(--blue-clr)]">{activeButtonSave && "Simpan"}</button>
                     </div>
 
                     <div className={`${themeActive ? "bg-[var(--bg-12)] text-white" : "bg-white text-black"} max-w-[42rem] m-auto p-[16px] h-full`}>
@@ -139,7 +140,7 @@ export default function EditProfilePage() {
                                     className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
                                     value={usernameValue}
                                     placeholder="Nama pengguna"
-                                    onChange={(e) => setUsernameValue(e.target.value)} />
+                                    onChange={(e) => { setUsernameValue(e.target.value); setActiveButtonSave(true) }} />
                             </span>
                             <span className="flex flex-col gap-[4px]">
                                 <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Bio</label>
@@ -147,7 +148,7 @@ export default function EditProfilePage() {
                                     className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
                                     value={bioUserValue}
                                     placeholder="Deskripsikan diri"
-                                    onChange={(e) => setBioUserValue(e.target.value)} />
+                                    onChange={(e) => { setBioUserValue(e.target.value); setActiveButtonSave(true) }} />
                             </span>
                             <span className="flex flex-col gap-[4px]">
                                 <label htmlFor="userBio" className="pl-[6px] text-[14px] text-[var(--black-subtext)]">Link</label>
@@ -156,7 +157,7 @@ export default function EditProfilePage() {
                                     value={linkUserValue}
                                     placeholder="Perluas koneksi"
                                     className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px]"
-                                    onChange={(e) => setLinkUserValue(e.target.value)} />
+                                    onChange={(e) => { setLinkUserValue(e.target.value); setActiveButtonSave(true) }} />
                             </span>
 
                             {/* FEEDBACK SECT */}

@@ -110,7 +110,6 @@ export default function UserProfile() {
             setOnLoading(true)
             try {
                 const response = await fetch(`${API_URL_PUB}/get/saved_publikasi?userId=${userId}&username=${usernameId}`, {
-                    cache: "no-cache",
                     method: "GET"
                 })
                 const data = await response.json()

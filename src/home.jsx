@@ -285,13 +285,6 @@ export default function Home() {
                                             </div>
                                         </div>
 
-                                        <div className="flex flex-col gap-[0px] mt-[16px] pt-[12px]" style={{ borderTop: '1px solid var(--black-border)' }}>
-                                            {/* <p className="text-[12px] font-[600] text-white">Aktifitas pengguna</p> */}
-                                            <Publikasi publikasiData={publikasi} />
-                                        </div>
-
-
-
                                     </div>
 
 
