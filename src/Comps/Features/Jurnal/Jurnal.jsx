@@ -265,6 +265,7 @@ export default function Jurnal() {
                         JurnalSect={true}
                         Heading={`Jurnal Harian`}
                         onClickFunc={() => setOnWriteJurnal(false)}
+                        jurnalAdd={true}
                         Button1={
                             <div className="w-full h-fit flex flex-row gap-[12px] items-center justify-between">
                                 <span className="w-fit shrink-0">
@@ -273,7 +274,7 @@ export default function Jurnal() {
                                 <input className="w-full h-full bg-transparent outline-0 border-0 text-white text-[12px]" type="search" placeholder="Deskripsi" onChange={(e) => setDataInputFieldJurnal((prevState) => ({ ...prevState, descJurnal: e.target.value }))} />
                             </div>
                         }
-                        Button2={<p className="text-[12px] font-[600] text-white" onClick={() => { setTimeout(() => { setInputFieldJurnalState(true); setOnWriteJurnal(false); }, 1000) }}>Tambah</p>}
+                        Button2={<span onClick={() => { setTimeout(() => { setInputFieldJurnalState(true); setOnWriteJurnal(false); }, 1000) }} className={`w-full p-[12px] bg-[var(--blue-clr)] flex items-center rounded-[12px] flex items-center justify-center`}><p className="text-[12px] font-[600] text-white" >Tambah</p></span>}
                     />
                 )
             }

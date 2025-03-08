@@ -4,11 +4,15 @@ export const API_URL_CONTEXT = createContext()
 
 export default function API_URL_PROVIDER({ children }) {
     // ENDPOINT PATH
-    const [MainDomain] = useState('https://jarjournal.vercel.app')
-    const [API_URL_AUTH] = useState('https://new-jjr-server.vercel.app')
-    const [API_URL_PUB] = useState('https://new-jjr-server.vercel.app')
-    const [API_URL_NOTE] = useState('https://new-jjr-server.vercel.app')
-    const [API_URL_CHATBOT] = useState('https://new-jjr-server.vercel.app')
+    const [MainDomain] = useState('https://jarjournal.cloud')
+    // const [API_URL_AUTH] = useState('https://new-jjr-server.vercel.app')
+    // const [API_URL_PUB] = useState('https://new-jjr-server.vercel.app')
+    // const [API_URL_NOTE] = useState('https://new-jjr-server.vercel.app')
+    // const [API_URL_CHATBOT] = useState('https://new-jjr-server.vercel.app')
+    const [API_URL_AUTH] = useState('http://localhost:8000')
+    const [API_URL_PUB] = useState('http://localhost:8000')
+    const [API_URL_NOTE] = useState('http://localhost:8000')
+    const [API_URL_CHATBOT] = useState('http://localhost:8000')
 
     // USER TOKEN
     const [token, setToken] = useState(() => localStorage.getItem('token'))
@@ -33,7 +37,9 @@ export default function API_URL_PROVIDER({ children }) {
                 const response = await fetch(`${API_URL_AUTH}/user_info`, {
                     method: "GET",
                     cache: "no-cache",
+                    keepalive: true,
                     headers: {
+                        'Connection': 'keep-alive',
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
@@ -59,6 +65,10 @@ export default function API_URL_PROVIDER({ children }) {
             setIsLoading(true)
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/public_userData`, {
+                    keepalive: true,
+                    headers: {
+                        'Connection': 'keep-alive'
+                    },
                     cache: "no-cache",
                     method: "GET",
                 })

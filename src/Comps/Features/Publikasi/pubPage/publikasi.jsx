@@ -1175,7 +1175,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
 }
 
 // SETTING MENU POPUP COMP
-export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalSect }) => {
+export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalSect, jurnalAdd }) => {
     const XIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
     </svg>
@@ -1205,7 +1205,13 @@ export const OnPopupSetting = ({ Button1, Button2, Heading, onClickFunc, JurnalS
                             <span className="w-full p-[12px] bg-[var(--black-bg)] flex items-center rounded-[12px] flex items-center justify-center">{Button1}</span>
                         )}
                         {Button2 && (
-                            <span className={`w-full p-[12px] ${JurnalSect ? 'bg-[var(--blue-clr)]' : 'bg-[var(--black-bg)]'} flex items-center rounded-[12px] flex items-center justify-center`}>{Button2}</span>
+                            <>
+                                {jurnalAdd ? (
+                                    <span>{Button2}</span>
+                                ) : (
+                                    <span className={`w-full p-[12px] ${JurnalSect ? 'bg-[var(--blue-clr)]' : 'bg-[var(--black-bg)]'} flex items-center rounded-[12px] flex items-center justify-center`}>{Button2}</span>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>

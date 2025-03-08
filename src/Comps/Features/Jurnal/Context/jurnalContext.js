@@ -17,10 +17,12 @@ export default function JurnalContextProvider({ children }) {
         const GetUserJurnal = async () => {
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/user_jurnal`, {
+                    keepalive: true,
                     method: "GET",
                     cache: "no-cache",
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Connection': 'keep-alive'
                     }
                 })
                 const data = await response.json()

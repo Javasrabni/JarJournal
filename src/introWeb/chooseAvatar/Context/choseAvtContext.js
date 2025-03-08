@@ -14,7 +14,10 @@ export default function ChosseAvatarProvider({ children }) {
             try {
                 const response = await fetch(`${API_URL_AUTH}/get/user_avatar`, {
                     method: "GET",
+                    cache: "no-cache",
+                    keepalive: true,
                     headers: {
+                        'connection': 'keep-alive',
                         'Content-Type': 'application/json'
                     }
                 })
