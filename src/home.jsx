@@ -143,7 +143,7 @@ export default function Home() {
                 <>
                     <div className="fixed w-full h-full bg-[#00000060] bottom-0 left-0 z-[19]"/>
 
-                    <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0">
+                    <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0 bg-white">
 
                         <div className="relative p-4 w-full max-h-full">
                             <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
