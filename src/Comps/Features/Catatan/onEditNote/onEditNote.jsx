@@ -36,7 +36,7 @@ export default function OnEditNote({ dataNote, indexNote }) {
     const { onEditNoteIndex, setOnEditNoteIndex } = UseEditNoteContext()
 
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
-
+    const { userId, setUserId } = useContext(API_URL_CONTEXT)
 
     async function handleSaveEdit() {
         try {
@@ -45,7 +45,7 @@ export default function OnEditNote({ dataNote, indexNote }) {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ noteIndex: onEditNoteIndex, editedNote: onEditNote })
+                }, body: JSON.stringify({ noteIndex: onEditNoteIndex, editedNote: onEditNote, userId: userId })
             })
             const data = await response.json()
             if (response.ok) {

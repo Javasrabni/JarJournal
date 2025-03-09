@@ -45,6 +45,8 @@ export default function NavFooter() {
     </svg>
     const [onLoading, setOnLoading] = useState(true)
 
+    // Before login func
+    const { onBeforeLogin, setOnBeforeLogin } = useContext(OVERALL_CONTEXT)
 
     return (
         <div className="fixed left-0 bottom-0 h-[54px] w-[100%] bg-[var(--bg-12)] z-[16] min-w-[360px] flex flex-row items-center justify-around text-white" style={{ borderTop: '1px solid var(--black-border)' }}>
@@ -59,16 +61,16 @@ export default function NavFooter() {
                 <p className="text-[8px]">AI ChatBot</p>
                 {/* <span>{cubeIcon}</span> */}
             </div>
-            {username && token && (
-                <div onClick={() => navigate(`/user/${findUser?.id}/${findUser?.username}`)} className="cursor-pointer w-[25px] h-[25px]">
-                    {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />)}
+            {/* {username && token && ( */}
+            <div onClick={() => token && username ? navigate(`/user/${findUser?.id}/${findUser?.username}`) : setOnBeforeLogin(false)} className="cursor-pointer w-[25px] h-[25px]">
+                {onLoading && (<Skeleton circle={true} count={1} className="w-full h-full rounded-lg" />)}
 
-                    <span>
-                        <img src={findUser?.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
-                            loading="lazy" onLoad={() => setOnLoading(false)} />
-                    </span>
-                </div>
-            )}
+                <span>
+                    <img src={findUser?.avatar ? findUser.avatar : 'https://res.cloudinary.com/dwf753l9w/image/upload/v1737166429/no_profile_user_emaldm.svg'} alt={`${username} avatar`} className={`rounded-[50px] object-cover w-full h-full transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                        loading="lazy" onLoad={() => setOnLoading(false)} />
+                </span>
+            </div>
+            {/* )} */}
         </div>
     )
 }

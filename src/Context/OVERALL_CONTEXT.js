@@ -17,6 +17,9 @@ export default function OVERALL_CONTEXT_PROVIDER({ children }) {
     const { publicDataUser, setPublicDataUser } = useContext(API_URL_CONTEXT)
     const { username, setUsername } = useContext(API_URL_CONTEXT)
 
+    const [onBeforeLogin, setOnBeforeLogin] = useState(true)
+
+
     // intro after login
     const [introAfterLogin, setIntroAfterLogin] = useState(() => {
         const statusIntroAfterLogin = localStorage.getItem('introAfterLogin')
@@ -43,7 +46,7 @@ export default function OVERALL_CONTEXT_PROVIDER({ children }) {
     }, [introAfterLogin])
 
     return (
-        <OVERALL_CONTEXT.Provider value={{ isLoading, setLoading, introAfterLogin, setIntroAfterLogin }}>
+        <OVERALL_CONTEXT.Provider value={{ onBeforeLogin, setOnBeforeLogin, isLoading, setLoading, introAfterLogin, setIntroAfterLogin }}>
             {children}
         </OVERALL_CONTEXT.Provider>
     )

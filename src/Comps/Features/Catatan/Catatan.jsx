@@ -118,7 +118,7 @@ export default function Catatan() {
                 headers: {
                     'Content-type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }, body: JSON.stringify({ noteIndex: checkedNote })
+                }, body: JSON.stringify({ noteIndex: checkedNote, userId: userId })
             })
 
             const data = await response.json()
@@ -127,6 +127,8 @@ export default function Catatan() {
                 setRefreshData(prev => !prev)
                 setCheckedNote([])
                 setOnDelNote(false)
+            } else {
+                alert(data.ErrMsg)
             }
         } catch (err) {
             console.error(err)
