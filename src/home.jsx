@@ -143,12 +143,12 @@ export default function Home() {
                 <>
                     <div className="fixed w-full h-full bg-[#00000060] bottom-0 left-0 z-[19]"/>
 
-                    <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0 bg-white">
+                    <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0">
 
-                        <div className="relative p-4 w-full max-h-full">
-                            <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                        <div className="relative p-4 w-full max-h-full bg-white">
+                            <div className="relative bg-white rounded-lg shadow-sm">
                                 <div className="flex items-center justify-between py-2 px-4 md:p-5 border-b rounded-t ">
-                                    <h3 className="text-[16px] font-semibold text-gray-900 dark:text-white">
+                                    <h3 className="text-[16px] font-semibold text-gray-900">
                                         Login ke akun
                                     </h3>
                                     <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" onClick={() => setOnBeforeLogin(true)}>
