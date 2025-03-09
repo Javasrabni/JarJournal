@@ -145,9 +145,9 @@ export default function Home() {
 
                     <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0">
 
-                        <div className="relative p-4 w-full max-h-full bg-white">
-                            <div className="relative bg-white rounded-lg shadow-sm">
-                                <div className="flex items-center justify-between py-2 px-4 md:p-5 border-b rounded-t ">
+                        <div className="relative p-4 w-full max-h-full ">
+                            <div className="bg-white rounded-lg shadow-sm">
+                                <div className="bg-white flex items-center justify-between py-2 px-4 md:p-5 border-b rounded-lg ">
                                     <h3 className="text-[16px] font-semibold text-gray-900">
                                         Login ke akun
                                     </h3>
