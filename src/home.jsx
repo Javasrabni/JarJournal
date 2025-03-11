@@ -136,19 +136,27 @@ export default function Home() {
 
     const { onBeforeLogin, setOnBeforeLogin } = useContext(OVERALL_CONTEXT)
 
+    useEffect(() => {
+        if (!onBeforeLogin) {
+            document.body.style.overflowY = "hidden"
+        } else {
+            document.body.style.overflowY = "auto"
+        }
+    }, [onBeforeLogin])
+
 
     return (
         <>
             {!onBeforeLogin && (
                 <>
-                    <div className="fixed w-full h-full bg-[#00000060] bottom-0 left-0 z-[19]"/>
+                    <div className="fixed w-full h-full bg-[#00000060] bottom-0 left-0 z-[19]" />
 
                     <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0">
 
                         <div className="relative p-4 w-full max-h-full ">
-                            <div className="bg-white rounded-lg shadow-sm">
-                                <div className="bg-white flex items-center justify-between py-2 px-4 md:p-5 border-b rounded-lg ">
-                                    <h3 className="text-[16px] font-semibold text-gray-900">
+                            <div className="bg-[var(--bg-12)] rounded-lg" style={{ outline: '1px solid var(--black-border)' }}>
+                                <div className="bg-[var(--bg-12)] flex items-center justify-between py-2 px-4 md:p-5" style={{ borderBottom: "1px solid var(--black-border)" }}>
+                                    <h3 className="text-[16px] font-semibold text-white">
                                         Login ke akun
                                     </h3>
                                     <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" onClick={() => setOnBeforeLogin(true)}>
@@ -158,14 +166,14 @@ export default function Home() {
                                     </button>
                                 </div>
                                 <div className="p-4 md:p-5 flex flex-col gap-[8px]">
-                                    <p className="text-[12px] font-normal text-gray-500">Ayo terhubung dengan pengguna lain di JarJournal!</p>
+                                    <p className="text-[12px] font-normal text-[var(--black-subtext)]">Ayo terhubung dengan pengguna lain di JarJournal!</p>
                                     <div>
-                                        <button className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-[12px] px-5 py-2.5 text-center" onClick={() => { navigate('/Auth'); setOnBeforeLogin(true) }}>
+                                        <button className="text-white inline-flex w-full justify-center bg-[var(--blue-clr)] hover:bg-blue-800 font-medium rounded-lg text-[12px] px-5 py-2.5 text-center" onClick={() => { navigate('/Auth'); setOnBeforeLogin(true) }}>
                                             Login / Daftar
                                         </button>
                                     </div>
                                     <div>
-                                        <a href="#" className="inline-flex items-center text-[11px] font-normal text-gray-500 hover:underline dark:text-gray-400">
+                                        <a href="#" className="inline-flex items-center text-[11px] font-normal text-[var(--black-subtext)] hover:underline dark:text-gray-400">
                                             <svg className="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                             </svg>
@@ -268,7 +276,7 @@ export default function Home() {
                                     </div>
 
                                     {/* REPORT JURNAL X CATATAN */}
-                                    <div className="flex flex-col gap-[12px] w-full h-full pb-[32px]">
+                                    <div className="flex flex-col gap-[12px] w-full h-full pb-[16px]">
                                         <div className="flex flex-row gap-[12px]">
                                             <ReportJurnal />
                                         </div>
@@ -315,13 +323,7 @@ export default function Home() {
                                             )}
                                         </div>
                                         <div classname="flex flex-row gap-[12px] w-full items-center justify-between" >
-                                            <div className="w-full">
-                                                <span className="text-white flex flex-row gap-[8px] items-center">{mobileIcon} <p className="text-[12px] text-white">Dapatkan pengalaman terbaik dalam versi Mobile App</p></span>
-                                            </div>
-                                            <div className="w-fit">
-                                                <button id="installButton"><span className="text-white flex flex-row gap-[8px] items-center">Download {downloadIcon}</span></button>
-                                                <InstallApp />
-                                            </div>
+                                            <InstallApp />
                                         </div>
 
                                     </div>

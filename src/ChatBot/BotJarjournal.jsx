@@ -6,6 +6,7 @@ import './style.css';
 import { useNavigate } from "react-router-dom";
 import NavFooter from "../Comps/Footer/Navigation footer/NavFooter";
 import { API_URL_CONTEXT } from "../Auth/Context/API_URL";
+import { OVERALL_CONTEXT } from "../Context/OVERALL_CONTEXT";
 
 // Komponen untuk merender pesan dengan ReactMarkdown
 const MarkdownMessage = React.memo(({ message }) => (
@@ -288,9 +289,57 @@ export default function Chatbot() {
         <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
     </svg>
 
+    const { onBeforeLogin, setOnBeforeLogin } = useContext(OVERALL_CONTEXT)
+    useEffect(() => {
+        if (!onBeforeLogin) {
+            document.body.style.overflowY = "hidden"
+        } else {
+            document.body.style.overflowY = "auto"
+        }
+    }, [onBeforeLogin])
+
 
     return (
         <>
+            {/* ON BEFORE LOGIN */}
+            {!onBeforeLogin && (
+                <>
+                    <div className="fixed w-full h-full bg-[#00000060] bottom-0 left-0 z-[19]" />
+
+                    <div className="overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 justify-center w-full max-w-[376px] items-center flex shrink-0">
+
+                        <div className="relative p-4 w-full max-h-full ">
+                            <div className="bg-[var(--bg-12)] rounded-lg" style={{ outline: '1px solid var(--black-border)' }}>
+                                <div className="bg-[var(--bg-12)] flex items-center justify-between py-2 px-4 md:p-5" style={{ borderBottom: "1px solid var(--black-border)" }}>
+                                    <h3 className="text-[16px] font-semibold text-white">
+                                        Login ke akun
+                                    </h3>
+                                    <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center" onClick={() => setOnBeforeLogin(true)}>
+                                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div className="p-4 md:p-5 flex flex-col gap-[8px]">
+                                    <p className="text-[12px] font-normal text-[var(--black-subtext)]">Ayo terhubung dengan pengguna lain di JarJournal!</p>
+                                    <div>
+                                        <button className="text-white inline-flex w-full justify-center bg-[var(--blue-clr)] hover:bg-blue-800 font-medium rounded-lg text-[12px] px-5 py-2.5 text-center" onClick={() => { navigate('/Auth'); setOnBeforeLogin(true) }}>
+                                            Login / Daftar
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <a href="#" className="inline-flex items-center text-[11px] font-normal text-[var(--black-subtext)] hover:underline dark:text-gray-400">
+                                            <svg className="w-3 h-3 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.529 7.988a2.502 2.502 0 0 1 5 .191A2.441 2.441 0 0 1 10 10.582V12m-.01 3.008H10M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            </svg>
+                                            Mengapa Akun atau Login diperlukan?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
 
             {clearChatPopup && (
                 <div className="fixed left-0 top-0 w-full h-full z-[2]">
