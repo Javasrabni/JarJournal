@@ -221,7 +221,7 @@ export default function Home() {
                                     <div className="flex flex-row gap-[12px] justify-between w-full h-fit mb-[32px]">
 
                                         {/* Left side */}
-                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                        <div className="w-1/2 grow-0 shirnk-0 flex flex-col gap-[12px]">
                                             <div>
                                                 <CardFeatures
                                                     onClickFeatures={'/ftr/Catatan'}
@@ -252,7 +252,7 @@ export default function Home() {
                                             </div> */}
                                         </div>
                                         {/* Right side */}
-                                        <div className="w-full grow-0 flex flex-col gap-[12px]">
+                                        <div className="w-1/2 grow-0 flex flex-col gap-[12px]">
                                             <div>
                                                 <DateTimePlan />
                                             </div>

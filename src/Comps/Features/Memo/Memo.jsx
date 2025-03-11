@@ -16,7 +16,7 @@ export default function Memo() {
     const navigate = useNavigate()
 
     // Memo Section
-    const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo } = useContext(MemoContext)
+    const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, valueJudulMemo, setValueJudulMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo, valueMemo, setValueMemo, onLoadMemo, setOnLoadMemo } = useContext(MemoContext)
 
     const [indicator, setIndicator] = useState(false)
     const inputActive = useRef('')
@@ -114,6 +114,7 @@ export default function Memo() {
     async function HandleDelMemo(index) {
         const confirmDelMemo = window.confirm(`Yakin ingin menghapus?`)
         if (!confirmDelMemo) return
+        setOnLoadMemo(true)
 
         try {
             const response = await fetch(`${API_URL_AUTH}/del/memo_user`, {
@@ -132,6 +133,11 @@ export default function Memo() {
             }
         } catch (err) {
             console.error(err)
+        } finally {
+            setOnLoadMemo(false)
+            setIndicatorFromMemo(false)
+            setOption1_Status(false)
+
         }
     }
 
@@ -153,14 +159,25 @@ export default function Memo() {
     }
 
     // change height after memo has more than 2 values
-    // useEffect(() => {
-    //     if (changeHeightMemo) {
-    //         setValueMemo(valueMemo.slice(0, 2))
-    //     } else {
-    //         setValueMemo(valueMemo)
-    //     }
-    // }, [changeHeightMemo])
+    const [originalMemoData, setOriginalMemoData] = useState(valueMemo)
+    function SliceMemoValue() {
+        setChangeHeightMemo((prev) => !prev);
 
+        if (changeHeightMemo) {
+            // Saat kembali ke panjang asli
+            setValueMemo(originalMemoData);
+        } else {
+            // Simpan data asli hanya sekali sebelum slice
+            setOriginalMemoData(valueMemo);
+
+            if (valueMemo.length <= 2) {
+                return
+            } else {
+                setValueMemo(valueMemo.slice(0, 2));
+            }
+
+        }
+    }
     // useEffect(() => {
     //     setValueMemo(prev => (prev.length > 2 ? prev.slice(0, 2) : prev))
     // })
@@ -260,6 +277,10 @@ export default function Memo() {
             setMemoInputValue('')
             return
         }
+
+        setOnLoadMemo(true)
+        setActivePopupMemo(false)
+
         try {
 
             const response = await fetch(`${API_URL_AUTH}/post/memo_user`, {
@@ -277,13 +298,23 @@ export default function Memo() {
                 setOption1_Status(false)
                 setIndicatorFromMemo(false)
                 setMemoInputValue('')
-                setActivePopupMemo(false)
             }
 
         } catch (err) {
             console.error(err)
+        } finally {
+            setOnLoadMemo(false)
+            setActivePopupMemo(false)
+
         }
     }
+
+    const loadingSpinner = <div role="status">
+        <svg aria-hidden="true" class="w-2.5 h-2.5 text-gray-200 animate-spin fill-black" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+        </svg>
+    </div>
 
     return (
         <>
@@ -292,16 +323,32 @@ export default function Memo() {
                 <div style={{ color: "black", zIndex: "16", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%", position: "fixed", left: "0", top: "0" }}>
                     <div className="w-[100%] h-[100%] bg-[#00000080]" onClick={() => { setOpenPopupMemo(false) }} />
 
-                    <div style={BoxPopupNote}>
-                        <div style={{ width: "100%" }} className="flex flex-col gap-[4px] items-center">
-                            <p className="text-[12px] font-[500]" style={{ whiteSpace: "pre-wrap" }}>{indexValueMemo.index}</p>
+                    <div style={{
+                        position: 'absolute',
+                        top: keyboardActive ? "20%" : "30%",
+                        transition: "0.5s ease",
+                        width: '100%',
+                        maxWidth: "260px",
+                        height: "fit-content",
+                        backgroundColor: "white",
+                        borderRadius: "16px",
+                        padding: "12px",
+                        display: "flex",
+                        flexDirection: "column"
+                    }}>
+                        <div className="flex flex-col gap-[4px] items-center w-full ">
+                            <p className="text-[12px] font-[500] w-full text-center break-words overflow-hidden">
+                                {indexValueMemo.index}
+                            </p>
+
                             <p className="whitespace-pre-wrap text-[10px] break-words text-[var(--black-subtext)]">{indexValueMemo.time}</p>
 
                         </div>
                         {/* <button onClick={() => setOpenPopupMemo(false)} style={SubmitMemo}>Tutup</button> */}
                     </div>
-                </div>
-            )}
+                </div >
+            )
+            }
             <div className="flex flex-col justify-center items-center" >
 
                 {/* Popup memo  */}
@@ -314,7 +361,7 @@ export default function Memo() {
                    </div> */}
 
                             <div style={{ marginBottom: "8px", width: "100%" }}>
-                                <textarea name="" id="" style={{ width: "100%", height: "100px", outline: "none", fontSize: "12px", fontWeight: "500" }} onChange={(e) => HandleChange(e)} autoFocus placeholder="Memo kamu" onFocus={KeyboardActive} onBlur={KeyboardBlur} />
+                                <textarea name="" id="" style={{ width: "100%", height: "100px", outline: "none", fontSize: "12px", fontWeight: "500" }} onChange={(e) => HandleChange(e)} autoFocus placeholder="Memo kamu" onFocus={KeyboardActive} onBlur={KeyboardBlur} maxLength={'250'} />
                                 {/* localStorage.setItem("IsiNote", e.target.value) */}
                             </div>
 
@@ -346,11 +393,19 @@ export default function Memo() {
                             <p className="font-[600] text-[10px]" style={{ opacity: "50%", color: themeActive ? 'white' : 'var(--black-text)' }}>({valueMemo.length})</p>
                             {/* <p className="text-[10px] font-[400 text-[#999999]">{descFeatures}</p> */}
                         </div>
+
                         <button className={`text-[10px] py-[4px] px-[4px] ${themeActive ? 'bg-white' : 'bg-[var(--white-bg-200)]'} text-black rounded-xl font-semibold mt-[0px]`} style={{ height: "fit-content" }} onClick={HandleClickMemo}>
-                            <span className="flex gap-[4px] items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
+
+                            <span className="flex flex-row gap-[4px] items-center justify-center">
+                                {onLoadMemo ? (
+                                    <div>
+                                        {loadingSpinner}
+                                    </div>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                )}
                             </span>
                         </button>
                     </div>
@@ -427,7 +482,7 @@ export default function Memo() {
                                                         </div>
                                                     ) : (
                                                         <div className={`w-full max-w-full  ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            <p className="text-[10px] break-words" onClick={() => PopupMemoView(item.value_memo, item.updatedAt.slice(0, 10))}> {item.value_memo}</p>
+                                                            <p className="text-[10px]" onClick={() => PopupMemoView(item.value_memo, item.updatedAt.slice(0, 10))}> {item.value_memo}</p>
                                                         </div>
                                                     )}
                                                     {/* </li> */}
@@ -451,8 +506,8 @@ export default function Memo() {
                     <div className="flex flex-col items-end gap-[4px] w-[100%]">
                         {popupSetting && (
                             <BoxPopupFromSetting
-                                option_1={'Edit'}
-                                option_2={'Lebarkan'}
+                                option_1={'Hapus'}
+                                // option_2={'Lebarkan'}
                             />
                         )}
                         <span className="mb-[2px] w-[100%] " >
@@ -462,7 +517,7 @@ export default function Memo() {
                                         <>
                                             {valueMemo.length > 1 ? (
                                                 <div className="flex flex-row gap-[4px] items-center justify-evenly w-[100%]">
-                                                    <div onClick={() => setChangeHeightMemo((prev) => !prev)}>
+                                                    <div onClick={() => SliceMemoValue()}>
                                                         {changeHeightMemo ? (
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="size-2.5">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />

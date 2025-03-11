@@ -34,8 +34,11 @@ export default function MemoProvider({ children }) {
     const [visibleMemo, setVisibleMemo] = useState([])
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
+    const [onLoadMemo, setOnLoadMemo] = useState(false)
+
     useEffect(() => {
         const GetMemoUser = async () => {
+            setOnLoadMemo(true)
             try {
 
                 const response = await fetch(`${API_URL_AUTH}/get/memo_user`, {
@@ -51,6 +54,8 @@ export default function MemoProvider({ children }) {
 
             } catch (err) {
                 console.error(err)
+            } finally {
+                setOnLoadMemo(false)
             }
 
         }
@@ -58,7 +63,7 @@ export default function MemoProvider({ children }) {
     }, [refreshData])
 
     return (
-        <MemoContext.Provider value={{ valueMemo, setValueMemo, indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo }}>
+        <MemoContext.Provider value={{ onLoadMemo, setOnLoadMemo, valueMemo, setValueMemo, indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo }}>
             {children}
         </MemoContext.Provider>
     )

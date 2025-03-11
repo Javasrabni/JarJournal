@@ -19,12 +19,12 @@ export default function BoxPopupFromSetting({option_1, option_2, icon_1, icon_2}
                         {icon_1}
                     </span>
                 </span>
-                <span className="flex flex-row gap-[4px] px-[6px] py-[4px] align-center h-full justify-between hover:bg-gray-200 rounded">
+                {/* <span className="flex flex-row gap-[4px] px-[6px] py-[4px] align-center h-full justify-between hover:bg-gray-200 rounded">
                     <p className="text-[10px]">{option_2}</p>
                     <span className="mt-[2px]">
                         {icon_2}
                     </span>
-                </span>
+                </span> */}
             </div>
         </div>
     )
