@@ -38,11 +38,8 @@ const InstallApp = () => {
 
     return (
         showButton && (
-            <div className="mt-[32px] text-white bg-[var(--blue-clr)] p-[16px] w-full h-fit flex flex-col gap-[12px] items-center rounded-lg">
-                <span className="flex flex-row items-center">
-                    <p className="text-[12px] text-white text-center">Dapatkan pengalaman terbaik dalam versi Mobile App</p>
-                    <span className="flex flex-row gap-[8px]">{mobileIcon}</span>
-                </span>
+            <div className=" text-white bg-[var(--blue-clr)] p-[16px] w-full h-fit flex flex-col gap-[12px] items-center rounded-lg">
+                <p className="text-[12px] text-white text-center">Dapatkan pengalaman terbaik dalam versi Mobile App</p>
                 <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "12px", fontWeight: 'bolder' }} className="bg-[var(--black-card)] rounded-full w-full">
                     Install App
                 </button>

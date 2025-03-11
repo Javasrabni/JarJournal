@@ -577,10 +577,10 @@ const ReportJurnal = () => {
                             </div> */}
                             {/* Rata rata mood user */}
                             <div style={{ height: '100%', width: '100%' }} className="pt-[32px] pb-[32px]">
-                                <p className="text-[12px] text-white mb-[4px]">Data dalam grafik diagram garis</p>
+                                {/* <p className="text-[12px] text-white mb-[4px]">Data dalam grafik diagram garis</p> */}
                                 <Line data={moodData} options={chartOptions} height={220} />
                             </div>
-                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya Jurnal. </p>
+                            <p className="text-[11px] text-[var(--black-subtext)]">Akan tersedia saat kamu sudah punya jurnal. <span className="text-[var(--blue-clr)] cursor-pointer" onClick={() => navigate('/ftr/Jurnal')}>Mulai jurnal</span></p>
 
                         </ div>
                     ) : (

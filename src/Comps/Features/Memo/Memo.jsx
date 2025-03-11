@@ -409,7 +409,7 @@ export default function Memo() {
 
                                                             {/* Value memo on edit */}
                                                             <div className={`w-full ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                                <p className="whitespace-pre-wrap text-[10px] break-words"> {item.value_memo}</p>
+                                                                <p className=" text-[10px] break-words"> {item.value_memo}</p>
                                                             </div>
                                                             {/* {editValueMemoStatus ? ():()} */}
 
@@ -426,8 +426,8 @@ export default function Memo() {
 
                                                         </div>
                                                     ) : (
-                                                        <div className={`w-full  ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
-                                                            <p className="whitespace-pre-wrap text-[10px] break-words" onClick={() => PopupMemoView(item.value_memo, item.updatedAt.slice(0, 10))}> {item.value_memo}</p>
+                                                        <div className={`w-full max-w-full  ${themeActive ? 'bg-[var(--black-bg)]' : 'bg-[var(--white-bg-200)]'} h-fit rounded ${themeActive ? 'text-white' : 'text-[var(--black-text)]'} p-[8px]`}>
+                                                            <p className="text-[10px] break-words" onClick={() => PopupMemoView(item.value_memo, item.updatedAt.slice(0, 10))}> {item.value_memo}</p>
                                                         </div>
                                                     )}
                                                     {/* </li> */}
