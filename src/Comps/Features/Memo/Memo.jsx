@@ -74,7 +74,7 @@ export default function Memo() {
         }
     })
 
-    console.log(memoValue)
+    // console.log(memoValue)
 
     // Popup new memo
     const [activePopupMemo, setActivePopupMemo] = useState(false)
@@ -305,7 +305,7 @@ export default function Memo() {
                 setOption1_Status(false)
                 setIndicatorFromMemo(false)
                 setMemoInputValue('')
-                console.log(data, 'POST RES MEMO')
+                // console.log(data, 'POST RES MEMO')
             }
 
         } catch (err) {
@@ -324,8 +324,8 @@ export default function Memo() {
         </svg>
     </div>
 
-    console.log(memoValue)
-    console.log(typeof memoValue)
+    // console.log(memoValue)
+    // console.log(typeof memoValue)
 
     return (
         <>
