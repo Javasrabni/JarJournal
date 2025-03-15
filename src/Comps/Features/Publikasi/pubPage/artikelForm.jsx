@@ -166,7 +166,7 @@ export default function ArtikelForm() {
                 </div>
 
                 <label className="block outline-none text-[12px] font-medium text-white " for="user_avatar">Post dengan gambar</label>
-                <input className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept="image/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
+                <input className="text-[12px] text-white px-[12px] py-[12px] outline-0 border-0 bg-[var(--black-bg)] rounded-[6px] w-full" aria-describedby="user_avatar_help" id="user_avatar" type="file" accept="image/*, 'video/*" onChange={(e) => setSelectedImage(e.target.files[0])} />
                 <div className="text-[11px] text-[var(--black-subtext)]" id="user_avatar_help">Format JPG, JPEG, dan PNG, Mohon untuk menjaga sikap dan sopan santun antar sesama.</div>
 
 
