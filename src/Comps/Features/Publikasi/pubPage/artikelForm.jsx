@@ -74,7 +74,9 @@ export default function ArtikelForm() {
                 articleData.append('file', selectedImage)
             }
             const response = await axios.post(`${API_URL_PUB}/post/userPublikasi`, articleData, {
+                keepalive: true,
                 headers: {
+                    'connection': 'keep-alive',
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
                 },

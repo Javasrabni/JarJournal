@@ -129,10 +129,10 @@ export default function Memo() {
             })
             const data = await response.json()
             if (response.ok) {
-                setTimeout(() => {
-                    setMemoValue([]);
-                    setRefreshData(prev => !prev);
-                }, 100);
+                // setTimeout(() => {
+                    // setMemoValue([]);
+                    setRefreshDataMemo(prev => !prev);
+                // }, 100);
             } else {
                 console.log(data.Msg)
             }
@@ -164,20 +164,21 @@ export default function Memo() {
     }
 
     // change height after memo has more than 2 values
+    const [originalMemoData,setOriginalMemoData] = useState(memoValue)
     function SliceMemoValue() {
         setChangeHeightMemo((prev) => !prev);
 
         if (changeHeightMemo) {
             // Saat kembali ke panjang asli
-            // setmemoValue(originalMemoData);
+            setMemoValue(originalMemoData);
         } else {
             // Simpan data asli hanya sekali sebelum slice
-            // setOriginalMemoData(memoValue);
+            setOriginalMemoData(memoValue);
 
             if (memoValue.length <= 2) {
                 return
             } else {
-                // setmemoValue(memoValue.slice(0, 2));
+                setMemoValue(memoValue.slice(0, 2));
             }
 
         }
@@ -272,7 +273,7 @@ export default function Memo() {
 
 
     const { userId, setUserId } = useContext(API_URL_CONTEXT)
-    const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
+    const { refreshDataMemo, setRefreshDataMemo } = useContext(API_URL_CONTEXT)
 
     // Add memo func in btn
     const HandleAddMemo = async () => {
@@ -298,10 +299,10 @@ export default function Memo() {
             const data = await response.json()
 
             if (response.ok) {
-                setTimeout(() => {
-                    setMemoValue([]);
-                    setRefreshData(prev => !prev);
-                }, 100);
+                // setTimeout(() => {
+                    // setMemoValue([]);
+                    setRefreshDataMemo(prev => !prev);
+                // }, 100);
                 setOption1_Status(false)
                 setIndicatorFromMemo(false)
                 setMemoInputValue('')

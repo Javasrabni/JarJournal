@@ -23,6 +23,7 @@ export default function API_URL_PROVIDER({ children }) {
     const [userEmail, setUserEmail] = useState(null)
 
     const [refreshData, setRefreshData] = useState(false)
+    const [refreshDataMemo, setRefreshDataMemo] = useState(false)
 
     // STATUS AUTH FORM
     const [isRegister, setIsRegister] = useState(false);
@@ -92,7 +93,7 @@ export default function API_URL_PROVIDER({ children }) {
 
 
     return (
-        <API_URL_CONTEXT.Provider value={{ refreshData, setRefreshData, isLoading, setIsLoading, statusSuccess, setStatusSuccess, success, setSuccess, MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister, userId, setUserId }}>
+        <API_URL_CONTEXT.Provider value={{refreshDataMemo, setRefreshDataMemo, refreshData, setRefreshData, isLoading, setIsLoading, statusSuccess, setStatusSuccess, success, setSuccess, MainDomain, publicDataUser, setPublicDataUser, API_URL_CHATBOT, API_URL_AUTH, API_URL_PUB, API_URL_NOTE, token, setToken, username, setUsername, userEmail, setUserEmail, isRegister, setIsRegister, userId, setUserId }}>
             {children}
         </API_URL_CONTEXT.Provider>
     )
