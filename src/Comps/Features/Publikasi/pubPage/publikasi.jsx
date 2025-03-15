@@ -497,17 +497,24 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                     )}
                                                     {pub.imageUrl && (
                                                         <>
-                                                            <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                            {/* max-h-260px */}
+                                                            <div className="w-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
                                                                 <>
+                                                                    {pub.imageUrl.slice(-3) === 'mp4' ? (
+                                                                        <video controls
+                                                                            disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate" className="w-full h-auto max-h-full object-contain rounded-[8px]">
+                                                                            <source src={pub.imageUrl} type="video/mp4" />
+                                                                        </video>
+                                                                    ) : (
+                                                                        < img
+                                                                            src={`${pub.imageUrl}`}
+                                                                            alt="pub-image"
+                                                                            className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                            onLoad={() => setOnLoading(false)}
+                                                                        />
+                                                                    )}
 
 
-                                                                    < img
-                                                                        src={`${pub.imageUrl}`}
-                                                                        alt="pub-image"
-                                                                        className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
-                                                                        onLoad={() => setOnLoading(false)}
-
-                                                                    />
 
                                                                 </>
                                                             </div>
@@ -728,17 +735,24 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             )}
                                                             {pub.imageUrl && (
                                                                 <>
-                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                                    {/* max-h-260px */}
+                                                                    <div className="w-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
                                                                         <>
+                                                                            {pub.imageUrl.slice(-3) === 'mp4' ? (
+                                                                                <video controls
+                                                                                    disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate" className="w-full h-auto max-h-full object-contain rounded-[8px]">
+                                                                                    <source src={pub.imageUrl} type="video/mp4" />
+                                                                                </video>
+                                                                            ) : (
+                                                                                < img
+                                                                                    src={`${pub.imageUrl}`}
+                                                                                    alt="pub-image"
+                                                                                    className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                                    onLoad={() => setOnLoading(false)}
+                                                                                />
+                                                                            )}
 
 
-                                                                            < img
-                                                                                src={`${pub.imageUrl}`}
-                                                                                alt="pub-image"
-                                                                                className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
-                                                                                onLoad={() => setOnLoading(false)}
-
-                                                                            />
 
                                                                         </>
                                                                     </div>
@@ -798,7 +812,7 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                             data-popover
                                                                             id="popover-top"
                                                                             role="tooltip"
-                                                                            className={`absolute z-[50] left-1/2 bottom-full mb-2 -translate-x-1/2 w-fit text-sm text-gray-500 transition-opacity duration-200 ${onShareClick ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-[var(--bg-12)] border border-[var(--black-border)] rounded-lg shadow-xs `}
+                                                                            className={`absolute z-[50] left-1/2 bottom-full mb-2 -translate-x-1/2 w-fit text-sm text-gray-500 transition-opacity duration-200 ${onShareClick ? 'opacity-100 visible' : 'opacity-0 invisible'} bg-[var(--bg-12)] border border-[var(--black-border)] rounded-lg shadow-xs`}
                                                                         >
                                                                             <div className="px-3 py-2 bg-[var(--black-bg)] border-b border-[var(--black-border)] rounded-t-lg ">
                                                                                 <p className="font-semibold text-[11px] text-white">Opsi bagikan</p>
@@ -958,12 +972,12 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             )}
                                                             {pub.imageUrl && (
                                                                 <>
-                                                                {/* max-h-260px */}
+                                                                    {/* max-h-260px */}
                                                                     <div className="w-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
                                                                         <>
                                                                             {pub.imageUrl.slice(-3) === 'mp4' ? (
-                                                                                <video controls 
-                                                                                disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate" className="w-full h-auto max-h-full object-contain rounded-[8px]">
+                                                                                <video controls
+                                                                                    disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate" className="w-full h-auto max-h-full object-contain rounded-[8px]">
                                                                                     <source src={pub.imageUrl} type="video/mp4" />
                                                                                 </video>
                                                                             ) : (
