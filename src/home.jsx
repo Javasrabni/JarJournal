@@ -199,8 +199,11 @@ export default function Home() {
                     {onUploadPubLoading && (
                         <div className="fixed top-0 left-[50%] translate-x-[-50%] max-w-[42rem] w-full h-fit bg-[var(--bg-12)] z-[30]">
                             <div className="flex flex-col items-center justify-between p-[32px] w-full gap-[6px]">
-                                <div className="flex w-full justify-between">
-                                    <span className="text-[12px] font-bold text-white">Uploading..</span>
+                                <div className="flex w-full justify-between items-center">
+                                    <div className="flex flex-col gap-[2px]">
+                                        <span className="text-[12px] font-bold text-white">Uploading..</span>
+                                        <span className="text-[11px] font-regular text-[var(--black-subtext)]">Jangan refresh atau tutup halaman</span>
+                                    </div>
                                     <span className="text-[12px] font-bold text-white">{onProgressUpPub}%</span>
                                 </div>
                                 <div className="w-full bg-[var(--black-bg)] rounded-full h-[6px]">
