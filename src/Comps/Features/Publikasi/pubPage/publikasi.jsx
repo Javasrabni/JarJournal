@@ -962,7 +962,8 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                                     <div className="w-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
                                                                         <>
                                                                             {pub.imageUrl.slice(-3) === 'mp4' ? (
-                                                                                <video controls controlsList="nodownload" className="w-full h-auto max-h-full object-contain rounded-[8px]">
+                                                                                <video controls 
+                                                                                disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate" className="w-full h-auto max-h-full object-contain rounded-[8px]">
                                                                                     <source src={pub.imageUrl} type="video/mp4" />
                                                                                 </video>
                                                                             ) : (
