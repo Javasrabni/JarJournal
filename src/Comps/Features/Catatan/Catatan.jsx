@@ -290,9 +290,10 @@ export default function Catatan() {
                                                                         className={`${themeActive ? 'bg-[#262626]' : 'bg-stone-100'} w-full h-fit flex flex-col p-[12px] rounded-[6px] justify-between gap-[8px] cursor-pointer`}
                                                                         onClick={() => HandleClickNote(item.catatan, item.id)} // Pass the item directly
                                                                     >
-                                                                        <div className="flex flex-col gap-[0px]">
+                                                                        <div className="flex flex-col gap-[0px] w-full">
                                                                             <div
                                                                                 id="outputCatatan"
+                                                                                className="break-words whitespace-normal"
                                                                                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.catatan) }} // Assuming item.content holds the note text
                                                                             />
                                                                         </div>

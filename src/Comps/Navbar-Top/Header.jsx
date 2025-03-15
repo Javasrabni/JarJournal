@@ -58,7 +58,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     }, [pathLocation.pathname])
 
     // Memo Section
-    const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, setValueMemo, valueMemo, afterEditValueMemo, setAfterEditValueMemo, editValueMemoStatus, setEditValueMemoStatus } = useContext(MemoContext)
+    const { indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, setMemoValue, valueMemo, afterEditValueMemo, setAfterEditValueMemo, editValueMemoStatus, setEditValueMemoStatus } = useContext(MemoContext)
 
     // edit option clicked
     const { option1_Status, setOption1_Status, checkOption1Status, setCheckOption1Status } = useContext(PopupFrSettingsContext)
@@ -70,7 +70,7 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
             return
         } else {
             // setIndicatorFromMemo(false)
-            setValueMemo((prevValue) => [...prevValue, memoInputValue])
+            setMemoValue((prevValue) => [...prevValue, memoInputValue])
         }
 
         setOption1_Status(false)
@@ -90,11 +90,11 @@ export default function Header({ nameTools, sloganTools, backPage, hideLogo }) {
     }, [option1_Status])
 
     // Hide Check when value memo is zero 0
-    useEffect(() => {
-        if (valueMemo.length < 1) {
-            setIndicatorFromMemo(false)
-        }
-    }, [valueMemo])
+    // useEffect(() => {
+    //     if (valueMemo.length < 1) {
+    //         setIndicatorFromMemo(false)
+    //     }
+    // }, [valueMemo])
 
 
     // Theme app

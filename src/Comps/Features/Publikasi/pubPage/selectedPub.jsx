@@ -100,8 +100,44 @@ export default function SelectedPub({ items }) {
                         }
                     />
                     <div className={`p-[16px] h-full w-full`}>
+
+
+                        {/* IMAGE  */}
+                        {selectedPub.imageUrl && (
+                            <div className="w-full h-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] overflow-hidden">
+
+                                {selectedPub?.imageUrl.slice(-3) === 'mp4' ? (
+                                    <video controls className="w-full h-auto max-h-full object-cover rounded-[8px]">
+                                        <source src={selectedPub?.imageUrl} type="video/mp4" />
+                                    </video>
+                                ) : (
+                                    < img
+                                        src={`${selectedPub?.imageUrl}`}
+                                        alt="pub-image"
+                                        className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                        onLoad={() => setOnLoading(false)}
+                                    />
+                                )}
+                            </div>
+                        )}
+                        {/* {selectedPub.imageUrl && (
+                            <div className="w-full h-full max-h-[240px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
+                                <img src={selectedPub?.imageUrl} alt="pub-image" className="w-full h-full max-h-full object-cover rounded-[8px]" loading="lazy" />
+                            </div>
+                        )} */}
+
+                        {/* JUDUL */}
+                        <div className="pb-[2px]">
+                            <h1 className={`text-[16px] ${themeActive ? 'text-[white]' : 'text-black'} font-[700] `} style={{ fontFamily: 'poppins' }}>{selectedPub.judulContent}</h1>
+                        </div>
+
+                        {/* CONTENT */}
+                        <div>
+                            <p className="text-[12px] text-white">{selectedPub.content}</p>
+                        </div>
+
                         {/* Author */}
-                        <div className="flex flex-row gap-[8px] items-center" onClick={() => navigate(`/user/${selectedPub.userId}/${selectedPub.userName}`)}>
+                        <div className="flex flex-row gap-[8px] items-center pt-[16px]" onClick={() => navigate(`/user/${selectedPub.userId}/${selectedPub.userName}`)}>
                             {publikasi && (() => {
                                 const user = publikasi?.find(user => user.userName === selectedPub.userName) && publicDataUser?.find(user => user.username === selectedPub.userName); // Ambil user berdasarkan userName
                                 return (
@@ -130,27 +166,6 @@ export default function SelectedPub({ items }) {
                                     </>
                                 ) // Jika user tidak ditemukan, jangan tampilkan apa pun
                             })()}
-                        </div>
-
-                        {/* IMAGE  */}
-                        {selectedPub.imageUrl && (
-                            <div className="w-full h-full max-h-[240px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px]  overflow-hidden">
-                                <img src={selectedPub?.imageUrl} alt="pub-image" className="w-full h-full max-h-full object-cover rounded-[8px]" loading="lazy" />
-                            </div>
-                        )}
-
-                        {/* JUDUL */}
-                        <div className="pb-[16px]">
-                            <h1 className={`text-[16px] ${themeActive ? 'text-[white]' : 'text-black'} font-[700] `} style={{ fontFamily: 'poppins' }}>{selectedPub.judulContent}</h1>
-                        </div>
-
-
-
-
-
-                        {/* CONTENT */}
-                        <div>
-                            <p className="text-[12px] text-white">{selectedPub.content}</p>
                         </div>
 
 

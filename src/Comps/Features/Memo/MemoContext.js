@@ -14,7 +14,9 @@ export default function MemoProvider({ children }) {
     const [memoInputValue, setMemoInputValue] = useState('')
 
     // localstorage state memo value "isi textarea"
-    const [valueMemo, setValueMemo] = useState([])
+    // const [valueMemo, setValueMemo] = useState([])
+    const [memoValue, setMemoValue] = useState([])
+
     // const [valueMemo, setValueMemo] = useState(() => {
     //     const saveMemo = localStorage.getItem('saveUserMemo')
     //     return saveMemo ? JSON.parse(saveMemo) : []
@@ -31,39 +33,42 @@ export default function MemoProvider({ children }) {
         const saveState = localStorage.getItem('saveStateHeightMemo')
         return saveState ? JSON.parse(saveState) : false
     })
-    const [visibleMemo, setVisibleMemo] = useState([])
+    const [visibleMemo, setVisibleMemo] = useState({})
     const { refreshData, setRefreshData } = useContext(API_URL_CONTEXT)
 
     const [onLoadMemo, setOnLoadMemo] = useState(false)
 
+
     useEffect(() => {
         const GetMemoUser = async () => {
-            setOnLoadMemo(true)
+            // setOnLoadMemo(true)
             try {
 
                 const response = await fetch(`${API_URL_AUTH}/get/memo_user`, {
                     method: "GET",
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 })
                 const data = await response.json()
                 if (response.ok) {
-                    setValueMemo(data)
+                    setMemoValue(data)
+                    console.log(data, "GET RES MEMO")
                 }
 
             } catch (err) {
-                console.error(err)
-            } finally {
-                setOnLoadMemo(false)
-            }
+                console.error(err)}
+            // } finally {
+            //     setOnLoadMemo(false)
+            // }
 
         }
         GetMemoUser()
     }, [refreshData])
 
     return (
-        <MemoContext.Provider value={{ onLoadMemo, setOnLoadMemo, valueMemo, setValueMemo, indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo }}>
+        <MemoContext.Provider value={{ memoValue, setMemoValue, onLoadMemo, setOnLoadMemo, indicatorFromMemo, setIndicatorFromMemo, memoInputValue, setMemoInputValue, editValueMemoStatus, setEditValueMemoStatus, afterEditValueMemo, setAfterEditValueMemo, changeHeightMemo, setChangeHeightMemo, visibleMemo, setVisibleMemo }}>
             {children}
         </MemoContext.Provider>
     )

@@ -958,17 +958,23 @@ export default function Publikasi({ publikasiData, profilePage, profilePageUserL
                                                             )}
                                                             {pub.imageUrl && (
                                                                 <>
-                                                                    <div className="w-full max-h-[260px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
+                                                                {/* max-h-260px */}
+                                                                    <div className="w-full max-h-[600px] rounded-[8px] flex items-center justify-center mb-[16px] mt-[16px] overflow-hidden relative" style={{ display: onLoading ? 'none' : 'flex' }}>
                                                                         <>
+                                                                            {pub.imageUrl.slice(-3) === 'mp4' ? (
+                                                                                <video controls controlsList="nodownload" className="w-full h-auto max-h-full object-contain rounded-[8px]">
+                                                                                    <source src={pub.imageUrl} type="video/mp4" />
+                                                                                </video>
+                                                                            ) : (
+                                                                                < img
+                                                                                    src={`${pub.imageUrl}`}
+                                                                                    alt="pub-image"
+                                                                                    className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
+                                                                                    onLoad={() => setOnLoading(false)}
+                                                                                />
+                                                                            )}
 
 
-                                                                            < img
-                                                                                src={`${pub.imageUrl}`}
-                                                                                alt="pub-image"
-                                                                                className={`w-full h-auto max-h-full object-cover rounded-[8px] transition-opacity duration-300 ${onLoading ? 'opacity-0' : 'opacity-100'}`}
-                                                                                onLoad={() => setOnLoading(false)}
-
-                                                                            />
 
                                                                         </>
                                                                     </div>

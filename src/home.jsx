@@ -589,7 +589,7 @@ const ReportJurnal = () => {
                                 {/* DATA JURNAL PERTAMA */}
                                 <div>
                                     {outputDataUserJurnal.length > 0 && outputDataUserJurnal.slice(0, 1).map((item, index) =>
-                                        <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col" onClick={() => console.log(index)}>
+                                        <div key={index} className="w-fit h-fit bg-[var(--black-bg)] rounded-[8px] shrink-0 p-[12px] gap-[2px] flex flex-col">
                                             <p className="text-[12px] text-white font-[600]">Jurnal hari ke-{item.day}</p>
                                             <p className="text-[11px] text-[var(--black-subtext)]">{item.descJurnal == 'null' ? `Jurnal harianku yang ke-${item.day}` : item.descJurnal}</p>
                                         </div>
