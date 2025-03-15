@@ -241,7 +241,7 @@ export default function Chatbot() {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
-                }, body: JSON.stringify({ userId: userIdAsker, asking: userInput })
+                }, body: JSON.stringify({ userId: userIdAsker, asking: userInput, botAnswer: aiResponse })
             })
         } catch (error) {
             console.error("Error:", error);
